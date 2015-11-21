@@ -1,0 +1,25 @@
+{
+  "name": "kavidi_kali",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cd javascript; mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sumanmaity112/KavidiKali.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sumanmaity112/KavidiKali/issues"
+  },
+  "homepage": "https://github.com/sumanmaity112/KavidiKali#readme",
+  "devDependencies": {
+    "mocha": "^2.3.4"
+  },
+  "dependencies": {
+    "lodash": "^3.10.1"
+  }
+}
