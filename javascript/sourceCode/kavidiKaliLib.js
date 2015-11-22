@@ -34,6 +34,13 @@ entities.GameMaster = function(){
 
 };
 
-entities.SafePlaces = function(){
-	
+entities.createSafePlaces = function(size){
+	var safePlaces = [];
+	safePlaces.push([0,Math.floor(size/2)]);
+	safePlaces.push([Math.floor(size/2),size-1]);
+	safePlaces.push([size-1,Math.floor(size/2)]);
+	safePlaces.push([Math.floor(size/2),0]);
+	safePlaces.push([Math.floor(size/2),Math.floor(size/2)]);
+	return safePlaces;
 };
+

@@ -34,5 +34,14 @@ describe('board',function(){
 		var coin={currentPosition:[2,3]};
 		assert.ok(!board.isSafe(coin)); 
 	});
-})
+});
+
+describe('createSafePlaces',function(){
+	it("create all the possible safe place of a given size's board",function(){
+		var safePlaces = [[0,2], [2,4], [4,2], [2,0], [2,2]];
+		assert.deepEqual(safePlaces,entities.createSafePlaces(5));
+		var safePlaces = [[0,3], [3,6], [6,3], [3,0], [3,3]];
+		assert.deepEqual(safePlaces, entities.createSafePlaces(7));
+	});
+});
  
