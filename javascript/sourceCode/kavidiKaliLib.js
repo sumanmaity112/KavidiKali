@@ -8,8 +8,8 @@ entities.Board = function(safePlaces,size){
 };
 
 entities.Board.prototype.isSafe = function(coin){
-	return this.safePlaces.indexOf(coin.currentPosition)>=0;
-}
+	return (lodash.findIndex(this.safePlaces,coin.currentPosition)>=0);
+};
 
 entities.Coin = function(){
 

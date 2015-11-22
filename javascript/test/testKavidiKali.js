@@ -15,5 +15,24 @@ describe("Dice",function(){
 	});
 });
 
-
+describe('board',function(){
+	it('create a board of given size with given safe places',function(){
+		var safePlaces = [[0,2],[2,4],[4,2],[2,0],[2,2]];
+		var board = new entities.Board(safePlaces,5);
+		assert.deepEqual(board.safePlaces,safePlaces);
+		assert.equal(board.grid.length , 5);
+	});
+	it("say that one coin is in safe place when coin's current place is one of the safe places",function(){
+		var safePlaces = [[0,2],[2,4],[4,2],[2,0],[2,2]];
+		var board = new entities.Board(safePlaces,5);
+		var coin={currentPosition:[2,2]};
+		assert.ok(board.isSafe(coin)); 
+	});
+	it("say that one coin is not in safe place when coin's current place is not one of the safe places",function(){
+		var safePlaces = [[0,2],[2,4],[4,2],[2,0],[2,2]];
+		var board = new entities.Board(safePlaces,5);
+		var coin={currentPosition:[2,3]};
+		assert.ok(!board.isSafe(coin)); 
+	});
+})
  
