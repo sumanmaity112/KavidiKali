@@ -191,6 +191,16 @@ describe('GameMaster',function(){
 			assert.ok(!gameMaster.analyzeDiceValue(4,6));
 		});
 	});
+	describe('createPlayer',function(){
+		it('creates a player with given playerId',function(){
+			var master = new entities.GameMaster();
+			master.createPlayer('red');
+			assert.ok(Object.keys(master.players).length==1)
+			assert.ok(master.players['red'] instanceof entities.Player);
+			master.createPlayer('blue');
+			assert.ok(Object.keys(master.players).length==2)
+		});
+	});
 });
 
 

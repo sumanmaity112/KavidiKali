@@ -89,12 +89,15 @@ entities.Dice.prototype = {
 }
 
 entities.GameMaster = function(){
-
+	this.players = {};
 };
 
 entities.GameMaster.prototype = {
 	analyzeDiceValue : function(diceValue, specialValue){
 		return diceValue == specialValue;
+	},
+	createPlayer : function(playerId){
+		this.players[playerId] = new entities.Player(playerId);
 	}
 }
 
