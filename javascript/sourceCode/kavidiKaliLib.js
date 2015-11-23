@@ -67,6 +67,10 @@ entities.Player.prototype = {
 	moveCoin : function(coinID,movesTo){
 		var coin = this.coins[coinID];
 		coin.move(movesTo);
+	},
+	kill : function(coin){
+		coin.die();
+		this.matured = true;
 	}
 };
 

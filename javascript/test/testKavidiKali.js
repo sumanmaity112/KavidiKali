@@ -162,6 +162,22 @@ describe('Player',function(){
 			assert.deepEqual(coin.currentPosition,[1,1]);
 		});
 	});
+	describe('killCoin',function(){
+		it('kills the given coin',function(){
+			var player1 = new entities.Player('red');
+			var coin = new entities.Coin('green1');
+			coin.move('0,0');
+			player1.kill(coin);
+			assert.equal(coin.currentPosition,undefined);
+		});
+		it('sets the matured property of the player "true"', function(){
+			var player = new entities.Player('red');
+			var coin = new entities.Coin('blue2');
+			assert.equal(player.matured,false);
+			player.kill(coin);
+			assert.equal(player.matured,true);
+		});
+	});
 });
 
 
