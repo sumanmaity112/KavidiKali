@@ -3,7 +3,7 @@ var entities = {};
 exports.entities = entities;
 //===========================================================================
 entities.Board = function(safePlaces,size){
-	this.grid = entities.Board.prototype.createGrid(safePlaces,size);
+	this.grid = createGrid(safePlaces,size);
 	this.safePlaces = safePlaces;
 };
 entities.Board.prototype={
@@ -12,18 +12,19 @@ entities.Board.prototype={
 	},
 	isThereAnyCoin : function(position){
 		return this.grid[position];
-	},
-	createGrid : function(safePlaces,size){
-		var grid = {};
-		for(var row = 0;row < size;row++)
-			for(var column = 0;column < size;column++)
-				grid[row+','+column] = undefined;
-		safePlaces.forEach(function(safePlace){
-			grid[safePlace] = [];
-		});
-		return grid;
 	}
-}
+};
+
+var createGrid = function(safePlaces,size){
+	var grid = {};
+	for(var row = 0;row < size;row++)
+		for(var column = 0;column < size;column++)
+			grid[row+','+column] = undefined;
+	safePlaces.forEach(function(safePlace){
+		grid[safePlace] = [];
+	});
+	return grid;
+};
 
 entities.Coin = function(id){
 	this.id = id;
@@ -48,14 +49,16 @@ entities.Coin.prototype = {
 entities.Player = function(id){
 	this.id = id;
 	this.matured = false;
-	this.coins = function(id){
-			var coins = new Object;
-			for(var i=1; i<=4; i++){
-				coins[id+i] = new entities.Coin(id+i);
-			};
-			return coins;
-		}(id);
+	this.coins = createCoins(id,4);
 	this.diceValues = new Array;
+};
+
+var createCoins =  function(id,numberOfCoins){
+	var coins = new Object;
+	for(var i=1; i<=numberOfCoins; i++){
+		coins[id+i] = new entities.Coin(id+i);
+	};
+	return coins;
 };
 
 entities.Player.prototype = {
@@ -80,8 +83,8 @@ entities.Dice = function(values){
 
 entities.Dice.prototype = {
 	roll : function(){
-		var randomNumber = lodash.random(0,this.values.length-1);
-		return this.values[randomNumber];
+		var randomIndex = lodash.random(0,this.values.length-1);
+		return this.values[randomIndex];
 	}
 }
 
