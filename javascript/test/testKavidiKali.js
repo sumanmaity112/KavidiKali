@@ -17,38 +17,72 @@ describe("Dice",function(){
 
 describe('board',function(){
 	it('create a board of given size with given safe places',function(){
-		var safePlaces = [[0,2],[2,4],[4,2],[2,0],[2,2]];
+		var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
 		var board = new entities.Board(safePlaces,5);
 		assert.deepEqual(board.safePlaces,safePlaces);
-		assert.equal(board.grid.length , 5);
+		assert.equal(Object.keys(board.grid).length,5*5);
 	});
-	it("say that one coin is in safe place when coin's current place is one of the safe places",function(){
-		var safePlaces = [[0,2],[2,4],[4,2],[2,0],[2,2]];
-		var board = new entities.Board(safePlaces,5);
-		var coin={currentPosition:[2,2]};
-		assert.ok(board.isSafe(coin)); 
-		coin = {currentPosition:[0,2]};
-		assert.ok(board.isSafe(coin));
-		coin = {currentPosition:[4,2]};
-		assert.ok(board.isSafe(coin));
+	describe('isSafe',function(){
+		it("say that one coin is in safe place when coin's current place is one of the safe places",function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			var coin={currentPosition:'2,4'};
+			assert.ok(board.isSafe(coin)); 
+		});	
+		it("say that one coin is in safe place when coin's current place is one of the safe places",function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			var coin={currentPosition:'2,2'};
+			assert.ok(board.isSafe(coin)); 
+			coin = {currentPosition:'0,2'};
+			assert.ok(board.isSafe(coin));
+			coin = {currentPosition:'4,2'};
+			assert.ok(board.isSafe(coin));
+		});
+		it("say that one coin is not in safe place when coin's current place is not one of the safe places",function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			var coin={currentPosition:'2,3'};
+			assert.ok(!board.isSafe(coin)); 
+			coin = {currentPosition:'4,4'};
+			assert.ok(!board.isSafe(coin));
+			coin = {currentPosition:'3,4'};
+			assert.ok(!board.isSafe(coin)); 
+		});
 	});
-	it("say that one coin is not in safe place when coin's current place is not one of the safe places",function(){
-		var safePlaces = [[0,2],[2,4],[4,2],[2,0],[2,2]];
+	describe('isThereAnyCoin',function(){
+		it('checks wheather coin is present on tile',function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			board.grid['1,2'] = 1;
+			assert.ok(board.isThereAnyCoin(['1,2']))
+		});
+		it('checks wheather coin is not present on tile',function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			assert.ok(!board.isThereAnyCoin(['2,3']));
+			assert.ok(!board.isThereAnyCoin(['1,4']));
+		});
+	})
+	it('checks safe place of a board contain array',function(){
+		var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
 		var board = new entities.Board(safePlaces,5);
-		var coin={currentPosition:[2,3]};
-		assert.ok(!board.isSafe(coin)); 
-		coin = {currentPosition:[4,4]};
-		assert.ok(!board.isSafe(coin));
-		coin = {currentPosition:[3,4]};
-		assert.ok(!board.isSafe(coin)); 
+		assert.ok(board.grid['0,2'] instanceof Object)
+		assert.deepEqual(board.grid['0,2'],{red:[],blue:[],green:[],yellow:[]});
+	});
+	it('checks tiles except safe place of a board does not contain array',function(){
+		var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+		var board = new entities.Board(safePlaces,5);
+		assert.ok(!(board.grid['1,2'] instanceof Object))
+		assert.notDeepEqual(board.grid['1,2'],{red:[],blue:[],green:[],yellow:[]});
 	});
 });
 
 describe('createSafePlaces',function(){
 	it("create all the possible safe place of a given size's board",function(){
-		var safePlaces = [[0,2], [2,4], [4,2], [2,0], [2,2]];
+		var safePlaces = ['0,2', '2,4', '4,2', '2,0', '2,2'];
 		assert.deepEqual(safePlaces,entities.createSafePlaces(5));
-		var safePlaces = [[0,3], [3,6], [6,3], [3,0], [3,3]];
+		var safePlaces = ['0,3', '3,6', '6,3', '3,0', '3,3'];
 		assert.deepEqual(safePlaces, entities.createSafePlaces(7));
 	});
 });
