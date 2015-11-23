@@ -11,8 +11,24 @@ entities.Board.prototype.isSafe = function(coin){
 	return (lodash.findIndex(this.safePlaces,coin.currentPosition)>=0);
 };
 
-entities.Coin = function(){
+entities.Coin = function(id){
+	this.id = id;
+	this.currentPosition = undefined;
+	this.reachedHome = false;
+};
 
+entities.Coin.prototype = {
+	move : function(movesTo){
+		this.currentPosition = movesTo;
+	},
+
+	die : function(){
+		this.currentPosition = undefined;
+	},
+
+	hasReachedHome : function(){
+		this.reachedHome = true;
+	}
 };
 
 entities.Player = function(){

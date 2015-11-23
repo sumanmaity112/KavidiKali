@@ -45,3 +45,37 @@ describe('createSafePlaces',function(){
 	});
 });
  
+ describe('Coin',function(){
+ 	it('creates an object with given id and properties currentPosition and reachedHome',function(){
+ 		var coin = new entities.Coin('green1');
+ 		assert.equal('green1',coin.id);
+ 		assert.deepEqual(undefined,coin.currentPosition);
+ 		assert.equal(false,coin.reachedHome);
+ 	});
+	describe('move',function(){
+		it('moves the coin from its current position to the given position',function(){
+			var coin = new entities.Coin('red1');
+			coin.move([2,3]);
+			assert.deepEqual(coin.currentPosition,[2,3]);
+			coin.move([2,2])
+			assert.deepEqual(coin.currentPosition,[2,2]);
+		});
+	});
+	describe('die',function(){
+		it('resets the current position of the coin',function(){
+			var coin = new entities.Coin('blue1');
+			coin.move([2,3]);
+			assert.deepEqual(coin.currentPosition,[2,3]);
+			coin.die();
+			assert.equal(coin.currentPosition,undefined);
+		});
+	});
+	describe('hasReachedHome', function(){
+		it('sets the reached home property of the coin "true"',function(){
+			var coin = new entities.Coin('yellow1');
+			assert.equal(false,coin.reachedHome);
+			coin.hasReachedHome();
+			assert.equal(true,coin.reachedHome);
+		});
+	});	
+ });
