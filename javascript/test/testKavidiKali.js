@@ -27,11 +27,19 @@ describe('board',function(){
 		var board = new entities.Board(safePlaces,5);
 		var coin={currentPosition:[2,2]};
 		assert.ok(board.isSafe(coin)); 
+		coin = {currentPosition:[0,2]};
+		assert.ok(board.isSafe(coin));
+		coin = {currentPosition:[4,2]};
+		assert.ok(board.isSafe(coin));
 	});
 	it("say that one coin is not in safe place when coin's current place is not one of the safe places",function(){
 		var safePlaces = [[0,2],[2,4],[4,2],[2,0],[2,2]];
 		var board = new entities.Board(safePlaces,5);
 		var coin={currentPosition:[2,3]};
+		assert.ok(!board.isSafe(coin)); 
+		coin = {currentPosition:[4,4]};
+		assert.ok(!board.isSafe(coin));
+		coin = {currentPosition:[3,4]};
 		assert.ok(!board.isSafe(coin)); 
 	});
 });
