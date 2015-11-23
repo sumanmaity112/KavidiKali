@@ -218,7 +218,7 @@ describe('GameMaster',function(){
 		});
 	});
 	describe('setChances',function(){
-		it('analyses the given dice value and then gives chance to the given player',function(){
+		it('analyses the given dice value and then gives chance to the given player if dice value is one of special value',function(){
 			var master = new entities.GameMaster([6]);
 			master.createPlayer('red');
 			var player = master.players['red'];
@@ -227,6 +227,16 @@ describe('GameMaster',function(){
 			assert.equal(player.chances,0);
 			master.setChances(6,'red');
 			assert.equal(player.chances,1);
+		});
+		it('analyses the given dice value and then do nothing if dice value is not one of special value',function(){
+			var master = new entities.GameMaster([6]);
+			master.createPlayer('red');
+			var player = master.players['red'];
+			player.chances = 1;
+			player.rollDice(new entities.Dice([]));
+			assert.equal(player.chances,0);
+			master.setChances(4,'red');
+			assert.equal(player.chances,0);
 		});
 	});
 });
