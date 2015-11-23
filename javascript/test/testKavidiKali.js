@@ -23,31 +23,25 @@ describe('board',function(){
 		assert.equal(Object.keys(board.grid).length,5*5);
 	});
 	describe('isSafe',function(){
-		it("say that one coin is in safe place when coin's current place is one of the safe places",function(){
+		it('returns true if the given position is a safe position',function(){
 			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
 			var board = new entities.Board(safePlaces,5);
-			var coin={currentPosition:'2,4'};
-			assert.ok(board.isSafe(coin)); 
-		});	
-		it("say that one coin is in safe place when coin's current place is one of the safe places",function(){
-			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
-			var board = new entities.Board(safePlaces,5);
-			var coin={currentPosition:'2,2'};
-			assert.ok(board.isSafe(coin)); 
-			coin = {currentPosition:'0,2'};
-			assert.ok(board.isSafe(coin));
-			coin = {currentPosition:'4,2'};
-			assert.ok(board.isSafe(coin));
+			var coinPosition = '2,2';
+			assert.ok(board.isSafe(coinPosition)); 
+			coinPosition = '0,2';
+			assert.ok(board.isSafe(coinPosition));
+			coinPosition = '4,2';
+			assert.ok(board.isSafe(coinPosition));
 		});
-		it("say that one coin is not in safe place when coin's current place is not one of the safe places",function(){
+		it('returns false if the given position is not a safe position',function(){
 			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
 			var board = new entities.Board(safePlaces,5);
-			var coin={currentPosition:'2,3'};
-			assert.ok(!board.isSafe(coin)); 
-			coin = {currentPosition:'4,4'};
-			assert.ok(!board.isSafe(coin));
-			coin = {currentPosition:'3,4'};
-			assert.ok(!board.isSafe(coin)); 
+			var coinPosition = '2,3';
+			assert.ok(!board.isSafe(coinPosition)); 
+			coinPosition = '4,4';
+			assert.ok(!board.isSafe(coinPosition));
+			coinPosition = '3,4';
+			assert.ok(!board.isSafe(coinPosition)); 
 		});
 	});
 	describe('isThereAnyCoin',function(){
@@ -154,12 +148,34 @@ describe('Player',function(){
 	});
 	describe('moveCoin', function(){
 		it('moves the selected coin to the given place',function(){
+			var board = new entities.Board(['2,3','4,2'],5);
 			var player = new entities.Player('red');
 			var coin = player.coins['red1'];
-			player.moveCoin(coin.id,[3,3]);
-			assert.deepEqual(coin.currentPosition,[3,3]);
-			player.moveCoin(coin.id,[1,1]);
-			assert.deepEqual(coin.currentPosition,[1,1]);
+			player.moveCoin(coin.id,'3,3',board);
+			assert.deepEqual(coin.currentPosition,'3,3');
+			player.moveCoin(coin.id,'1,1',board);
+			assert.deepEqual(coin.currentPosition,'1,1');
+		});
+		it('kills the coin present in the position to be moved',function(){
+			var board = new entities.Board(['2,3','4,2'],5);
+			var player1 = new entities.Player('red');
+			var player2 = new entities.Player('blue');
+			var movesBy = '2,4';
+			player1.moveCoin('red1',movesBy,board);
+			assert.equal(board.getCoins(movesBy).id,'red1');
+			player2.moveCoin('blue2',movesBy,board);
+			assert.equal(board.getCoins(movesBy).id,'blue2');
+			assert.ok(player1.coins['red1'].currentPosition == undefined)
+		});
+		it('it will not kill the coin if the "movedTo" place is a safe place. Instead the coin will be added to the list of coins in that place',function(){
+			var board = new entities.Board(['2,3','4,2'],5);
+			var player1 = new entities.Player('red');
+			var player2 = new entities.Player('blue');
+			var movesBy = '2,3';
+			player1.moveCoin('red1',movesBy,board);
+			assert.deepEqual(board.getCoins(movesBy),[player1.coins['red1']]);
+			player2.moveCoin('blue2',movesBy,board);
+			assert.deepEqual(board.getCoins(movesBy),[player1.coins['red1'],player2.coins['blue2']]);
 		});
 	});
 	describe('killCoin',function(){
@@ -212,7 +228,7 @@ describe('GameMaster',function(){
 			master.setChances(6,'red');
 			assert.equal(player.chances,1);
 		});
-	})
+	});
 });
 
 
