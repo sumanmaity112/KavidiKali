@@ -1,14 +1,22 @@
 var lodash = require('lodash');
 var entities = {};
 exports.entities = entities;
-
+//===========================================================================
 entities.Board = function(safePlaces,size){
-	this.grid = lodash.fill(new Array(size),new Array(size));
+	this.grid = {};
+	for(var row = 0;row < size;row++)
+		for(var column = 0;column < size;column++)
+			this.grid[row+','+column] = 0;
+	var grid=this.grid;
 	this.safePlaces = safePlaces;
+	this.safePlaces.forEach(function(safePlace){
+		grid[safePlace] = [];
+	});
+	this.grid = grid;
 };
 
 entities.Board.prototype.isSafe = function(coin){
-	return (lodash.findIndex(this.safePlaces,coin.currentPosition)>=0);
+	return (lodash.indexOf(this.safePlaces,coin.currentPosition)>=0);
 };
 
 entities.Coin = function(){
@@ -41,6 +49,8 @@ entities.createSafePlaces = function(size){
 	safePlaces.push([size-1,Math.floor(size/2)]);
 	safePlaces.push([Math.floor(size/2),0]);
 	safePlaces.push([Math.floor(size/2),Math.floor(size/2)]);
+	safePlaces.forEach(function(safePlace,index){
+		return safePlaces[index] = safePlace.join();
+	});
 	return safePlaces;
 };
-
