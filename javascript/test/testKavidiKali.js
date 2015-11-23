@@ -120,4 +120,48 @@ describe('createSafePlaces',function(){
 			assert.equal(true,coin.reachedHome);
 		});
 	});	
- });
+});
+
+describe('Player',function(){
+	it('creates an object with given id and properties "matured" and "diceValues"', function(){
+		var player = new entities.Player('p1');
+		assert.equal('p1',player.id);
+		assert.deepEqual(false,player.matured);
+		assert.deepEqual([],player.diceValues);
+	});
+	describe('rollDice',function(){
+		it('rolls the given dice and adds the values to diceValues',function(){
+			var player = new entities.Player('p1');
+			var dice = new entities.Dice([2]);
+			assert.deepEqual(2,player.rollDice(dice));
+			assert.deepEqual(player.diceValues,[2]);
+		});
+	});
+	describe('coins',function(){
+		it('has 4 coins with id\'s as player\'s id + coin number',function(){
+			var player = new entities.Player('green');
+			var coins = Object.keys(player.coins);
+			assert.deepEqual(coins,['green1','green2','green3','green4']);
+		});
+		it('has 4 coins. Each coin is created with Coin',function(){
+			var Coin = entities.Coin;
+			var player = new entities.Player('green');
+			var coins = Object.keys(player.coins);
+			coins.forEach(function(coin){
+				assert.ok(player.coins[coin] instanceof Coin);
+			});
+		});
+	});
+	describe('moveCoin', function(){
+		it('moves the selected coin to the given place',function(){
+			var player = new entities.Player('red');
+			var coin = player.coins['red1'];
+			player.moveCoin(coin.id,[3,3]);
+			assert.deepEqual(coin.currentPosition,[3,3]);
+			player.moveCoin(coin.id,[1,1]);
+			assert.deepEqual(coin.currentPosition,[1,1]);
+		});
+	});
+});
+
+

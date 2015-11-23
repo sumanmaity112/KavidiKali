@@ -45,8 +45,29 @@ entities.Coin.prototype = {
 	}
 };
 
-entities.Player = function(){
+entities.Player = function(id){
+	this.id = id;
+	this.matured = false;
+	this.coins = function(id){
+			var coins = new Object;
+			for(var i=1; i<=4; i++){
+				coins[id+i] = new entities.Coin(id+i);
+			};
+			return coins;
+		}(id);
+	this.diceValues = new Array;
+};
 
+entities.Player.prototype = {
+	rollDice : function(dice){
+		var diceValue = dice.roll();
+		this.diceValues.push(diceValue);
+		return diceValue;
+	},
+	moveCoin : function(coinID,movesTo){
+		var coin = this.coins[coinID];
+		coin.move(movesTo);
+	}
 };
 
 entities.Dice = function(values){
