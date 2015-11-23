@@ -10,11 +10,10 @@ entities.Board = function(safePlaces,size){
 	var grid=this.grid;
 	this.safePlaces = safePlaces;
 	this.safePlaces.forEach(function(safePlace){
-		grid[safePlace] = [];
+		grid[safePlace] = {red:[],blue:[],green:[],yellow:[]};
 	});
 	this.grid = grid;
 };
-
 entities.Board.prototype.isSafe = function(coin){
 	return (lodash.indexOf(this.safePlaces,coin.currentPosition)>=0);
 };
