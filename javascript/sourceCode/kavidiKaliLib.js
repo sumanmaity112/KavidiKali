@@ -14,9 +14,14 @@ entities.Board = function(safePlaces,size){
 	});
 	this.grid = grid;
 };
-entities.Board.prototype.isSafe = function(coin){
-	return (lodash.indexOf(this.safePlaces,coin.currentPosition)>=0);
-};
+entities.Board.prototype={
+	isSafe : function(coin){
+		return (lodash.indexOf(this.safePlaces,coin.currentPosition)>=0);
+	},
+	isThereAnyCoin : function(position){
+		return this.grid[position]>0;
+	}
+}
 
 entities.Coin = function(id){
 	this.id = id;
