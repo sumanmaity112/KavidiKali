@@ -164,4 +164,17 @@ describe('Player',function(){
 	});
 });
 
+describe('GameMaster',function(){
+	describe('analyzeDiceValue',function(){
+		it('return true when dice value is same as special value',function(){
+			var gameMaster = new entities.GameMaster();
+			assert.ok(gameMaster.analyzeDiceValue(6,6));
+		});
+		it('return false when dice value is not same as special value',function(){
+			var gameMaster = new entities.GameMaster();
+			assert.ok(!gameMaster.analyzeDiceValue(4,6));
+		});
+	});
+});
+
 

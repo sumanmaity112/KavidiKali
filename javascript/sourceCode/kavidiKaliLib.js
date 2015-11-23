@@ -85,6 +85,12 @@ entities.GameMaster = function(){
 
 };
 
+entities.GameMaster.prototype = {
+	analyzeDiceValue : function(diceValue, specialValue){
+		return diceValue == specialValue;
+	}
+}
+
 entities.createSafePlaces = function(size){
 	var safePlaces = [];
 	safePlaces.push([0,Math.floor(size/2)]);
