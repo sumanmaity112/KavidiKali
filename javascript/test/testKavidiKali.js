@@ -67,14 +67,14 @@ describe('board',function(){
 	it('checks safe place of a board contain array',function(){
 		var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
 		var board = new entities.Board(safePlaces,5);
-		assert.ok(board.grid['0,2'] instanceof Object)
-		assert.deepEqual(board.grid['0,2'],{red:[],blue:[],green:[],yellow:[]});
+		assert.ok(board.grid['0,2'] instanceof Array)
+		assert.deepEqual(board.grid['0,2'],[]);
 	});
 	it('checks tiles except safe place of a board does not contain array',function(){
 		var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
 		var board = new entities.Board(safePlaces,5);
-		assert.ok(!(board.grid['1,2'] instanceof Object))
-		assert.notDeepEqual(board.grid['1,2'],{red:[],blue:[],green:[],yellow:[]});
+		assert.ok(!(board.grid['1,2'] instanceof Array))
+		assert.notDeepEqual(board.grid['1,2'],[]);
 	});
 });
 

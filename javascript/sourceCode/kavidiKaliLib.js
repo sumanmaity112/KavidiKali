@@ -3,23 +3,25 @@ var entities = {};
 exports.entities = entities;
 //===========================================================================
 entities.Board = function(safePlaces,size){
-	this.grid = {};
-	for(var row = 0;row < size;row++)
-		for(var column = 0;column < size;column++)
-			this.grid[row+','+column] = 0;
-	var grid=this.grid;
+	this.grid = entities.Board.prototype.createGrid(safePlaces,size);
 	this.safePlaces = safePlaces;
-	this.safePlaces.forEach(function(safePlace){
-		grid[safePlace] = {red:[],blue:[],green:[],yellow:[]};
-	});
-	this.grid = grid;
 };
 entities.Board.prototype={
 	isSafe : function(coin){
 		return (lodash.indexOf(this.safePlaces,coin.currentPosition)>=0);
 	},
 	isThereAnyCoin : function(position){
-		return this.grid[position]>0;
+		return this.grid[position];
+	},
+	createGrid : function(safePlaces,size){
+		var grid = {};
+		for(var row = 0;row < size;row++)
+			for(var column = 0;column < size;column++)
+				grid[row+','+column] = undefined;
+		safePlaces.forEach(function(safePlace){
+			grid[safePlace] = [];
+		});
+		return grid;
 	}
 }
 
