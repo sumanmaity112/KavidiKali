@@ -183,12 +183,12 @@ describe('Player',function(){
 describe('GameMaster',function(){
 	describe('analyzeDiceValue',function(){
 		it('return true when dice value is same as special value',function(){
-			var gameMaster = new entities.GameMaster();
-			assert.ok(gameMaster.analyzeDiceValue(6,6));
+			var gameMaster = new entities.GameMaster([6]);
+			assert.ok(gameMaster.analyzeDiceValue(6));
 		});
 		it('return false when dice value is not same as special value',function(){
-			var gameMaster = new entities.GameMaster();
-			assert.ok(!gameMaster.analyzeDiceValue(4,6));
+			var gameMaster = new entities.GameMaster([6]);
+			assert.ok(!gameMaster.analyzeDiceValue(4));
 		});
 	});
 	describe('createPlayer',function(){
@@ -201,6 +201,18 @@ describe('GameMaster',function(){
 			assert.ok(Object.keys(master.players).length==2)
 		});
 	});
+	describe('setChances',function(){
+		it('analyses the given dice value and then gives chance to the given player',function(){
+			var master = new entities.GameMaster([6]);
+			master.createPlayer('red');
+			var player = master.players['red'];
+			player.chances = 1;
+			player.rollDice(new entities.Dice([]));
+			assert.equal(player.chances,0);
+			master.setChances(6,'red');
+			assert.equal(player.chances,1);
+		});
+	})
 });
 
 

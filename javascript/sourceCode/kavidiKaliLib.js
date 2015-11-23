@@ -65,6 +65,7 @@ entities.Player.prototype = {
 	rollDice : function(dice){
 		var diceValue = dice.roll();
 		this.diceValues.push(diceValue);
+		this.chances--;
 		return diceValue;
 	},
 	moveCoin : function(coinID,movesTo){
@@ -88,16 +89,21 @@ entities.Dice.prototype = {
 	}
 }
 
-entities.GameMaster = function(){
+entities.GameMaster = function(specialValues){
+	this.specialValues = specialValues;
 	this.players = {};
 };
 
 entities.GameMaster.prototype = {
-	analyzeDiceValue : function(diceValue, specialValue){
-		return diceValue == specialValue;
+	analyzeDiceValue : function(diceValue){
+		return (this.specialValues.indexOf(diceValue)>=0);
 	},
 	createPlayer : function(playerId){
 		this.players[playerId] = new entities.Player(playerId);
+	},
+	setChances : function(diceValue,playerId){
+		if(this.analyzeDiceValue(diceValue))
+			this.players[playerId].chances++;  
 	}
 }
 
