@@ -121,6 +121,7 @@ entities.GameMaster = function(specialValues,size,diceValues){
 	this.specialValues = specialValues;
 	this.board = this.createBoard(size);
 	this.dice = this.createDice(diceValues);
+	this.getCurrentPlayer = getCurrentPlayer(this);
 };
 
 entities.GameMaster.prototype = {
@@ -141,16 +142,20 @@ entities.GameMaster.prototype = {
 	createDice : function(values){
 		this.dice = new entities.Dice(values);
 	},
-	getCurrentPlayer : function(){
-		var counter = 0;
-		return function(){
-			var players = Object.keys(this.players);
-			this.players[players[counter]].chances || counter++;
-			counter = counter%players.length;
-			return this.players[players[counter]];
-		};
-	}()
-}
+};
+
+var getCurrentPlayer = function(master){
+	var counter = 0;
+	return (function(){
+		var players = Object.keys(this.players);
+		var currPlayer = this.players[players[counter]]
+		if(!currPlayer.chances){
+			counter = (counter+1)%players.length;
+			this.players[players[counter]].chances++;
+	 	};	
+		return this.players[players[counter]];
+	}).bind(master);
+};
 
 entities.createSafePlaces = function(size){
 	var safePlaces = [];

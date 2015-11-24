@@ -334,11 +334,45 @@ describe('GameMaster',function(){
 			master.players['red'].chances = 1;
 			assert.equal(master.getCurrentPlayer().id,'red');
 		});
-		it('gives the next player if the current player has no further chance to play',function(){
+		it('gives the next player if the current player has no further chance to play and also gives chance to next player',function(){
 			var master = new entities.GameMaster([6],5);
+			master.createDice([1,2,3,4,5]);	
 			master.createPlayer('red');
 			master.createPlayer('yellow');
-			assert.equal(master.getCurrentPlayer().id,'yellow');
+			master.createPlayer('blue');
+			master.createPlayer('green');
+			master.players['red'].chances++;
+			var currPlayer = master.getCurrentPlayer();
+			assert.equal(currPlayer.id,'red');
+			currPlayer.rollDice(master.dice);
+			currPlayer = master.getCurrentPlayer()
+			assert.equal(currPlayer.id,'yellow');
+			currPlayer.rollDice(master.dice);
+			currPlayer = master.getCurrentPlayer()
+			assert.equal(currPlayer.id,'blue');
+			currPlayer.rollDice(master.dice);
+			currPlayer = master.getCurrentPlayer()
+			assert.equal(currPlayer.id,'green');
+		});
+		it('gives the next player if the current player has no further chance to play and also gives chance to next player   11',function(){
+			var master = new entities.GameMaster([6],5);
+			master.createDice([1,2,3,4,5]);	
+			master.createPlayer('red');
+			master.createPlayer('yellow');
+			master.createPlayer('blue');
+			master.createPlayer('green');
+			master.players['red'].chances++;
+			var currPlayer = master.getCurrentPlayer();
+			assert.equal(currPlayer.id,'red');
+			currPlayer.rollDice(master.dice);
+			currPlayer = master.getCurrentPlayer()
+			assert.equal(currPlayer.id,'yellow');
+			currPlayer.rollDice(master.dice);
+			currPlayer = master.getCurrentPlayer()
+			assert.equal(currPlayer.id,'blue');
+			currPlayer.rollDice(master.dice);
+			currPlayer = master.getCurrentPlayer()
+			assert.equal(currPlayer.id,'green');
 		});
 	});
 });
