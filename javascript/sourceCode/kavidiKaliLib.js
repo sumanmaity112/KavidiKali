@@ -140,6 +140,9 @@ entities.GameMaster.prototype = {
 	},
 	createDice : function(values){
 		this.dice = new entities.Dice(values);
+	},
+	isPlayerMatured : function(player){
+		return player.matured;
 	}
 }
 

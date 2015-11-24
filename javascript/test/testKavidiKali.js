@@ -326,7 +326,17 @@ describe('GameMaster',function(){
 			assert.ok(master.dice instanceof entities.Dice);
 		});
 	});
-
+	describe('isPlayerMatured',function(){
+		it('it checks the players is matured or not',function(){
+			var master = new entities.GameMaster([6],5,[1,2,3,4,5,6]);
+			master.createPlayer('red');
+			master.createPlayer('blue');
+			assert.ok(!master.isPlayerMatured(master.players['red']));
+			assert.ok(!master.isPlayerMatured(master.players['blue']));
+			master.players['red'].matured = true;
+			assert.ok(master.isPlayerMatured(master.players['red']));
+		});
+	});
 });
 
 
