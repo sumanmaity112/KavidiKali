@@ -239,6 +239,22 @@ describe('GameMaster',function(){
 			assert.equal(player.chances,0);
 		});
 	});
+	describe('createBoard',function(){
+		it('creates a board of given size',function(){
+			var size = 5;
+			var master = new entities.GameMaster([6],size);
+			master.createBoard(size);
+			assert.ok(master.board instanceof entities.Board);
+		});
+	});
+	describe('createDice',function(){
+		it('creates a dice with given values',function(){
+			var size = 5,values=[1,2,3,4,5,6];
+			var master = new entities.GameMaster([6],size,values);
+			master.createDice(values);
+			assert.ok(master.dice instanceof entities.Dice);
+		})
+	})
 });
 
 

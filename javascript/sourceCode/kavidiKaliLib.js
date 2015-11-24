@@ -103,9 +103,11 @@ entities.Dice.prototype = {
 	}
 }
 
-entities.GameMaster = function(specialValues){
+entities.GameMaster = function(specialValues,size,diceValues){
 	this.players = {};
 	this.specialValues = specialValues;
+	this.board = this.createBoard(size);
+	this.dice = this.createDice(diceValues);
 };
 
 entities.GameMaster.prototype = {
@@ -118,6 +120,13 @@ entities.GameMaster.prototype = {
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue))
 			this.players[playerId].chances++;  
+	},
+	createBoard : function(size){
+		var safePlaces = entities.createSafePlaces(size);
+		this.board = new entities.Board(safePlaces,size);
+	},
+	createDice : function(values){
+		this.dice = new entities.Dice(values);
 	}
 }
 
