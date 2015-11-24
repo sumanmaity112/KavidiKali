@@ -33,7 +33,6 @@ entities.Board.prototype={
 			this.grid[movesFrom]=undefined;
 	}
 };
-
 var createGrid = function(safePlaces,size){
 	var grid = {};
 	for(var row = 0;row < size;row++)
@@ -44,6 +43,7 @@ var createGrid = function(safePlaces,size){
 	});
 	return grid;
 };
+entities.Board(['0,2','2,4','4,2','2,0','2,2'],5)
 
 entities.Coin = function(id){
 	this.id = id;
@@ -66,8 +66,6 @@ entities.Coin.prototype = {
 	}
 };
 
-
- 
 entities.Player = function(id){
 	this.id = id;
 	this.matured = false;
@@ -121,6 +119,7 @@ entities.GameMaster = function(specialValues,size,diceValues){
 	this.specialValues = specialValues;
 	this.board = this.createBoard(size);
 	this.dice = this.createDice(diceValues);
+	this.getCurrentPlayer = getCurrentPlayer(this);
 };
 
 entities.GameMaster.prototype = {
@@ -144,7 +143,20 @@ entities.GameMaster.prototype = {
 	isPlayerMatured : function(player){
 		return player.matured;
 	}
-}
+};
+
+var getCurrentPlayer = function(master){
+	var counter = 0;
+	return (function(){
+		var players = Object.keys(this.players);
+		var currPlayer = this.players[players[counter]]
+		if(!currPlayer.chances){
+			counter = (counter+1)%players.length;
+			this.players[players[counter]].chances++;
+	 	};	
+		return this.players[players[counter]];
+	}).bind(master);
+};
 
 entities.createSafePlaces = function(size){
 	var safePlaces = [];
