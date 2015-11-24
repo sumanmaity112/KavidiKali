@@ -326,21 +326,7 @@ describe('GameMaster',function(){
 			assert.ok(master.dice instanceof entities.Dice);
 		});
 	});
-	describe('getCurrentPlayer',function(){
-		it('gives the current player if he has chance to play',function(){
-			var master = new entities.GameMaster([6],5);
-			master.createPlayer('red');
-			master.createPlayer('yellow');
-			master.players['red'].chances = 1;
-			assert.equal(master.getCurrentPlayer().id,'red');
-		});
-		it('gives the next player if the current player has no further chance to play',function(){
-			var master = new entities.GameMaster([6],5);
-			master.createPlayer('red');
-			master.createPlayer('yellow');
-			assert.equal(master.getCurrentPlayer().id,'yellow');
-		});
-	});
+
 });
 
 
