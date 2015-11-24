@@ -140,7 +140,16 @@ entities.GameMaster.prototype = {
 	},
 	createDice : function(values){
 		this.dice = new entities.Dice(values);
-	}
+	},
+	getCurrentPlayer : function(){
+		var counter = 0;
+		return function(){
+			var players = Object.keys(this.players);
+			this.players[players[counter]].chances || counter++;
+			counter = counter%players.length;
+			return this.players[players[counter]];
+		};
+	}()
 }
 
 entities.createSafePlaces = function(size){
