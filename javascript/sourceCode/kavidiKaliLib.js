@@ -23,6 +23,14 @@ entities.Board.prototype={
 	},
 	getCoins : function(position){
 		return this.grid[position];
+	},
+	eraseCoin : function(movesFrom,activeCoin){
+		if(this.isSafe(movesFrom))
+			lodash.remove(this.grid[movesFrom],function(coin){
+				return coin.id == activeCoin.id; 
+			});
+		else
+			this.grid[movesFrom]=undefined;
 	}
 };
 
@@ -44,7 +52,8 @@ entities.Coin = function(id){
 };
 
 entities.Coin.prototype = {
-	move : function(movesTo){
+	move : function(movesTo,board){
+		var oldPosition = this.currentPosition;
 		this.currentPosition = movesTo;
 	},
 
@@ -57,6 +66,8 @@ entities.Coin.prototype = {
 	}
 };
 
+
+ 
 entities.Player = function(id){
 	this.id = id;
 	this.matured = false;
@@ -82,9 +93,11 @@ entities.Player.prototype = {
 	},
 	moveCoin : function(coinID,movesTo,board){
 		var coin = this.coins[coinID];
-		coin.move(movesTo);
+		var movesFrom = coin.currentPosition;
+		coin.move(movesTo,board);
 		board.isThereAnyCoin(movesTo) && this.kill(board.getCoins(movesTo));
 		board.addCoin(coin);
+		board.eraseCoin(movesFrom,coin);
 	},
 	kill : function(coin){
 		coin.die();

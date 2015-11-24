@@ -57,7 +57,7 @@ describe('board',function(){
 			assert.ok(!board.isThereAnyCoin(['2,3']));
 			assert.ok(!board.isThereAnyCoin(['1,4']));
 		});
-	})
+	});
 	it('checks safe place of a board contain array',function(){
 		var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
 		var board = new entities.Board(safePlaces,5);
@@ -69,6 +69,74 @@ describe('board',function(){
 		var board = new entities.Board(safePlaces,5);
 		assert.ok(!(board.grid['1,2'] instanceof Array))
 		assert.notDeepEqual(board.grid['1,2'],[]);
+	});
+	describe('addCoin',function(){
+		it('adds a coin to the board on a specified position other than safe places',function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			var coin = new entities.Coin('red1');
+			coin.currentPosition = '0,3';
+			board.addCoin(coin);		
+			assert.deepEqual(board.grid['0,3'],coin);	
+		});
+		it('adds a coin to the list of coins on the board on a specified position of safe places',function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			var coin1 = new entities.Coin('red1');
+			coin1.currentPosition = '0,2';
+			board.addCoin(coin1);
+			assert.deepEqual(board.grid['0,2'],[coin1]);	
+			var coin2 = new entities.Coin('red2');
+			coin2.currentPosition = '0,2';
+			board.addCoin(coin2);	
+			assert.deepEqual(board.grid['0,2'],[coin1,coin2]);	
+		});
+	});
+	describe('eraseCoin',function(){
+		it('erase a coin from the board on a specified position other than safe places',function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			var coin = new entities.Coin('red1');
+			coin.currentPosition = '0,3';
+			board.eraseCoin(coin);		
+			assert.equal(board.grid['0,3'],undefined);	
+		});
+		it('erase a coin from the list of coins on the board on a specified position of safe places',function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			var coin1 = new entities.Coin('red1');
+			var coin2 = new entities.Coin('red2');
+			coin1.currentPosition = '0,2';
+			coin2.currentPosition = '0,2';
+			board.addCoin(coin1);
+			board.addCoin(coin2);
+			board.eraseCoin('0,2',coin1);	
+			assert.deepEqual(board.grid['0,2'],[coin2]);
+			board.eraseCoin('0,2',coin2);	
+			assert.deepEqual(board.grid['0,2'],[]);	
+		});
+	});
+	describe('getCoins',function(){
+		it('gives the coin present in the given position',function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			var coin = new entities.Coin('red1');
+			coin.currentPosition = '0,3';
+			board.addCoin(coin);
+			assert.deepEqual(board.getCoins('0,3'),coin);
+		});
+		it('gives the list of all coins present in the given position if the position is a safe place',function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			var coin1 = new entities.Coin('red');
+			coin1.currentPosition = '0,2';
+			board.addCoin(coin1);
+			assert.deepEqual(board.getCoins('0,2'),[coin1]);
+			var coin2 = new entities.Coin('blue');
+			coin2.currentPosition = '0,2';
+			board.addCoin(coin2);
+			assert.deepEqual(board.getCoins('0,2'),[coin1,coin2]);
+		});
 	});
 });
 
@@ -90,17 +158,19 @@ describe('createSafePlaces',function(){
  	});
 	describe('move',function(){
 		it('moves the coin from its current position to the given position',function(){
+			var board = new entities.Board(entities.createSafePlaces(5),5);
 			var coin = new entities.Coin('red1');
-			coin.move([2,3]);
+			coin.move([2,3],board);
 			assert.deepEqual(coin.currentPosition,[2,3]);
-			coin.move([2,2])
+			coin.move([2,2],board);
 			assert.deepEqual(coin.currentPosition,[2,2]);
 		});
 	});
 	describe('die',function(){
 		it('resets the current position of the coin',function(){
 			var coin = new entities.Coin('blue1');
-			coin.move([2,3]);
+			var board = new entities.Board(entities.createSafePlaces(5),5);
+			coin.move([2,3],board);
 			assert.deepEqual(coin.currentPosition,[2,3]);
 			coin.die();
 			assert.equal(coin.currentPosition,undefined);
@@ -180,9 +250,10 @@ describe('Player',function(){
 	});
 	describe('killCoin',function(){
 		it('kills the given coin',function(){
+			var board = new entities.Board(entities.createSafePlaces(5),5);
 			var player1 = new entities.Player('red');
 			var coin = new entities.Coin('green1');
-			coin.move('0,0');
+			coin.move('0,0',board);
 			player1.kill(coin);
 			assert.equal(coin.currentPosition,undefined);
 		});
