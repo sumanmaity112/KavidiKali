@@ -4,6 +4,7 @@ exports.entities = entities;
 //===========================================================================
 entities.Board = function(safePlaces,size){
 	this.grid = createGrid(safePlaces,size);
+	console.log(this.grid);
 	this.safePlaces = safePlaces;
 };
 entities.Board.prototype={
@@ -33,7 +34,6 @@ entities.Board.prototype={
 			this.grid[movesFrom]=undefined;
 	}
 };
-
 var createGrid = function(safePlaces,size){
 	var grid = {};
 	for(var row = 0;row < size;row++)
@@ -44,6 +44,7 @@ var createGrid = function(safePlaces,size){
 	});
 	return grid;
 };
+entities.Board(['0,2','2,4','4,2','2,0','2,2'],5)
 
 entities.Coin = function(id){
 	this.id = id;
