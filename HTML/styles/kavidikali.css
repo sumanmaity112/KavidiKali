@@ -1,4 +1,31 @@
-.table{
-	padding-left: 200;
-	padding-top: 100;
+#table{
+	float: left;
+	width: 43.8%;
+	background-color: red;
+	height: 84%;
+	padding-left: 100px;
+	padding-top: 150px;
+}
+.button{
+	height: 40px;
+	width: 80px;
+    background: #62a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 100px;
+    font-size: 18px;
+}
+
+
+#information{
+	background-color:#000;
+	float: right;
+	width: 50%;
+	height: 100%;
+}
+
+#notification{
+	padding-top: 10px;
+	padding-right: 120px;
 }
