@@ -32,7 +32,21 @@ entities.Board.prototype={
 			});
 		else
 			this.grid[movesFrom]=undefined;
-	}
+	},
+	get_All_Valid_Moves_Of_Coin : function(coin,diceValues,path){
+		var validMoves = diceValues.map(function(diceValue){
+			return getTheValidMove.call(this,coin,diceValue,path);
+		}.bind(this));
+		return lodash.pull(validMoves,false);
+	},
+};
+
+var getTheValidMove = function(coin,movesBy,path){
+	var coinIndex = path.indexOf(coin.currentPosition);
+	var nextIndex = (coinIndex+movesBy)%path.length;
+	if(this.isThereAnyCoin(path[nextIndex]))
+		return coin.id.slice(0,-1) != this.getCoins(path[nextIndex]).id.slice(0,-1);
+	return path[nextIndex];
 };
 
 var createGrid = function(safePlaces,size){

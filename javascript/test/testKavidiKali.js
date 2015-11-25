@@ -138,6 +138,28 @@ describe('board',function(){
 			assert.deepEqual(board.getCoins('0,2'),[coin1,coin2]);
 		});
 	});
+	describe('get_All_Valid_Moves_Of_Coin',function(){
+		it('gives all possible moves of a coin in the given path',function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			var coin = new entities.Coin('red1');
+			var path =['0,0','1,0','2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1'];
+			coin.currentPosition = '2,0';
+			var diceValues = [6,4,2,1];
+			assert.deepEqual(board.get_All_Valid_Moves_Of_Coin(coin,diceValues,path),[ '4,4', '4,2', '4,0', '3,0' ]);
+		});
+		it('will not give the position as valid if a coin of same player is at the place',function(){
+			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
+			var board = new entities.Board(safePlaces,5);
+			var player = new entities.Player('orange');
+			var path =['0,0','1,0','2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1'];
+			var diceValues = [6,4,2,1];
+			player.moveCoin('orange1','2,0',board);
+			player.moveCoin('orange2','4,4',board);
+			var coin = player.coins['orange1'];
+			assert.deepEqual(board.get_All_Valid_Moves_Of_Coin(coin,diceValues,path),[ '4,2', '4,0', '3,0' ]);
+		});
+	});
 });
 
 describe('createSafePlaces',function(){
