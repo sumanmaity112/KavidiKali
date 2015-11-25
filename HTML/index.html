@@ -1,24 +1,21 @@
 <html>
 <head>
 	<title>KavidiKali Game</title>
+	<link rel="stylesheet" href="styles/kavidikali.css">
+	<script type="text/javascript" src="./js/script.js"></script>
 </head>
 <body>
-	<h1>Welcome To KavidiKali</h1>
-	<script type="text/javascript">
-		function makeGrid(){
-			var string='<table border="3px" width="500px">'
-			for(var i=0;i<5;i++){
-				string+='<tr height="100px" width="100px">';
-				for(var j=0;j<5;j++){
-					string+='<td id="'+i+','+j+'"></td>';
-				}
-				string+='</tr>'
-			}
-			string+='</table>';
-			alert(string)
-			document.write(string);
-		}
-	</script>
-	<input type="submit" value="submit" id="grid" onclick="makeGrid()"></function>
+	<h1 align="center">Welcome To KavidiKali</h1>
+	<div class="table" id="table">
+		<div>
+			<input type="text" placeholder="name" id="name" required >
+			<button onclick="makeGrid()">SUBMIT</button>
+		</div>		
+	</div>
 </body>
 </html>
+
+
+
+
+	
