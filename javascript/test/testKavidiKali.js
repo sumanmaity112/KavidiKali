@@ -259,10 +259,17 @@ describe('Player',function(){
 		});
 		it('sets the matured property of the player "true"', function(){
 			var player = new entities.Player('red');
-			var coin = new entities.Coin('blue2');
+			var coin = new entities.Coin('blue1');
 			assert.equal(player.matured,false);
 			player.kill(coin);
 			assert.equal(player.matured,true);
+		});
+		it('increments the chance of the player', function(){
+			var player = new entities.Player('red');
+			var coin = new entities.Coin('blue1');
+			assert.equal(player.chances,0);
+			player.kill(coin);
+			assert.equal(player.chances,1);
 		});
 	});
 });
@@ -339,27 +346,30 @@ describe('GameMaster',function(){
 			master.players['red'].chances = 1;
 			assert.equal(master.getCurrentPlayer().id,'red');
 		});
-		it('gives the next player if the current player has no further chance to play and also gives chance to next player',function(){
+	});
+	describe('getCurrentPlayer',function(){
+		it('gives the chance the player if the player has not completed his chances',function(){
 			var master = new entities.GameMaster([6],5);
 			master.createDice([1,2,3,4,5]);	
 			master.createPlayer('red');
 			master.createPlayer('yellow');
-			master.createPlayer('blue');
-			master.createPlayer('green');
+			master.players['red'].chances++;
+			var currPlayer = master.getCurrentPlayer();
+			assert.equal(currPlayer.id,'red');
+		});
+		it('gives the next player if the current player has no further chance to play',function(){
+			var master = new entities.GameMaster([6],5);
+			master.createDice([1,2,3,4,5]);	
+			master.createPlayer('red');
+			master.createPlayer('yellow');
 			master.players['red'].chances++;
 			var currPlayer = master.getCurrentPlayer();
 			assert.equal(currPlayer.id,'red');
 			currPlayer.rollDice(master.dice);
 			currPlayer = master.getCurrentPlayer()
 			assert.equal(currPlayer.id,'yellow');
-			currPlayer.rollDice(master.dice);
-			currPlayer = master.getCurrentPlayer()
-			assert.equal(currPlayer.id,'blue');
-			currPlayer.rollDice(master.dice);
-			currPlayer = master.getCurrentPlayer()
-			assert.equal(currPlayer.id,'green');
 		});
-		it('gives the next player if the current player has no further chance to play and also gives chance to next player   11',function(){
+		it('gives the next player if the current player has no further chance to play and also gives chance to next player',function(){
 			var master = new entities.GameMaster([6],5);
 			master.createDice([1,2,3,4,5]);	
 			master.createPlayer('red');
