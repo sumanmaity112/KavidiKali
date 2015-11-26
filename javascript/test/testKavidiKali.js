@@ -138,7 +138,7 @@ describe('board',function(){
 			assert.deepEqual(board.getCoins('0,2'),[coin1,coin2]);
 		});
 	});
-	describe('get_All_Valid_Moves_Of_Coin',function(){
+	describe('getAllValidMovesOfCoin',function(){
 		it('gives all possible moves of a coin in the given path',function(){
 			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
 			var board = new entities.Board(safePlaces,5);
@@ -146,7 +146,7 @@ describe('board',function(){
 			var path =['0,0','1,0','2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1'];
 			coin.currentPosition = '2,0';
 			var diceValues = [6,4,2,1];
-			assert.deepEqual(board.get_All_Valid_Moves_Of_Coin(coin,diceValues,path),[ '4,4', '4,2', '4,0', '3,0' ]);
+			assert.deepEqual(board.getAllValidMovesOfCoin(coin,diceValues,path),[ '4,4', '4,2', '4,0', '3,0' ]);
 		});
 		it('will not give the position as valid if a coin of same player is at the place',function(){
 			var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
@@ -157,7 +157,22 @@ describe('board',function(){
 			player.moveCoin('orange1','2,0',board);
 			player.moveCoin('orange2','4,4',board);
 			var coin = player.coins['orange1'];
-			assert.deepEqual(board.get_All_Valid_Moves_Of_Coin(coin,diceValues,path),[ '4,2', '4,0', '3,0' ]);
+			assert.deepEqual(board.getAllValidMovesOfCoin(coin,diceValues,path),[ '4,2', '4,0', '3,0' ]);
+		});
+		it('gives players startPosition if coin is at off Board',function(){
+			var master =new entities.GameMaster([6],5,[1,2,3,4,5,6]);
+			var player = master.createPlayer('red');
+			var path =['0,0','1,0','2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1'];
+			var diceValues = [1,2,3,4,5,6];
+			assert.deepEqual(master.board.getAllValidMovesOfCoin(master.players['red'].coins['red2'],diceValues,path,[6]),['2,0']);	
+		});
+		it('gives undefined if the player is off board and player doesnt got special value to enter',function(){
+			var master =new entities.GameMaster([6],5,[1,2,3,4,5,6]);
+			master.createPlayer('red');
+			var coin = master.players['red'].coins['red2'];
+			var path =['0,0','1,0','2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1'];
+			var diceValues = [1,2,3,4,5];
+			assert.deepEqual(master.board.getAllValidMovesOfCoin(coin,diceValues,path,[6]),undefined);	
 		});
 	});
 });
@@ -196,20 +211,6 @@ describe('createSafePlaces',function(){
 			assert.deepEqual(coin.currentPosition,[2,3]);
 			coin.die();
 			assert.equal(coin.currentPosition,undefined);
-		});
-	});
-	describe('enterIntoBoard',function(){
-		it('moves coin to its home position when it gets 6 on dice at the starting',function(){
-			var coin = new entities.Coin('red1');
-			var diceValue = 6;
-			var homePosition = '2,0';
-			assert.equal(coin.enterIntoBoard(homePosition,diceValue),'2,0');
-		});
-		it('doesn\'t do anything if diceValue is not 6',function(){
-			var coin = new entities.Coin('red1');
-			var diceValue = 5;
-			var homePosition = '2,0';
-			assert.equal(coin.enterIntoBoard(homePosition,diceValue),undefined);
 		});
 	});
 	describe('hasReachedHome', function(){
