@@ -1,7 +1,7 @@
 var http = require('http');
 var EventEmitter = require('events').EventEmitter;
 var routes = require('./routes.js');
-const port = 4000;
+const PORT = 4000;
 var get_handlers = routes.get_handlers;
 var rEmitter = new EventEmitter();
 var querystring = require('querystring');
@@ -35,7 +35,7 @@ var handle_all_get = function(req, res){
 };
 
 var requestHandler = function(req, res){
-	console.log(req.method, req.url,querystring.parse(req.url));
+	console.log(req.method, req.url);
 	if(req.method == 'GET')
 		handle_all_get(req, res);
 	else if(req.method == 'POST')
@@ -45,5 +45,5 @@ var requestHandler = function(req, res){
 };
 
 var server = http.createServer(requestHandler);
-server.listen(port,function(){console.log('server is listen on ',port)});
+server.listen(PORT,function(){console.log('server is listen on ',PORT)});
 

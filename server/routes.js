@@ -8,6 +8,20 @@ var serveIndex = function(req, res, next){
 
 var serveStaticFile = function(req, res, next){
 	var filePath = './HTML' + req.url;
+	createInformation(filePath, res, next);
+};
+
+var fileNotFound = function(req, res){
+	res.statusCode = 404;
+	res.end('Not Found');
+	console.log(res.statusCode);
+};
+var doRedirect = function(req, res, next){
+	var filePath = './HTML/main.html';
+	createInformation(filePath, res, next);
+};
+
+var createInformation = function(filePath,res,next){
 	fs.readFile(filePath, function(err, data){
 		if(data){
 			res.statusCode = 200;
@@ -18,16 +32,11 @@ var serveStaticFile = function(req, res, next){
 			next();
 		}
 	});
-};
-
-var fileNotFound = function(req, res){
-	res.statusCode = 404;
-	res.end('Not Found');
-	console.log(res.statusCode);
-};
+}
 
 exports.get_handlers = [
 	{path: '^/$', handler: serveIndex},
 	{path: '', handler: serveStaticFile},
-	{path: '', handler: fileNotFound}
+	{path: '^/\\?name=', handler: doRedirect},
+	{path: '', handler: fileNotFound},
 ];
