@@ -9,14 +9,13 @@ function makeGrid(){
 	};
 	table+='</table></br><button  class="button">Dice</button>';
 	document.getElementById("table").innerHTML = table;
-	document.getElementById('4,2').bgColor = "#76D8FF"
-	document.getElementById('2,4').bgColor = "#76D8FF"
-	document.getElementById('2,2').bgColor = "#76D8FF"
-	document.getElementById('0,2').bgColor = "#76D8FF"
-	document.getElementById('2,0').bgColor = "#76D8FF"
+	document.getElementById('4,2').bgColor = "#B078B2";
+	document.getElementById('2,4').bgColor = "#B078B2";
+	document.getElementById('2,2').bgColor = "white";
+	document.getElementById('0,2').bgColor = "#B078B2";
+	document.getElementById('2,0').bgColor = "#B078B2";
 };
 
 function print(x){
-
 	alert('x is clicked'+x);
-}
+};
