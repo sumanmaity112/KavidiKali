@@ -164,9 +164,9 @@ describe('board',function(){
 
 describe('createSafePlaces',function(){
 	it("create all the possible safe place of a given size's board",function(){
-		var safePlaces = ['0,2', '2,4', '4,2', '2,0', '2,2'];
+		var safePlaces = ['2,0','4,2','2,4','0,2','2,2'];
 		assert.deepEqual(safePlaces,entities.createSafePlaces(5));
-		var safePlaces = ['0,3', '3,6', '6,3', '3,0', '3,3'];
+		var safePlaces = ['3,0', '6,3', '3,6', '0,3', '3,3' ];
 		assert.deepEqual(safePlaces, entities.createSafePlaces(7));
 	});
 });
@@ -196,6 +196,20 @@ describe('createSafePlaces',function(){
 			assert.deepEqual(coin.currentPosition,[2,3]);
 			coin.die();
 			assert.equal(coin.currentPosition,undefined);
+		});
+	});
+	describe('enterIntoBoard',function(){
+		it('moves coin to its home position when it gets 6 on dice at the starting',function(){
+			var coin = new entities.Coin('red1');
+			var diceValue = 6;
+			var homePosition = '2,0';
+			assert.equal(coin.enterIntoBoard(homePosition,diceValue),'2,0');
+		});
+		it('doesn\'t do anything if diceValue is not 6',function(){
+			var coin = new entities.Coin('red1');
+			var diceValue = 5;
+			var homePosition = '2,0';
+			assert.equal(coin.enterIntoBoard(homePosition,diceValue),undefined);
 		});
 	});
 	describe('hasReachedHome', function(){
@@ -314,7 +328,18 @@ describe('GameMaster',function(){
 			assert.ok(Object.keys(master.players).length==1)
 			assert.ok(master.players['red'] instanceof entities.Player);
 			master.createPlayer('blue');
-			assert.ok(Object.keys(master.players).length==2)
+			assert.ok(Object.keys(master.players).length==2);
+		});
+		it('creates a player with given playerId and gives startPosition',function(){
+			var master = new entities.GameMaster([6],5,[1,2,3,4,5,6]);
+			master.createPlayer('red');
+			assert.equal(master.players['red'].startPosition,'2,0');
+			master.createPlayer('blue');
+			assert.equal(master.players['blue'].startPosition,'4,2');
+			master.createPlayer('green');
+			assert.equal(master.players['green'].startPosition,'2,4');
+			master.createPlayer('yellow');
+			assert.equal(master.players['yellow'].startPosition,'0,2');
 		});
 	});
 	describe('setChances',function(){

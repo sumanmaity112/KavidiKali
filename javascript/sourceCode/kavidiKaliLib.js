@@ -71,6 +71,11 @@ entities.Coin.prototype = {
 		var oldPosition = this.currentPosition;
 		this.currentPosition = movesTo;
 	},
+	enterIntoBoard : function(homePosition,diceValue){
+		if(!this.currentPosition && diceValue == 6)
+				this.currentPosition = homePosition;
+		return this.currentPosition;
+	},
 
 	die : function(){
 		this.currentPosition = undefined;
@@ -87,6 +92,7 @@ entities.Player = function(id){
 	this.coins = createCoins(id,4);
 	this.diceValues = new Array;
 	this.chances = 0;
+	this.startPosition = undefined;
 };
 
 var createCoins =  function(id,numberOfCoins){
@@ -144,6 +150,7 @@ entities.GameMaster.prototype = {
 	},
 	createPlayer : function(playerId){
 		this.players[playerId] = new entities.Player(playerId);
+		this.players[playerId].startPosition = this.board.safePlaces[((Object.keys(this.players)).indexOf(playerId))];
 	},
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue))
@@ -151,7 +158,7 @@ entities.GameMaster.prototype = {
 	},
 	createBoard : function(size){
 		var safePlaces = entities.createSafePlaces(size);
-		this.board = new entities.Board(safePlaces,size);
+		return new entities.Board(safePlaces,size);
 	},
 	createDice : function(values){
 		this.dice = new entities.Dice(values);
@@ -176,13 +183,26 @@ var getCurrentPlayer = function(master){
 
 entities.createSafePlaces = function(size){
 	var safePlaces = [];
-	safePlaces.push([0,Math.floor(size/2)]);
-	safePlaces.push([Math.floor(size/2),size-1]);
-	safePlaces.push([size-1,Math.floor(size/2)]);
 	safePlaces.push([Math.floor(size/2),0]);
+	safePlaces.push([size-1,Math.floor(size/2)]);
+	safePlaces.push([Math.floor(size/2),size-1]);
+	safePlaces.push([0,Math.floor(size/2)]);
 	safePlaces.push([Math.floor(size/2),Math.floor(size/2)]);
 	safePlaces.forEach(function(safePlace,index){
 		return safePlaces[index] = safePlace.join();
 	});
 	return safePlaces;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
