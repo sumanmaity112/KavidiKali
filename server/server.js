@@ -20,7 +20,7 @@ rEmitter.on('next', function(handlers, req, res, next,gameMaster){
 	ph.handler(req, res, next,gameMaster);
 });
 
-var handle_all_post = function(req, res,gameMaster){
+var handle_all_post = function(req, res, gameMaster){
 	var handlers = post_handlers.filter(matchHandler(req.url));
 	var next = function(){
 		rEmitter.emit('next', handlers, req, res, next,gameMaster);
