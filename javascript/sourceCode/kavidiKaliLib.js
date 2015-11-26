@@ -33,11 +33,16 @@ entities.Board.prototype={
 		else
 			this.grid[movesFrom]=undefined;
 	},
-	get_All_Valid_Moves_Of_Coin : function(coin,diceValues,path){
-		var validMoves = diceValues.map(function(diceValue){
-			return getTheValidMove.call(this,coin,diceValue,path);
-		}.bind(this));
-		return lodash.pull(validMoves,false);
+	getAllValidMovesOfCoin : function(coin,diceValues,path,specialValue){
+		if(!coin.currentPosition){
+			return lodash.intersection(diceValues,specialValue).length && [coin.startPosition] || undefined;
+		}
+		else{
+			var validMoves = diceValues.map(function(diceValue){
+				return getTheValidMove.call(this,coin,diceValue,path);
+			}.bind(this));
+			return lodash.pull(validMoves,false);
+		}
 	},
 };
 
@@ -60,10 +65,11 @@ var createGrid = function(safePlaces,size){
 	return grid;
 };
 
-entities.Coin = function(id){
+entities.Coin = function(id,startPosition){
 	this.id = id;
 	this.currentPosition = undefined;
 	this.reachedHome = false;
+	this.startPosition = startPosition;
 };
 
 entities.Coin.prototype = {
@@ -71,12 +77,6 @@ entities.Coin.prototype = {
 		var oldPosition = this.currentPosition;
 		this.currentPosition = movesTo;
 	},
-	enterIntoBoard : function(homePosition,diceValue){
-		if(!this.currentPosition && diceValue == 6)
-				this.currentPosition = homePosition;
-		return this.currentPosition;
-	},
-
 	die : function(){
 		this.currentPosition = undefined;
 	},
@@ -86,19 +86,19 @@ entities.Coin.prototype = {
 	}
 };
 
-entities.Player = function(id){
+entities.Player = function(id,startPosition){
 	this.id = id;
 	this.matured = false;
-	this.coins = createCoins(id,4);
+	this.coins = createCoins(id,4,startPosition);
 	this.diceValues = new Array;
 	this.chances = 0;
-	this.startPosition = undefined;
+	this.startPosition = startPosition;
 };
 
-var createCoins =  function(id,numberOfCoins){
+var createCoins =  function(id,numberOfCoins,startPosition){
 	var coins = new Object;
 	for(var i=1; i<=numberOfCoins; i++){
-		coins[id+i] = new entities.Coin(id+i);
+		coins[id+i] = new entities.Coin(id+i,startPosition);
 	};
 	return coins;
 };
@@ -149,8 +149,8 @@ entities.GameMaster.prototype = {
 		return (this.specialValues.indexOf(diceValue)>=0);
 	},
 	createPlayer : function(playerId){
-		this.players[playerId] = new entities.Player(playerId);
-		this.players[playerId].startPosition = this.board.safePlaces[((Object.keys(this.players)).indexOf(playerId))];
+		var playersCount = Object.keys(this.players).length; 
+		this.players[playerId] = new entities.Player(playerId,this.board.safePlaces[playersCount]);
 	},
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue))
