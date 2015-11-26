@@ -1,8 +1,8 @@
 #table{
 	float: left;
-	width: 43.8%;
-	background-color: red;
-	height: 84%;
+	width: 68.984%;
+	background-color: #FFA380;
+	height: 83.1%;
 	padding-left: 100px;
 	padding-top: 150px;
 }
@@ -19,13 +19,39 @@
 
 
 #information{
-	background-color:#000;
+	background-color:#F09A8A;
 	float: right;
-	width: 50%;
+	width: 25%;
 	height: 100%;
 }
 
 #notification{
-	padding-top: 10px;
-	padding-right: 120px;
+	padding-top: 100px;
+	/*padding-right: 1px;*/
+	padding-left: 35px;
+}
+#name{
+	width: 200px;
+	height: 30px;
+	font-size: 17px;
+};
+#userid{
+	width: 200px;
+	height: 100px;
+	background-color: #fff;
+}
+#submit{
+	height: 30px;
+	width: 80px;
+    background: #62a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 30px;
+    font-size: 18px;
+}
+
+#login{
+	padding-left: 42%;
+	padding-top: 20%;
 }
