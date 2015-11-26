@@ -161,7 +161,7 @@ entities.GameMaster.prototype = {
 		return new entities.Board(safePlaces,size);
 	},
 	createDice : function(values){
-		this.dice = new entities.Dice(values);
+		return new entities.Dice(values);
 	},
 	isPlayerMatured : function(player){
 		return player.matured;

@@ -8,14 +8,12 @@ function makeGrid(){
 		table+='</tr>'
 	};
 	table+='</table></br><button  class="button">Dice</button>';
-
 	document.getElementById("table").innerHTML = table;
 	document.getElementById('4,2').bgColor = "#76D8FF"
 	document.getElementById('2,4').bgColor = "#76D8FF"
 	document.getElementById('2,2').bgColor = "#76D8FF"
 	document.getElementById('0,2').bgColor = "#76D8FF"
 	document.getElementById('2,0').bgColor = "#76D8FF"
-
 };
 
 function print(x){
