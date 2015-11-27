@@ -1,6 +1,6 @@
 var fs = require('fs');
 var querystring = require('querystring');
-
+var main = require('./application.js').main;
 var serveIndex = function(req, res, gameMaster, next){
 	req.url = '/index.html';
 	next();
@@ -62,19 +62,7 @@ var createInformation = function(req, res, gameMaster, next){
 };
 
 var rollDice = function(req, res, gameMaster, next){
-	var data = '';
-	req.on('data', function(chunk){
-		data += chunk;
-	});
-	req.on('end', function(){
-		var obj = JSON.parse(data);
-		var userId = req.connection.remoteAddress+'_' +obj.player.trim()
-		var player = gameMaster.players[userId];
-		var diceValue = player.rollDice(gameMaster.dice);
-		console.log(diceValue);
-		res.statusCode = 200;
-		res.end('diceValues='+diceValue);
-	});
+	main('rollDice',req, res, gameMaster)
 };
 
 exports.post_handlers = [
@@ -87,7 +75,6 @@ exports.get_handlers = [
 	{path: '^/main.html$',handler:createInformation},
 	{path: '^/$', handler: serveIndex},
 	{path: '', handler: serveStaticFile},
-	{path: '^/\\?name=', handler: doRedirect},
 	{path: 'dice', handler: rollDice},
 	{path: '', handler: fileNotFound}
 ];
