@@ -1,6 +1,7 @@
 var lodash = require('lodash');
 var entities = {};
 exports.entities = entities;
+var path = require('./generatePath.js');
 //===========================================================================
 entities.Board = function(safePlaces,size){
 	this.grid = createGrid(safePlaces,size);
@@ -48,7 +49,7 @@ entities.Board.prototype={
 
 var getTheValidMove = function(coin,movesBy,path){
 	var coinIndex = path.indexOf(coin.currentPosition);
-	var nextIndex = (coinIndex+movesBy)%path.length;
+	var nextIndex = coinIndex+movesBy
 	if(this.isThereAnyCoin(path[nextIndex]))
 		return coin.id.slice(0,-1) != this.getCoins(path[nextIndex]).id.slice(0,-1);
 	return path[nextIndex];
@@ -122,6 +123,13 @@ entities.Player.prototype = {
 		coin.die();
 		this.chances++;
 		this.matured = true;
+	},
+	get path(){
+		if(this.matured){
+			return path.generateFullPath(this.startPosition);
+		};
+			var playerPath = path.generateHalfPath(this.startPosition);
+			return playerPath.concat(playerPath);
 	}
 };
 
