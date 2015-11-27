@@ -8,7 +8,14 @@ var serveIndex = function(req, res, next){
 
 var serveStaticFile = function(req, res, next){
 	var filePath = './HTML' + req.url;
-	createInformation(filePath, res, next);
+	fs.readFile(filePath, function(err, data){
+		if(data){
+			console.log(res.statusCode);
+			res.end(data);
+		}
+		else
+			next();
+	});
 };
 
 var fileNotFound = function(req, res){
@@ -19,23 +26,17 @@ var fileNotFound = function(req, res){
 var doRedirect = function(req, res, next, gameMaster){
 	var userId = req.connection.remoteAddress+'_' + querystring.parse(req.url)['/?name'];
 	gameMaster.createPlayer(userId);
-	var filePath = './HTML/main.html';
-	res.statusCode = 302;
-	res.url = '/main.html'
-	createInformation(filePath, res, next);
+	res.writeHead('301',{'Location':'/main.html',
+		'content-type':'text/html'
+	});
+	res.end();
 };
 
-var createInformation = function(filePath,res,next){
-	fs.readFile(filePath, function(err, data){
-		if(data){
-			console.log(res.statusCode);
-			res.end(data);
-		}
-		else{
-			next();
-		}
-	});
-}
+var method_not_allowed = function(req, res){
+	res.statusCode = 405;
+	// console.log(res.statusCode);
+	res.end('Method is not allowed');
+};
 
 exports.get_handlers = [
 	{path: '^/$', handler: serveIndex},
@@ -43,3 +44,9 @@ exports.get_handlers = [
 	{path: '^/\\?name=', handler: doRedirect},
 	{path: '', handler: fileNotFound},
 ];
+
+exports.post_handlers = [
+	{path: '^/$', handler: doRedirect},
+	{path: '', handler: method_not_allowed}
+];
+
