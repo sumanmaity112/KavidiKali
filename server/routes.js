@@ -20,9 +20,8 @@ var serveStaticFile = function(req, res, gameMaster, next){
 			console.log(res.statusCode);
 			res.end(data);
 		}
-		else{
+		else
 			next();
-		}
 	});
 };
 
@@ -32,19 +31,28 @@ var fileNotFound = function(req, res){
 	console.log(res.statusCode);
 };
 var doRedirect = function(req, res, gameMaster, next ){
-	var userId = req.connection.remoteAddress+'_' + querystring.parse(req.url)['/?name'];
-	gameMaster.createPlayer(userId);
-	var filePath = './HTML/main.html';
-	res.statusCode = 302;
-	res.url = '/main.html'
-	createInformation(filePath, res, next,userId);
+	var data = '';
+	req.on('data',function(chunk){
+		data+=chunk;
+	})
+	req.on('end',function(){
+		var userId = req.connection.remoteAddress+'_' + querystring.parse(data)['name'];
+		gameMaster.createPlayer(userId);
+		res.writeHead('301',{'Location':'/main.html',
+			'content-type':'text/html'
+		});
+		res.end();
+	})
+	
 };
 
-var createInformation = function(filePath,res,next,userId){
+var createInformation = function(req, res, gameMaster, next){
+	var filePath = './HTML' + req.url;
+	var userId = Object.keys(gameMaster.players)[Object.keys(gameMaster.players).length - 1];
 	fs.readFile(filePath, function(err, data){
 		if(data){
 			console.log(res.statusCode);
-			var html = data.toString().replace('__userID__',userId)
+			var html = data.toString().replace('__userID__',userId.split('_')[1]);
 			res.end(html);
 		}
 		else{
@@ -60,22 +68,27 @@ var rollDice = function(req, res, gameMaster, next){
 	});
 	req.on('end', function(){
 		var obj = JSON.parse(data);
-		var player = gameMaster.players[obj.player.trim()]
+		var userId = req.connection.remoteAddress+'_' +obj.player.trim()
+		var player = gameMaster.players[userId];
 		var diceValue = player.rollDice(gameMaster.dice);
 		console.log(diceValue);
+		res.statusCode = 200;
 		res.end('diceValues='+diceValue);
 	});
 };
 
 exports.post_handlers = [
+	{path: '^/$', handler: doRedirect},
 	{path: 'dice', handler: rollDice},
 	{path: '', handler: method_not_allowed}
 ];
 
 exports.get_handlers = [
+	{path: '^/main.html$',handler:createInformation},
 	{path: '^/$', handler: serveIndex},
 	{path: '', handler: serveStaticFile},
 	{path: '^/\\?name=', handler: doRedirect},
 	{path: 'dice', handler: rollDice},
 	{path: '', handler: fileNotFound}
 ];
+

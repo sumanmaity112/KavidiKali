@@ -18,7 +18,6 @@ function print(x){
 var rollDice = function(){
 	var userId = document.querySelector('#userID').textContent
 	var req = new XMLHttpRequest();
-	console.log(req);
 	req.onreadystatechange = function() {
 	    if (req.readyState == 4 && req.status == 200) {
 	    	alert(req.responseText);
