@@ -406,7 +406,7 @@ describe('GameMaster',function(){
 			assert.equal(currPlayer.id,'red');
 		});
 		it('gives the next player if the current player has no further chance to play',function(){
-			var master = new entities.GameMaster([6],5);
+			var master = new entities.GameMaster([6],5,[1,2,3,4,5,6]);
 			master.createDice([1,2,3,4,5]);	
 			master.createPlayer('red');
 			master.createPlayer('yellow');
@@ -418,7 +418,7 @@ describe('GameMaster',function(){
 			assert.equal(currPlayer.id,'yellow');
 		});
 		it('gives the next player if the current player has no further chance to play and also gives chance to next player',function(){
-			var master = new entities.GameMaster([6],5);
+			var master = new entities.GameMaster([6],5,[1,2,3,4,5,6]);
 			master.createDice([1,2,3,4,5]);	
 			master.createPlayer('red');
 			master.createPlayer('yellow');
