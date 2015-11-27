@@ -23,7 +23,6 @@ rEmitter.on('next', function(handlers, req, res, next,gameMaster){
 
 var handle_all_post = function(req, res, gameMaster){
 	var handlers = post_handlers.filter(matchHandler(req.url));
-	console.log(handlers);
 	var next = function(){
 		rEmitter.emit('next', handlers, req, res, gameMaster, next);
 	};
@@ -32,7 +31,6 @@ var handle_all_post = function(req, res, gameMaster){
 
 var handle_all_get = function(req, res, gameMaster){
 	var handlers = get_handlers.filter(matchHandler(req.url));
-	console.log(handlers);
 	var next = function(){
 		rEmitter.emit('next', handlers, req, res, gameMaster, next );
 	};

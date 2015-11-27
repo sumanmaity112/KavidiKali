@@ -1,6 +1,6 @@
 var fs = require('fs');
 var querystring = require('querystring');
-
+var main = require('./application.js').main;
 var serveIndex = function(req, res, gameMaster, next){
 	req.url = '/index.html';
 	next();
@@ -37,11 +37,16 @@ var doRedirect = function(req, res, gameMaster, next ){
 	})
 	req.on('end',function(){
 		var userId = req.connection.remoteAddress+'_' + querystring.parse(data)['name'];
-		gameMaster.createPlayer(userId);
-		res.writeHead('301',{'Location':'/main.html',
-			'content-type':'text/html'
-		});
-		res.end();
+		if(Object.keys(gameMaster.players).length>4){
+			res.end('Please wait, a game is already started')
+		}
+		else{
+			gameMaster.createPlayer(userId);
+			res.writeHead('301',{'Location':'/main.html',
+				'content-type':'text/html'
+			});
+			res.end();
+		}
 	})
 	
 };
@@ -49,35 +54,32 @@ var doRedirect = function(req, res, gameMaster, next ){
 var createInformation = function(req, res, gameMaster, next){
 	var filePath = './HTML' + req.url;
 	var userId = Object.keys(gameMaster.players)[Object.keys(gameMaster.players).length - 1];
-	fs.readFile(filePath, function(err, data){
-		if(data){
-			console.log(res.statusCode);
-			var html = data.toString().replace('__userID__',userId.split('_')[1]);
-			res.end(html);
-		}
-		else{
-			next();
-		}
-	});
+	if(!userId || userId.split('_')[0] != req.connection.remoteAddress){
+		res.writeHead('301',{'Location':'/index.html',
+			'content-type':'text/html'
+		});
+		res.end();
+	}
+	else{
+		fs.readFile(filePath, function(err, data){
+			if(data){
+				console.log(res.statusCode);
+				var html = data.toString().replace('__userID__',userId.split('_')[1]);
+				res.end(html);
+			}
+			else{
+				next();
+			}
+		});	
+	}
 };
 
 var rollDice = function(req, res, gameMaster, next){
-	var data = '';
-	req.on('data', function(chunk){
-		data += chunk;
-	});
-	req.on('end', function(){
-		var obj = JSON.parse(data);
-		var userId = req.connection.remoteAddress+'_' +obj.player.trim()
-		var player = gameMaster.players[userId];
-		var diceValue = player.rollDice(gameMaster.dice);
-		console.log(diceValue);
-		res.statusCode = 200;
-		res.end('diceValues='+diceValue);
-	});
+	main('rollDice',req, res, gameMaster)
 };
 
 exports.post_handlers = [
+	{path: '^/index.html$', handler: doRedirect},
 	{path: '^/$', handler: doRedirect},
 	{path: 'dice', handler: rollDice},
 	{path: '', handler: method_not_allowed}
@@ -87,7 +89,6 @@ exports.get_handlers = [
 	{path: '^/main.html$',handler:createInformation},
 	{path: '^/$', handler: serveIndex},
 	{path: '', handler: serveStaticFile},
-	{path: '^/\\?name=', handler: doRedirect},
 	{path: 'dice', handler: rollDice},
 	{path: '', handler: fileNotFound}
 ];
