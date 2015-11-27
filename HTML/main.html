@@ -2,17 +2,21 @@
 <head>
 	<title>KavidiKali Game</title>
 	<link rel="stylesheet" href="styles/kavidikali.css">
-	<script type="text/javascript" src="./js/script.js"></script>
+	<script type="text/javascript" src="js/script.js"></script>
 </head>
-<body onload="makeGrid()" bgcolor="lightgrey">
+<body  >
 	<div class="header">
 		<h1 align="center" >Welcome To KavidiKali</h1>
 	</div>
-	<section id="table" ></section>
-	<div class="left">
+	<section class = "leftPane">
+		<section id="board" ></section>
+		</br>
+		<button  id="dice">Dice</button>
+	</section>
+	<div class="rightPane">
 		<section id="information">
 			<table border="1px">
-				<th width="200px" > __name__</th>
+				<th width="200px" id="userID" > __userID__</th>
 			</table>
 			<br>
 			<table id="notification">

@@ -1,21 +1,44 @@
 function makeGrid(){
-	var table='<table border="3px" width="500px">'
+	var table='<table class="grid">'
 	for(var i=4;i>=0;i--){
-		table+='<tr height="100px" width="100px">';
-		for(var j=0;j<5;j++){
-			table+='<td id="'+j+','+i+'"onclick="print(this.id)"></td>';
-		};
-		table+='</tr>'
+		var row = '<tr>';
+		for(var j=0;j<5;j++)
+			row+='<td id="'+j+','+i+'" class="tile" onclick="print(this.id)"></td>';
+		row += '</tr>';
+		table += row;
 	};
-	table+='</table></br><button  class="button">Dice</button>';
-	document.getElementById("table").innerHTML = table;
-	document.getElementById('4,2').bgColor = "#B078B2";
-	document.getElementById('2,4').bgColor = "#B078B2";
-	document.getElementById('2,2').bgColor = "white";
-	document.getElementById('0,2').bgColor = "#B078B2";
-	document.getElementById('2,0').bgColor = "#B078B2";
+	table+='</table>';
+	return table;
 };
 
 function print(x){
 	alert('x is clicked'+x);
 };
+
+var rollDice = function(){
+	var userId = document.querySelector('#userID').textContent
+	var req = new XMLHttpRequest();
+	console.log(req);
+	req.onreadystatechange = function() {
+	    if (req.readyState == 4 && req.status == 200) {
+	    	alert(req.responseText);
+	    };
+	};
+	req.open('POST', 'dice', true);
+	req.send('{"player":"'+userId+'","action":"rollDice"}');
+};
+
+window.onload = function(){
+	document.getElementById("board").innerHTML = makeGrid();
+	var safePlaces = ['4,2','2,4','2,2','0,2','2,0'];
+	safePlaces.forEach(function(safePlace){
+		document.getElementById(safePlace).className = 'safePlace';
+	});
+	document.querySelector('#dice').onclick = rollDice;
+};
+
+
+// document.onload = function(){
+// };
+
+

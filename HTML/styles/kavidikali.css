@@ -1,7 +1,9 @@
 body{
 	padding: 40 30 40 30;
+	background-color: lightgrey;
 }
-.left{
+
+.rightPane{
 	float: left;
 	padding: 5px;
 	margin: 10px;
@@ -11,7 +13,7 @@ body{
 	padding-right: 10px;	
 
 }
-#table{
+.leftPane{
 	float: left;
 	width: 50.84%;
 	background-color: lightgrey;
@@ -19,18 +21,41 @@ body{
 	padding-left: 100px;
 	padding-top: 75px;
 }
-.button{
+/*#dice{
 	height: 40px;
 	width: 80px;
     background: #62a;
     color: white;
-    border: none;
     border-radius: 5px;
     margin-left: 583px;
     margin-top: -150px;
     font-size: 18px;
+}*/
+#board {
+	background-color: red;
+	width: 500px;
 }
 
+.grid{
+	background-color: green ;
+	border: 3px solid black;
+	width : 500px;
+}
+
+.tile{
+	background-color: grey;
+	border:3px solid black;
+	height: 100px;
+	width : 100px;
+}
+
+.safePlace{
+	background-color: "#B078B2";
+	border:3px solid black;
+	height: 100px;
+	width : 100px;
+
+}
 .header{
 	background-color: lightgrey;
 }
