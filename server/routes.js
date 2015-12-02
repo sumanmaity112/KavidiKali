@@ -1,4 +1,5 @@
 var fs = require('fs');
+var lodash = require('lodash');
 var querystring = require('querystring');
 var main = require('./application.js').main;
 var serveIndex = function(req, res, gameMaster, next){
@@ -36,14 +37,22 @@ var doRedirect = function(req, res, gameMaster, next ){
 		data+=chunk;
 	})
 	req.on('end',function(){
-		var userId = req.connection.remoteAddress+'_' + querystring.parse(data)['name'];
+		var userId = querystring.parse(data)['name'];
 		if(Object.keys(gameMaster.players).length>4){
 			res.end('Please wait, a game is already started')
+		}
+		else if(lodash.has(gameMaster.players,userId)){
+			res.writeHead('301',{'Location':'/index.html',
+				'content-type':'text/html',
+				'Set-Cookie': 'userId='+undefined 
+			});
+			res.end();
 		}
 		else{
 			gameMaster.createPlayer(userId);
 			res.writeHead('301',{'Location':'/main.html',
-				'content-type':'text/html'
+				'content-type':'text/html',
+				'Set-Cookie': 'userId='+userId 
 			});
 			res.end();
 		}
@@ -54,7 +63,7 @@ var doRedirect = function(req, res, gameMaster, next ){
 var createInformation = function(req, res, gameMaster, next){
 	var filePath = './HTML' + req.url;
 	var userId = Object.keys(gameMaster.players)[Object.keys(gameMaster.players).length - 1];
-	if(!userId || userId.split('_')[0] != req.connection.remoteAddress){
+	if(!userId){
 		res.writeHead('301',{'Location':'/index.html',
 			'content-type':'text/html'
 		});
@@ -63,8 +72,8 @@ var createInformation = function(req, res, gameMaster, next){
 	else{
 		fs.readFile(filePath, function(err, data){
 			if(data){
-				console.log(res.statusCode);
-				var html = data.toString().replace('__userID__',userId.split('_')[1]);
+				console.log(res.statusCode+'cookie :'+ req.headers.cookie);
+				var html = data.toString().replace('__userID__',userId);
 				res.end(html);
 			}
 			else{

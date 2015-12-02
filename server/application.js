@@ -12,10 +12,10 @@ rEmitter.on('rollDice',function(req, res, gameMaster){
 	});
 	req.on('end', function(){
 		var obj = JSON.parse(data);
-		var userId = req.connection.remoteAddress+'_' +obj.player.trim()
+		var userId = obj.player.trim()
 		var player = gameMaster.players[userId];
 		var diceValue = player.rollDice(gameMaster.dice);
-		console.log(diceValue);
+		console.log(diceValue+' ===== '+ req.headers.cookie);
 		res.statusCode = 200;
 		res.end('diceValues='+diceValue);
 	});
