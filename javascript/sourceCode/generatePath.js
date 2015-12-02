@@ -44,7 +44,7 @@ function wrapArray(list,start){
 var generateRoute = function(initial,size){
 	var list = generate(initial,size)
 	var list1 = reverseList(list.slice(1,-1));
-	return list.concat(list1);;
+	return list.concat(list1).reverse();;
 };
 
 function getNeighbours(point){
@@ -73,8 +73,6 @@ exports.generateFullPath = generatePath;
 exports.generateHalfPath = function(start){
 	return wrapArray(generateRoute(0,4),[start]);
 };
-
-
 
 
 
