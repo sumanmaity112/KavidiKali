@@ -48,7 +48,7 @@ function wrapArray(list,start){
 var generateRoute = function(initial,size){
 	var list = generate(initial,size)
 	var list1 = reverseList(list.slice(1,-1));
-	return list.concat(list1);;
+	return list.concat(list1).reverse();;
 };
 
 function getNeighbours(point){
@@ -60,7 +60,7 @@ function getNeighbours(point){
 	});
 };
 
-var coin = {homePosition:'0,2'}
+var coin = {homePosition:'2,4'}
 var generatePath = function(start){
 	var size = 4;
 	var count = 0;
@@ -83,7 +83,7 @@ exports.generateHalfPath = function(start){
 
 
 console.log(exports.generateHalfPath(coin.homePosition));
-console.log(exports.generateFullPath(coin.homePosition))
+// console.log(exports.generateFullPath(coin.homePosition).slice(20,30));
 
 
 
