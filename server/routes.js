@@ -2,6 +2,7 @@ var fs = require('fs');
 var lodash = require('lodash');
 var querystring = require('querystring');
 var main = require('./application.js').main;
+
 var serveIndex = function(req, res, gameMaster, next){
 	req.url = '/index.html';
 	next();

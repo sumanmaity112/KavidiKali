@@ -2,11 +2,13 @@ var http = require('http');
 var EventEmitter = require('events').EventEmitter;
 var routes = require('./routes.js');
 var lib = require('../javascript/sourceCode/kavidikaliLib.js').entities;
+var querystring = require('querystring');
+
 var get_handlers = routes.get_handlers;
 var post_handlers = routes.post_handlers;
 var rEmitter = new EventEmitter();
-var querystring = require('querystring');
 var gameMaster ;
+
 const PORT = 8080;
 
 var matchHandler = function(url){
