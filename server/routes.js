@@ -31,39 +31,41 @@ var fileNotFound = function(req, res){
 	res.end('Not Found');
 	console.log(res.statusCode);
 };
+
 var doRedirect = function(req, res, gameMaster, next ){
 	var data = '';
 	req.on('data',function(chunk){
 		data+=chunk;
-	})
+	});
 	req.on('end',function(){
 		var userId = querystring.parse(data)['name'];
-		if(Object.keys(gameMaster.players).length>4){
-			res.end('Please wait, a game is already started')
-		}
-		else if(lodash.has(gameMaster.players,userId)){
-			res.writeHead('301',{'Location':'/index.html',
-				'content-type':'text/html',
-				'Set-Cookie': 'userId='+undefined 
-			});
-			res.end();
-		}
-		else{
-			gameMaster.createPlayer(userId);
-			res.writeHead('301',{'Location':'/main.html',
-				'content-type':'text/html',
-				'Set-Cookie': 'userId='+userId 
-			});
-			res.end();
-		}
-	})
-	
+		if(Object.keys(gameMaster.players).length>4)
+			res.end('Please wait, a game is already started');
+		else 
+			createPlayer(userId, res, gameMaster);
+	});
 };
+
+var createPlayer = function(userId, res, gameMaster){
+	if(lodash.has(gameMaster.players,userId))
+		res.writeHead('301',{'Location':'/index.html',
+			'content-type':'text/html',
+			'Set-Cookie': 'userId='+undefined 
+		});
+	else{
+		gameMaster.createPlayer(userId);
+		res.writeHead('301',{'Location':'/main.html',
+			'content-type':'text/html',
+			'Set-Cookie': 'userId='+userId 
+		});
+	}
+	res.end();
+}
 
 var createInformation = function(req, res, gameMaster, next){
 	var filePath = './HTML' + req.url;
-	var userId = Object.keys(gameMaster.players)[Object.keys(gameMaster.players).length - 1];
-	if(!userId){
+	var userId = querystring.parse(req.headers.cookie).userId;
+	if(!userId || !lodash.has(gameMaster.players,userId)){
 		res.writeHead('301',{'Location':'/index.html',
 			'content-type':'text/html'
 		});
@@ -76,9 +78,8 @@ var createInformation = function(req, res, gameMaster, next){
 				var html = data.toString().replace('__userID__',userId);
 				res.end(html);
 			}
-			else{
+			else
 				next();
-			}
 		});	
 	}
 };
