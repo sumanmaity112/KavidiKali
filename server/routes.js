@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var lodash = require('lodash');
 var querystring = require('querystring');
 var main = require('./application.js').main;
 
@@ -44,27 +45,36 @@ var doRedirect = function(req, res, gameMaster, next ){
 	var data = '';
 	req.on('data',function(chunk){
 		data+=chunk;
-	})
+	});
 	req.on('end',function(){
-		var userId = req.connection.remoteAddress+'_' + querystring.parse(data)['name'];
-		if(Object.keys(gameMaster.players).length>4){
-			res.end('Please wait, a game is already started')
-		}
-		else{
-			gameMaster.createPlayer(userId);
-			res.writeHead('301',{'Location':'/main.html',
-				'content-type':'text/html'
-			});
-			res.end();
-		}
-	})
-	
+		var userId = querystring.parse(data)['name'];
+		if(Object.keys(gameMaster.players).length>4)
+			res.end('Please wait, a game is already started');
+		else 
+			createPlayer(userId, res, gameMaster);
+	});
 };
+
+var createPlayer = function(userId, res, gameMaster){
+	if(lodash.has(gameMaster.players,userId))
+		res.writeHead('301',{'Location':'/index.html',
+			'content-type':'text/html',
+			'Set-Cookie': 'userId='+undefined 
+		});
+	else{
+		gameMaster.createPlayer(userId);
+		res.writeHead('301',{'Location':'/main.html',
+			'content-type':'text/html',
+			'Set-Cookie': 'userId='+userId 
+		});
+	}
+	res.end();
+}
 
 var createInformation = function(req, res, gameMaster, next){
 	var filePath = './HTML' + req.url;
-	var userId = Object.keys(gameMaster.players)[Object.keys(gameMaster.players).length - 1];
-	if(!userId || userId.split('_')[0] != req.connection.remoteAddress){
+	var userId = querystring.parse(req.headers.cookie).userId;
+	if(!userId || !lodash.has(gameMaster.players,userId)){
 		res.writeHead('301',{'Location':'/index.html',
 			'content-type':'text/html'
 		});
@@ -73,13 +83,12 @@ var createInformation = function(req, res, gameMaster, next){
 	else{
 		fs.readFile(filePath, function(err, data){
 			if(data){
-				console.log(res.statusCode);
-				var html = data.toString().replace('__userID__',userId.split('_')[1]);
+				console.log(res.statusCode+'cookie :'+ req.headers.cookie);
+				var html = data.toString().replace('__userID__',userId);
 				res.end(html);
 			}
-			else{
+			else
 				next();
-			}
 		});	
 	}
 };

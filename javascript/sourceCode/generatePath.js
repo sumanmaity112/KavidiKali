@@ -10,11 +10,8 @@ var op2 = function(i,j){
 };
 
 function generate(start,size){
-	var count = 0;
-	var operation = [op1,op2];        																			
-	var path = [];
-	var j = start;
-	var i = start;
+	var count = 0, operation = [op1,op2];        																			
+	var path = [], j = start, i = start;
 	do{
 		var value = operation[count](j,i)
 		if(value == path[0]) {
@@ -24,9 +21,8 @@ function generate(start,size){
 			value = operation[count](j,i);
 		}
 		path.push(value);
-		i = (i+1)%(size+1) || start
-	}
-	while(path.length < ((size-start)*2)+1 );
+		i = ((i+1)%(size+1)) || start
+	}while(path.length < ((size-start)*2)+1 );
 	return path;
 };
 
@@ -48,7 +44,7 @@ function wrapArray(list,start){
 var generateRoute = function(initial,size){
 	var list = generate(initial,size)
 	var list1 = reverseList(list.slice(1,-1));
-	return list.concat(list1);;
+	return list.concat(list1).reverse();;
 };
 
 function getNeighbours(point){
@@ -60,18 +56,16 @@ function getNeighbours(point){
 	});
 };
 
-var coin = {homePosition:'0,2'}
 var generatePath = function(start){
 	var size = 4;
 	var count = 0;
 	var path = [];
-	for(var initial = 0,startings = [start] ; 
-			initial<=size ; 
+	for(var initial = 0,startings = [start] ; initial<=size ; 
 			initial++,size--,startings=getNeighbours(list[0]),count = (count+1)%2){
 		var list = wrapArray(generateRoute(initial,size),startings);
 		list = count && list.reverse() || list;
 		path.push(list);
-	}
+	}	
 	return lodash.flatten(path);
 };
 
@@ -79,11 +73,6 @@ exports.generateFullPath = generatePath;
 exports.generateHalfPath = function(start){
 	return wrapArray(generateRoute(0,4),[start]);
 };
-
-
-
-console.log(exports.generateHalfPath(coin.homePosition));
-console.log(exports.generateFullPath(coin.homePosition))
 
 
 

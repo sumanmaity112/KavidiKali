@@ -7,7 +7,7 @@ var post_handlers = routes.post_handlers;
 var rEmitter = new EventEmitter();
 var querystring = require('querystring');
 var gameMaster ;
-const PORT = 4000;
+const PORT = 8080;
 
 var matchHandler = function(url){
 	return function(ph){
