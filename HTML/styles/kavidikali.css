@@ -128,6 +128,16 @@ body{
     margin-left: 13%;
 }
 
+#update{
+	border: 1px solid black;
+	height :20px;
+	width: 50px;
+    margin-left: 55%;
+	margin-top: -2%;
+}
+#updateText{
+	margin-left:43%
+}
 
 
 
