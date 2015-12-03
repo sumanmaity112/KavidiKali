@@ -21,24 +21,20 @@ body{
 	padding-left: 100px;
 	padding-top: 75px;
 }
-/*#dice{
+#dice{
 	height: 40px;
 	width: 80px;
     background: #62a;
     color: white;
     border-radius: 5px;
-    margin-left: 583px;
-    margin-top: -150px;
     font-size: 18px;
-}*/
+}
 #board {
-	background-color: red;
 	width: 700px;
 }
 
 .grid{
-	background-color: green ;
-	border: 2px solid black;
+	border: 2px;
 	width : 750px;
 	height:700px;
 }
@@ -62,7 +58,6 @@ body{
 }
 
 #information{
-	background-color:#B078B2;
 	float: right;
 	width: 90%;
 	height: 100%;
@@ -104,8 +99,7 @@ body{
 }
 
 .parking{
-	border:2px solid blue;
-	background-color:#B078B2;
+	border:2px solid black;
 }
 
 .coins_red{

@@ -48,10 +48,10 @@ var doRedirect = function(req, res, next ){
 	});
 	req.on('end',function(){
 		var userId = querystring.parse(data)['name'];
-		if(application.enquiry('numberOfPlayers').length>4)
-			res.end('Please wait, a game is already started');
-		else 
+		if(application.enquiry('numberOfPlayers').length <= 3)
 			createPlayer(userId, res);
+		else 
+			res.end('Please wait, a game is already started');
 	});
 };
 
@@ -77,7 +77,7 @@ var createInformation = function(req, res, next){
 	else{
 		fs.readFile(filePath, function(err, data){
 			if(data){
-				var html = data.toString().replace('__userID__',userId);
+				var html = replaceRespectiveValue(data.toString(),'__userID__',userId);
 				res.responseCode = 200;
 				res.end(html);
 				console.log(res.responseCode);
@@ -86,6 +86,26 @@ var createInformation = function(req, res, next){
 				next();
 		});	
 	}
+};
+
+var replaceRespectiveValue = function(originalData,replaceFrom,replaceTo){
+	return originalData.replace(replaceFrom,replaceTo);
+};
+
+var createWaitingPage = function(req, res, next){
+	var filePath = './HTML' + req.url;
+	fs.readFile(filePath, function(err, data){
+		if(data){
+			res.statusCode = 200;
+			res.writeHead(200,{'content-type' : headers[path.extname(filePath)]});
+			var userId = querystring.parse(req.headers.cookie).userId;
+			var html = replaceRespectiveValue(data.toString(),'__userId__',userId);
+			html = replaceRespectiveValue(html.toString(),'__numberOfPlayer__',application.enquiry('numberOfPlayers').length);
+			res.end(html);
+		}
+		else
+			next();
+	});
 };
 
 var doInstruction = function(req, res, next){
@@ -126,6 +146,7 @@ exports.post_handlers = [
 ];
 
 exports.get_handlers = [
+	{path:'^/waitingPage.html$',handler:createWaitingPage},
 	{path: '^/main.html$',handler:createInformation},
 	{path: '^/$', handler: serveIndex},
 	{path: '', handler: serveStaticFile},
