@@ -1,5 +1,6 @@
 var lodash = require('lodash');
 
+
 var rollDice = function(player,gameMaster){
 	var diceValue = gameMaster.players[player].rollDice(gameMaster.dice);
 	gameMaster.setChances(diceValue,player);
@@ -24,5 +25,6 @@ exports.updates = {
 
 exports.enquiries = [
 	{enquiry:'isValidPlayer', action : function(gameMaster,player){ return lodash.has(gameMaster.players,player)}},
-	{enquiry:'currentPlayer', action : function(gameMaster){ return gameMaster.getCurrentPlayer();}}
+	{enquiry:'currentPlayer', action : function(gameMaster){ return gameMaster.getCurrentPlayer();}},
+	{enquiry:'numberOfPlayers', action : function(gameMaster){ return Object.keys(gameMaster.players);}}
 ];
