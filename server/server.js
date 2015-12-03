@@ -2,10 +2,11 @@ var http = require('http');
 var EventEmitter = require('events').EventEmitter;
 var routes = require('./routes.js');
 var lib = require('../javascript/sourceCode/kavidikaliLib.js').entities;
+var querystring = require('querystring');
+
 var get_handlers = routes.get_handlers;
 var post_handlers = routes.post_handlers;
 var rEmitter = new EventEmitter();
-var querystring = require('querystring');
 var gameMaster ;
 const PORT = 8080;
 
@@ -49,7 +50,7 @@ var requestHandler = function(req, res){
 
 var server = http.createServer(requestHandler);
 server.listen(PORT,function(){
-	gameMaster = new lib.GameMaster([6],5,[1,2,3,4,5,6]);
+	gameMaster = createGameMaster()
 	console.log('server is listen on ',PORT);
 });
 

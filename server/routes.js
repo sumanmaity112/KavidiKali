@@ -1,8 +1,15 @@
 var fs = require('fs');
+var path = require('path');
 var lodash = require('lodash');
 var querystring = require('querystring');
 var application = require('./application.js')
 var main = application.main;
+
+var headers = {
+	".html" : "text/html",
+	".svg"	: "image/svg+xml",
+	".css"	: "text/css"
+};
 
 var serveIndex = function(req, res, gameMaster, next){
 	req.url = '/index.html';
@@ -19,7 +26,9 @@ var serveStaticFile = function(req, res, gameMaster, next){
 	var filePath = './HTML' + req.url;
 	fs.readFile(filePath, function(err, data){
 		if(data){
+			console.log(req.url,"------\n",data);
 			res.statusCode = 200;
+			res.writeHead(200,{'content-type' : headers[path.extname(filePath)]});
 			console.log(res.statusCode);
 			res.end(data);
 		}
@@ -50,9 +59,9 @@ var doRedirect = function(req, res, gameMaster, next ){
 
 var createPlayer = function(userId, res, gameMaster){
 	if(lodash.has(gameMaster.players,userId))
-		res.writeHead('301',{'Location':'/index.html',
+		res.writeHead('301',{'Location':'/main.html',
 			'content-type':'text/html',
-			'Set-Cookie': 'userId='+undefined 
+			'Set-Cookie': 'userId='+userId
 		});
 	else{
 		gameMaster.createPlayer(userId);

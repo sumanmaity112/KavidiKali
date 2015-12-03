@@ -33,13 +33,14 @@ body{
 }*/
 #board {
 	background-color: red;
-	width: 500px;
+	width: 700px;
 }
 
 .grid{
 	background-color: green ;
-	border: 3px solid black;
-	width : 500px;
+	border: 2px solid black;
+	width : 750px;
+	height:700px;
 }
 
 .tile{
@@ -50,7 +51,7 @@ body{
 }
 
 .safePlace{
-	background-color: "#B078B2";
+	background-color: white;
 	border:3px solid black;
 	height: 100px;
 	width : 100px;
@@ -97,3 +98,48 @@ body{
 	padding-left: 42%;
 	padding-top: 20%;
 }
+
+.outerTile{
+	border:0px;
+}
+
+.parking{
+	border:2px solid blue;
+	background-color:#B078B2;
+}
+
+.coins_red{
+    margin-top: -32%;
+    margin-left: 13%;
+}
+
+.coins_green{
+    margin-top: -89%;
+    margin-left: 33%;
+}
+
+.coins_blue{
+    margin-top: -89%;
+    margin-left: -7%;
+}
+
+.coins_yellow{
+	margin-top: -107%;
+    margin-left: 13%;
+}
+
+#update{
+	border: 1px solid black;
+	height :20px;
+	width: 50px;
+    margin-left: 55%;
+	margin-top: -2%;
+}
+#updateText{
+	margin-left:43%
+}
+
+
+
+
+
