@@ -1,0 +1,130 @@
+					=======STORY========
+
+#1. As a player, I want to be identified, so that I can join the game
+	A.C
+		1.	Given I have the place to put a name
+		  	When I put my name
+		  	Then I will be identified by that name then after 
+
+		2.	Given I have chance to put the name
+			When I have put the name
+			Then I can access the game
+
+#2.	As a player, I want the board updates, so that I can know the current status of the game
+	A.C  	
+		1.	Given I have access to board
+			When I entered into the game
+			Then I can distinguish between safe-places, unsafe-places and destination
+
+		2.	Given I have access to the game
+			When I entered into the game
+			Then I should know all the coins and their corresponding position
+
+		3.	Given I am playing the game
+			When any changes happen to the board
+			Then I should know all the coins and their corresponding position
+
+#3.	As a player, I want to roll the dice on my turn, so that I am able to play my turn 
+	A.C
+		1.	Given my neighbour has finished his/her turn 
+			When I have chance to play 
+			Then I should get access to dice and board
+
+		2.	Given I have chance to play 
+			When I roll the dice
+			Then I get a value on which I know how many steps to move my coin
+
+		3.	Given I have roll the dice
+			When I get a value other than 6 on dice
+			Then I should not get one more chance to roll the dice
+
+		4.	Given I have roll the dice
+			When I get a 6 on dice
+			Then I get a one more chance to roll the dice
+
+#4. As a player, I want to bring my coin into board, so that I can start playing
+	A.C
+		1.	Given I am playing my turn and the coin is off-board
+		  	When I get a 6 on dice
+		   	Then I can move my coin from off-board to my home position on the board
+
+		2.	Given I am playing my turn and the coin is off-board
+		  	When I get a value other than 6 on dice
+		   	Then I can't move my coin from off-board to my home position on the board
+
+#5.	As a player, I want to move the coins, so that I can lead the game
+	A.C
+		1.	Given number of steps (Dice value) and one of my coin on board
+			When I choose that coin and a valid position according to the dice value
+			Then the coin should move to that position
+
+		2.	Given number of steps (Dice value) and one of my coin on board
+			When I choose that coin and a invalid position according to the dice value
+			Then the coin should not move to that position
+
+		3.	Given number of steps (Dice value) and one of my coin on board
+			When the number of steps require to destination is lesser than dice value
+			Then the coin should not move from that position
+
+		4.	Given number of steps (Dice value) and two of my coins on board 
+			When the number of steps from one coin to another coin in direction of movement 
+				is equal to dice value and followed coin is in a position except home positions
+			Then the follower coin can't move to that position
+
+		5.	Given number of steps (Dice value) and two of my coins on board 
+			When the number of steps from one coin to another coin in direction of movement 
+				is equal to dice value and followed coin is in a home position
+			Then the follower coin can be moved and accomodated in that position
+
+#6. As a player, I want to capture my opponents coin, so that it is replaced with my coin on board
+	A.C
+		1.	Given number of steps (Dice value) and one of my coin and opponents coin on board 
+			When the number of steps from my coin to opponents coin in direction of movement 
+				is equal to dice value and followed coin is in a position except home positions
+			Then the opponents coin will be replaced with my coin at that position
+
+		2.	Given number of steps (Dice value) and one of my coin and opponents coin on board 
+			When the number of steps from my coin to opponents coin in direction of movement 
+				is equal to dice value and followed coin is in a home position
+			Then the my coin will also be accomodated at that position
+
+		3.	Given number of steps (Dice value) and one of my coin and opponents coin on board 
+			When I captured my opponents coin
+			Then the opponents coin will be send back off board
+
+		4.	Given number of steps (Dice value) and one of my coin and opponents coin on board 
+			when I captured my opponents coin
+			Then I should get an extra chance to roll the dice
+
+#7.	As a player, I want to captur atleast one of my opponents coin, so that I can move to the inner loop
+	A.C
+		1.	Given I have captured one of my opponents coin and number of steps (Dice value)
+			When required number of steps to move into inner loop is less than dice value
+			Then the coin moves to a position in inner loop
+
+		2.	Given I have not captured even one of my opponents coin and number of steps (Dice value)
+			When required number of steps to move into inner loop is less than dice value
+			Then the coin should not be allowed to enter inner loop and it moves to a position in outer loop
+
+#8.	As a player, I want to move all my coins to destination, so that I can win the game
+	A.C
+		1.	Given I have three coins at destination 
+			When I moved my fourth coin to destination
+			Then I will win the game and game finishes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
