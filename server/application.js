@@ -1,22 +1,23 @@
-var EventEmitter = require('events').EventEmitter;
-var rEmitter = new EventEmitter();
+var lodash = require('lodash');
+var operations = require('./operations.js');
+var actions = operations.actions;
+var updates = operations.updates;
+var enquiries = operations.enquiries;
 
-exports.main = function(instruction, req, res, gameMaster){
-	rEmitter.emit(instruction, req, res, gameMaster);
+
+exports.handleInstruction = function(obj, gameMaster){
+	if(obj.player == gameMaster.getCurrentPlayer().id)
+		return actions[obj.action](obj.player,gameMaster);
+	return 'Wrong Player';
 };
 
-rEmitter.on('rollDice',function(req, res, gameMaster){
-	var data = '';
-	req.on('data', function(chunk){
-		data += chunk;
-	});
-	req.on('end', function(){
-		var obj = JSON.parse(data);
-		var userId = obj.player.trim()
-		var player = gameMaster.players[userId];
-		var diceValue = player.rollDice(gameMaster.dice);
-		console.log(diceValue+' ===== '+ req.headers.cookie);
-		res.statusCode = 200;
-		res.end('diceValues='+diceValue);
-	});
-});
+exports.handleUpdates = function(obj, gameMaster){
+	var update = updates[obj.toUpdate];
+	return update(gameMaster,obj.player);
+};
+
+exports.enquiry = function(question,gameMaster,player){
+	var action = lodash.findWhere(enquiries,{enquiry:question})['action'];
+	return action(gameMaster,player);
+};
+

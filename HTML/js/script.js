@@ -16,15 +16,15 @@ function print(x){
 };
 
 var rollDice = function(){
-	var userId = document.querySelector('#userID').textContent
-	var req = new XMLHttpRequest();
-	req.onreadystatechange = function() {
-	    if (req.readyState == 4 && req.status == 200) {
-	    	alert(req.responseText);
-	    };
-	};
-	req.open('POST', 'dice', true);
-	req.send('{"player":"'+userId+'","action":"rollDice"}');
+	$.post('instruction',{"action":"rollDice"},function(data,status){
+		updateDiceValues();
+	});
+};
+
+var updateDiceValues = function(){
+	$.get('update/toUpdate=diceValues',function(data,status){
+		document.querySelector('#diceValues').innerHTML = data;
+	});
 };
 
 window.onload = function(){
@@ -34,10 +34,6 @@ window.onload = function(){
 		document.getElementById(safePlace).className = 'safePlace';
 	});
 	document.querySelector('#dice').onclick = rollDice;
+	document.querySelector('#updateDice').onclick = updateDiceValues;
 };
-
-
-// document.onload = function(){
-// };
-
 
