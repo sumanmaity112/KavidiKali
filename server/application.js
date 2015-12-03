@@ -1,22 +1,28 @@
-var EventEmitter = require('events').EventEmitter;
-var rEmitter = new EventEmitter();
+var lodash = require('lodash');
+var operations = require('./operations.js');
+var actions = operations.actions;
+var updates = operations.updates;
+var enquiries = operations.enquiries;
+var lib = require('./../javascript/sourceCode/kavidiKaliLib.js');
+var	gameMaster = new lib.entities.GameMaster([6],5,[1,2,3,4,5,6]);
 
-exports.main = function(instruction, req, res, gameMaster){
-	rEmitter.emit(instruction, req, res, gameMaster);
+
+exports.handleInstruction = function(obj){
+	if(obj.player == gameMaster.getCurrentPlayer().id)
+		return actions[obj.action](obj.player,gameMaster);
+	return 'Wrong Player';
 };
 
-rEmitter.on('rollDice',function(req, res, gameMaster){
-	var data = '';
-	req.on('data', function(chunk){
-		data += chunk;
-	});
-	req.on('end', function(){
-		var obj = JSON.parse(data);
-		var userId = obj.player.trim()
-		var player = gameMaster.players[userId];
-		var diceValue = player.rollDice(gameMaster.dice);
-		console.log(diceValue+' ===== '+ req.headers.cookie);
-		res.statusCode = 200;
-		res.end('diceValues='+diceValue);
-	});
-});
+exports.handleUpdates = function(obj){
+	var update = updates[obj.toUpdate];
+	return update(gameMaster,obj.player);
+};
+
+exports.enquiry = function(question,player){
+	var action = lodash.findWhere(enquiries,{enquiry:question})['action'];
+	return action(gameMaster,player);
+};
+
+exports.register = function(name){
+	gameMaster.createPlayer(name);
+};
