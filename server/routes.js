@@ -2,7 +2,8 @@ var fs = require('fs');
 var path = require('path');
 var lodash = require('lodash');
 var querystring = require('querystring');
-var main = require('./application.js').main;
+var application = require('./application.js')
+var main = application.main;
 
 var headers = {
 	".html" : "text/html",
@@ -95,6 +96,7 @@ var createInformation = function(req, res, gameMaster, next){
 	}
 };
 
+
 var replaceRespectiveValue = function(originalData,replaceFrom,replaceTo){
 	return originalData.replace(replaceFrom,replaceTo);
 };
@@ -119,12 +121,41 @@ var createWaitingPage = function(req, res, gameMaster, next){
 
 var rollDice = function(req, res, gameMaster, next){
 	main('rollDice',req, res, gameMaster)
+
+var doInstruction = function(req, res, gameMaster, next){
+	var player = querystring.parse(req.headers.cookie).userId;
+	if(application.enquiry('isValidPlayer',gameMaster,player)){
+		var data = '';
+		req.on('data',function(chunk){
+			data += chunk;
+		});
+		req.on('end',function(){
+			var obj = querystring.parse(data);
+			obj.player = player;
+			var result = application.handleInstruction(obj,gameMaster)
+			res.end(result)
+		});
+	}
+	else
+		next();
+};
+
+var handleUpdate = function(req, res, gameMaster, next){
+	var player = querystring.parse(req.headers.cookie).userId;
+	if(application.enquiry('isValidPlayer',gameMaster,player)){
+		var obj = querystring.parse(req.url.slice(8));
+		obj.player = player;
+		res.end(application.handleUpdates(obj,gameMaster));
+	}
+	else{
+		next();
+	}
 };
 
 exports.post_handlers = [
 	{path: '^/index.html$', handler: doRedirect},
 	{path: '^/$', handler: doRedirect},
-	{path: 'dice', handler: rollDice},
+	{path: '^/instruction$', handler: doInstruction},
 	{path: '', handler: method_not_allowed}
 ];
 
@@ -133,7 +164,7 @@ exports.get_handlers = [
 	{path: '^/main.html$',handler:createInformation},
 	{path: '^/$', handler: serveIndex},
 	{path: '', handler: serveStaticFile},
-	{path: 'dice', handler: rollDice},
+	{path: '^/update', handler: handleUpdate},
 	{path: '', handler: fileNotFound}
 ];
 
