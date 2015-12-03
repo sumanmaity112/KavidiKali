@@ -7,6 +7,8 @@ var post_handlers = routes.post_handlers;
 var rEmitter = new EventEmitter();
 var querystring = require('querystring');
 var gameMaster ;
+var fs = require('fs');
+
 const PORT = 8080;
 
 var matchHandler = function(url){
@@ -49,7 +51,7 @@ var requestHandler = function(req, res){
 
 var server = http.createServer(requestHandler);
 server.listen(PORT,function(){
-	gameMaster = new lib.GameMaster([6],5,[1,2,3,4,5,6]);
+	gameMaster = createGameMaster()
 	console.log('server is listen on ',PORT);
 });
 

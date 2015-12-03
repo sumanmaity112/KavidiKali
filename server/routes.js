@@ -57,9 +57,9 @@ var doRedirect = function(req, res, gameMaster, next ){
 
 var createPlayer = function(userId, res, gameMaster){
 	if(lodash.has(gameMaster.players,userId))
-		res.writeHead('301',{'Location':'/index.html',
+		res.writeHead('301',{'Location':'/main.html',
 			'content-type':'text/html',
-			'Set-Cookie': 'userId='+undefined 
+			'Set-Cookie': 'userId='+userId
 		});
 	else{
 		gameMaster.createPlayer(userId);
