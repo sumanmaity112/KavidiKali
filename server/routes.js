@@ -25,7 +25,7 @@ var serveStaticFile = function(req, res, gameMaster, next){
 	var filePath = './HTML' + req.url;
 	fs.readFile(filePath, function(err, data){
 		if(data){
-			console.log(req.url,"------\n",data);
+			console.log(req.url,"------\n");
 			res.statusCode = 200;
 			res.writeHead(200,{'content-type' : headers[path.extname(filePath)]});
 			console.log(res.statusCode);
@@ -49,10 +49,10 @@ var doRedirect = function(req, res, gameMaster, next ){
 	});
 	req.on('end',function(){
 		var userId = querystring.parse(data)['name'];
-		if(Object.keys(gameMaster.players).length>4)
-			res.end('Please wait, a game is already started');
-		else 
+		if(Object.keys(gameMaster.players).length <=3 )
 			createPlayer(userId, res, gameMaster);
+		else 
+			res.end('Please wait, a game is already started');
 	});
 };
 
@@ -64,7 +64,8 @@ var createPlayer = function(userId, res, gameMaster){
 		});
 	else{
 		gameMaster.createPlayer(userId);
-		res.writeHead('301',{'Location':'/main.html',
+		console.log('Current players are : ',Object.keys(gameMaster.players));
+		res.writeHead('301',{'Location':'/waitingPage.html',
 			'content-type':'text/html',
 			'Set-Cookie': 'userId='+userId 
 		});
@@ -85,13 +86,35 @@ var createInformation = function(req, res, gameMaster, next){
 		fs.readFile(filePath, function(err, data){
 			if(data){
 				console.log(res.statusCode+'cookie :'+ req.headers.cookie);
-				var html = data.toString().replace('__userID__',userId);
+				var html = replaceRespectiveValue(data.toString(),'__userID__',userId)
 				res.end(html);
 			}
 			else
 				next();
 		});	
 	}
+};
+
+var replaceRespectiveValue = function(originalData,replaceFrom,replaceTo){
+	return originalData.replace(replaceFrom,replaceTo);
+};
+
+var createWaitingPage = function(req, res, gameMaster, next){
+	var filePath = './HTML' + req.url;
+	fs.readFile(filePath, function(err, data){
+		if(data){
+			console.log(req.url,"------>\n");
+			res.statusCode = 200;
+			res.writeHead(200,{'content-type' : headers[path.extname(filePath)]});
+			var userId = querystring.parse(req.headers.cookie).userId;
+			var html = replaceRespectiveValue(data.toString(),'__userId__',userId);
+			html = replaceRespectiveValue(html.toString(),'__numberOfPlayer__',Object.keys(gameMaster.players).length);
+			
+			res.end(html);
+		}
+		else
+			next();
+	});
 };
 
 var rollDice = function(req, res, gameMaster, next){
@@ -106,6 +129,7 @@ exports.post_handlers = [
 ];
 
 exports.get_handlers = [
+	{path:'^/waitingPage.html$',handler:createWaitingPage},
 	{path: '^/main.html$',handler:createInformation},
 	{path: '^/$', handler: serveIndex},
 	{path: '', handler: serveStaticFile},

@@ -50,7 +50,7 @@ var requestHandler = function(req, res){
 
 var server = http.createServer(requestHandler);
 server.listen(PORT,function(){
-	gameMaster = createGameMaster()
+	gameMaster = new lib.GameMaster()
 	console.log('server is listen on ',PORT);
 });
 

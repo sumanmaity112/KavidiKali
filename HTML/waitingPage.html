@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Waiting For Players</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"> </script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			if(+($('#noOfPlayers').text()) == 4){
+				alert('Start the game');
+				window.location.href = "/main.html";
+			}
+		})
+	</script>
+</head>
+<body>
+	<div>
+		<h2>You are Successfully logged in   __userId__</h2>
+		<h3>Number of players joined...  <p id="noOfPlayers">__numberOfPlayer__</p></h3>
+	</div>
+</body>
+</html>
