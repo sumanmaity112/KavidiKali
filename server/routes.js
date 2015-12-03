@@ -65,14 +65,13 @@ var createPlayer = function(userId, res, gameMaster){
 		});
 	else{
 		gameMaster.createPlayer(userId);
-		console.log('Current players are : ',Object.keys(gameMaster.players));
 		res.writeHead('301',{'Location':'/waitingPage.html',
 			'content-type':'text/html',
 			'Set-Cookie': 'userId='+userId 
 		});
 	}
 	res.end();
-}
+};
 
 var createInformation = function(req, res, gameMaster, next){
 	var filePath = './HTML' + req.url;
@@ -121,6 +120,7 @@ var createWaitingPage = function(req, res, gameMaster, next){
 
 var rollDice = function(req, res, gameMaster, next){
 	main('rollDice',req, res, gameMaster)
+};
 
 var doInstruction = function(req, res, gameMaster, next){
 	var player = querystring.parse(req.headers.cookie).userId;

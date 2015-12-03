@@ -5,6 +5,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"> </script>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			setTimeout(function(){
+			   window.location.reload(1);
+			}, 5000);
 			if(+($('#noOfPlayers').text()) == 4){
 				alert('Start the game');
 				window.location.href = "/main.html";
