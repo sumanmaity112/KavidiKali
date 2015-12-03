@@ -8,7 +8,8 @@ var headers = {
 	".html" : "text/html",
 	".svg"	: "image/svg+xml",
 	".css"	: "text/css"
-}
+};
+
 var serveIndex = function(req, res, gameMaster, next){
 	req.url = '/index.html';
 	next();
