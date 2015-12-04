@@ -45,6 +45,13 @@ entities.Board.prototype={
 			return lodash.pull(validMoves,false);
 		}
 	},
+	anyMoreMoves: function(player){
+		var movesPerCoin = Object.keys(player.coins).map(function(coin){
+			return this.getAllValidMovesOfCoin(player.coins[coin],player.diceValues,player.path,[6]);
+		}.bind(this));
+		var totalMoves = lodash.flatten(movesPerCoin);
+		return !!lodash.pull(totalMoves,undefined)[0];
+	}
 };
 
 var getTheValidMove = function(coin,movesBy,path){

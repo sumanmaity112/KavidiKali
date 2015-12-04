@@ -4,13 +4,8 @@
 	<link rel="stylesheet" href="styles/kavidikali.css">
 	<script type="text/javascript" src="js/script.js"></script>
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-	<script type="text/javascript">
-		// $(document).ready(function(){
-		// 	document.getElementById('0,0').innerHTML = '4'
-		// })
-	</script>
 </head>
-<body  >
+<body  id="body">
 	<div class="header">
 		<h1 align="center" >Welcome To KavidiKali</h1>
 		<div id="manual">
@@ -20,19 +15,22 @@
 	<section class = "leftPane">
 		<section id="board" ></section>
 		</br>
-		<button  id="dice">Dice</button>
-		<button  id="updateDice">Update Dice Values</button>
+		<div class="Dice">
+			<button id="dice">Dice</button>
+		</div>
+		<div class="updateDice">
+			<button  id="updateDice">Update Dice Values</button>
+		</div>
 		<div id="diceValues"></div>
 	</section>
 	<div class="rightPane">
 		<section id="information">
-			<table border="1px" style="margin-left:14%;">
+			<table border="1px" style="margin-left:14%;" id="userID_table" border="1px">
 				<th width="200px" id="userID" > __userID__</th>
 			</table>
 			<br>
 			<table id="notification">
-				<td height="300px" width="285px" bgcolor="#fff">
-				</td>
+				<td height="300px" width="285px" bgcolor="#fff"></td>
 			</table>
 		</section>
 
