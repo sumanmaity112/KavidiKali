@@ -44,5 +44,8 @@ window.onload = function(){
 	})
 	document.querySelector('#dice').onclick = rollDice;
 	document.querySelector('#updateDice').onclick = updateDiceValues;
+	$(document).ready(function(){
+			document.getElementsByClassName('safePlace').innerHTML = 'hello'
+		})
 };
 

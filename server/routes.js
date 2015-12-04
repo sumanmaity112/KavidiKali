@@ -41,7 +41,7 @@ var fileNotFound = function(req, res){
 	console.log(res.statusCode);
 };
 
-var doRedirect = function(req, res, next ){
+var doRedirect = function(req, res, next){
 	var data = '';
 	req.on('data',function(chunk){
 		data+=chunk;
@@ -108,10 +108,6 @@ var createWaitingPage = function(req, res, next){
 	});
 };
 
-var rollDice = function(req, res, gameMaster, next){
-	main('rollDice',req, res, gameMaster)
-};
-
 var doInstruction = function(req, res, next){
 	var player = querystring.parse(req.headers.cookie).userId;
 	if(application.enquiry('isValidPlayer',player)){
@@ -122,7 +118,7 @@ var doInstruction = function(req, res, next){
 		req.on('end',function(){
 			var obj = querystring.parse(data);
 			obj.player = player;
-			var result = application.handleInstruction(obj)
+			var result = application.handleInstruction(obj);
 			res.end(result)
 		});
 	}
@@ -137,9 +133,8 @@ var handleUpdate = function(req, res, next){
 		obj.player = player;
 		res.end(application.handleUpdates(obj));
 	}
-	else{
+	else
 		next();
-	}
 };
 
 exports.post_handlers = [

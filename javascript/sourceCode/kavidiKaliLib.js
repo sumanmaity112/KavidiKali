@@ -98,8 +98,8 @@ entities.Player = function(id,startPosition){
 
 var createCoins =  function(id,numberOfCoins,startPosition){
 	var coins = new Object;
-	for(var i=1; i<=numberOfCoins; i++){
-		coins[id+i] = new entities.Coin(id+i,startPosition);
+	for(var count=1; count<=numberOfCoins; count++){
+		coins[id+count] = new entities.Coin(id+count,startPosition);
 	};
 	return coins;
 };
@@ -125,11 +125,10 @@ entities.Player.prototype = {
 		this.matured = true;
 	},
 	get path(){
-		if(this.matured){
+		if(this.matured)
 			return path.generateFullPath(this.startPosition);
-		};
-			var playerPath = path.generateHalfPath(this.startPosition);
-			return playerPath.concat(playerPath);
+		var playerPath = path.generateHalfPath(this.startPosition);
+		return playerPath.concat(playerPath);
 	}
 };
 
@@ -201,16 +200,4 @@ entities.createSafePlaces = function(size){
 	});
 	return safePlaces;
 };
-
-
-
-
-
-
-
-
-
-
-
-
 

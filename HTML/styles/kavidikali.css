@@ -133,7 +133,13 @@ body{
 	margin-left:43%
 }
 
-
+#manual{
+	border: 2px solid black;
+	border-radius: 5px;
+	font-family: serif;
+	font-size: 20px;
+	float: right;
+}
 
 
 
