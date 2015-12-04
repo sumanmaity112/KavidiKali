@@ -1,26 +1,54 @@
 body{
 	padding: 40 30 40 30;
 	background-color: lightgrey;
-}
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+};
+
+#body{
+    padding-top: 0px;
+    padding-bottom: 0px;
+    width: 1330px;
+    height: 730px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+};
+
+#heading{
+	font-family: sans-serif;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    width: 1325px;
+    height: 35px;
+    border-top-width: 0px;
+    padding-left: 0px;
+};
 
 .rightPane{
 	float: left;
 	padding: 5px;
 	margin: 10px;
-	height: 510px;
-	width: 350px;
-	padding-top: 80px;
+    padding-top: 15px;
+    width: 300px;
+    height: 420px;
+    padding-left: 10px;
+    margin-left: 50px;
 	padding-right: 10px;	
+};
 
-}
 .leftPane{
 	float: left;
-	width: 50.84%;
 	background-color: lightgrey;
-	height: 80.1%;
-	padding-left: 100px;
-	padding-top: 75px;
-}
+    padding-left: 50px;
+    padding-top: 20px;
+    padding-bottom: 0px;
+    width: 749.172;
+    height: 698.719;
+};
+
 #dice{
 	height: 40px;
 	width: 80px;
@@ -28,23 +56,29 @@ body{
     color: white;
     border-radius: 5px;
     font-size: 18px;
-}
+};
+
 #board {
-	width: 700px;
-}
+    width: 750px;
+};
+
+.Dice{
+	margin-left: 800px;
+    margin-top: -200px;
+};
 
 .grid{
 	border: 2px;
 	width : 750px;
 	height:700px;
-}
+};
 
 .tile{
 	background-color: grey;
 	border:3px solid black;
 	height: 100px;
 	width : 100px;
-}
+};
 
 .safePlace{
 	background-color: white;
@@ -52,75 +86,84 @@ body{
 	height: 100px;
 	width : 100px;
 
-}
+};
+
 .header{
 	background-color: lightgrey;
-}
+};
 
 #information{
 	float: right;
-	width: 90%;
+    width: 300px;
+    padding-left: 0px;
 	height: 100%;
-}
+};
 
 #notification{
-	padding-top: 50px;
-	/*padding-right: 1px;*/
-	padding-left: 11px;
-}
+    padding-left: 0px;
+    padding-top: 25px;
+    height: 350px;
+    width: 300px;
+};
+
 #name{
 	width: 200px;
 	height: 30px;
 	font-size: 17px;
 };
+
 #userid{
 	width: 200px;
 	height: 100px;
 	background-color: #fff;
-}
+};
+
 #submit{
-	height: 30px;
-	width: 80px;
+    margin-left: 0px;
+    padding-bottom: 2px;
+    width: 72px;
+    height: 29px;
     background: #62a;
     color: white;
     border: none;
     border-radius: 5px;
-    margin-left: 30px;
     font-size: 18px;
-}
+};
 
 #login{
-	padding-left: 42%;
-	padding-top: 20%;
-}
+    padding-left: 530.875;
+    width: 314.125;
+    padding-top: 236.797;
+    border-top-width: 0px;
+};
 
 .outerTile{
 	border:0px;
-}
+};
 
 .parking{
 	border:2px solid black;
-}
+};
 
 .coins_red{
     margin-top: -32%;
     margin-left: 13%;
-}
+};
 
 .coins_green{
     margin-top: -89%;
     margin-left: 33%;
-}
+};
 
 .coins_blue{
     margin-top: -89%;
     margin-left: -7%;
-}
+};
 
 .coins_yellow{
 	margin-top: -107%;
     margin-left: 13%;
-}
+};
 
 #update{
 	border: 1px solid black;
@@ -128,11 +171,27 @@ body{
 	width: 50px;
     margin-left: 55%;
 	margin-top: -2%;
-}
+};
+
 #updateText{
 	margin-left:43%
-}
+};
 
+#userID_table{
+    width: 300px;
+    border-left-width: 1px;
+    padding-left: 0px;
+    margin-left: 0px;
+};
+
+#diceValues{
+    margin-left: 800px;
+};
+
+.updateDice{
+    margin-left: 900px;
+    width: 119px;
+};
 
 
 

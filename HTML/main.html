@@ -5,20 +5,24 @@
 	<script type="text/javascript" src="js/script.js"></script>
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 </head>
-<body  >
+<body  id="body">
 	<div class="header">
-		<h1 align="center" >Welcome To KavidiKali</h1>
+		<h1 id="heading" align="center" >Welcome To KavidiKali</h1>
 	</div>
 	<section class = "leftPane">
 		<section id="board" ></section>
 		</br>
-		<button  id="dice">Dice</button>
+		<div class="Dice">
+		<button id="dice">Dice</button>
+		</div>
+		<div class="updateDice">
 		<button  id="updateDice">Update Dice Values</button>
+		</div>
 		<div id="diceValues"></div>
 	</section>
 	<div class="rightPane">
 		<section id="information">
-			<table border="1px">
+			<table id="userID_table" border="1px">
 				<th width="200px" id="userID" > __userID__</th>
 			</table>
 			<br>
