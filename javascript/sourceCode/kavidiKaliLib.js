@@ -35,7 +35,7 @@ entities.Board.prototype={
 			this.grid[movesFrom]=undefined;
 	},
 	getAllValidMovesOfCoin : function(coin,diceValues,path,specialValue){
-		if(!coin.currentPosition){
+		if(coin.currentPosition==coin.parkingPosition){
 			return lodash.intersection(diceValues,specialValue).length && [coin.startPosition] || undefined;
 		}
 		else{
@@ -66,11 +66,12 @@ var createGrid = function(safePlaces,size){
 	return grid;
 };
 
-entities.Coin = function(id,startPosition){
+entities.Coin = function(id,startPosition,parkingPosition){
 	this.id = id;
-	this.currentPosition = "2,5";
+	this.currentPosition = parkingPosition;
 	this.reachedHome = false;
 	this.startPosition = startPosition;
+	this.parkingPosition=parkingPosition;
 };
 
 entities.Coin.prototype = {
@@ -79,7 +80,7 @@ entities.Coin.prototype = {
 		this.currentPosition = movesTo;
 	},
 	die : function(){
-		this.currentPosition = undefined;
+		this.currentPosition = this.parkingPosition;
 	},
 
 	hasReachedHome : function(){
@@ -87,20 +88,20 @@ entities.Coin.prototype = {
 	}
 };
 
-entities.Player = function(id,startPosition,colour){
+entities.Player = function(id,startPosition,colour,parkingPosition){
 	this.id = id;
 	this.matured = false;
-	this.coins = createCoins(id,4,startPosition);
+	this.coins = createCoins(id,4,startPosition,parkingPosition);
 	this.diceValues = new Array;
 	this.chances = 0;
 	this.startPosition = startPosition;
 	this.colour=colour;
 };
 
-var createCoins =  function(id,numberOfCoins,startPosition){
+var createCoins =  function(id,numberOfCoins,startPosition,parkingPosition){
 	var coins = new Object;
 	for(var i=1; i<=numberOfCoins; i++){
-		coins[id+i] = new entities.Coin(id+i,startPosition);
+		coins[id+i] = new entities.Coin(id+i,startPosition,parkingPosition);
 	};
 	return coins;
 };
@@ -129,8 +130,8 @@ entities.Player.prototype = {
 		if(this.matured){
 			return path.generateFullPath(this.startPosition);
 		};
-			var playerPath = path.generateHalfPath(this.startPosition);
-			return playerPath.concat(playerPath);
+		var playerPath = path.generateHalfPath(this.startPosition);
+		return playerPath.concat(playerPath);
 	}
 };
 
@@ -140,8 +141,7 @@ entities.Dice = function(values){
 
 entities.Dice.prototype = {
 	roll : function(){
-		var randomIndex = lodash.random(0,this.values.length-1);
-		return this.values[randomIndex];
+		return lodash.sample(this.values);
 	}
 }
 
@@ -159,10 +159,12 @@ entities.GameMaster.prototype = {
 	},
 	createPlayer : function(playerId){
 		var playersCount = Object.keys(this.players).length;
-		var colorSequence=["red","green","blue","yellow"]; 
+		var colorSequence=["red","green","blue","yellow"];
+		var parkingPositions=["2,-1","5,2","2,5","-1,2"]; 
 		this.players[playerId] = new entities.Player(playerId,
 													this.board.safePlaces[playersCount],
-													colorSequence[playersCount]);
+													colorSequence[playersCount],
+													parkingPositions[playersCount]);
 	},
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue))
@@ -177,16 +179,6 @@ entities.GameMaster.prototype = {
 	},
 	isPlayerMatured : function(player){
 		return player.matured;
-	},
-	allCoins: function() {
-		var coins=[];
-		var players=this.players;
-		return Object.keys(players).reduce(function(coins,player){
-			var playersCoins=players[player].coins;
-			return coins.concat(Object.keys(playersCoins).map(function(coin){
-				return playersCoins[coin];
-			}));	
-		},coins);
 	},
 	stateOfGame: function() {
 		var state={};

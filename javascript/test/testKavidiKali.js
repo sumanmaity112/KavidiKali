@@ -414,18 +414,6 @@ describe('GameMaster',function(){
 			assert.ok(master.dice instanceof entities.Dice);
 		});
 	});
-	describe('allCoins',function(){
-		it('returns all the coins on the board',function() {
-			defaultMaster.createPlayer("p1");
-			var allCoins=defaultMaster.allCoins();
-			assert.equal(4,allCoins.length);
-			assert.deepEqual([{currentPosition:undefined,id:"p11",reachedHome:false,startPosition:"2,0"},
-				{currentPosition:undefined,id:"p12",reachedHome:false,startPosition:"2,0"},
-				{currentPosition:undefined,id:"p13",reachedHome:false,startPosition:"2,0"},
-				{currentPosition:undefined,id:"p14",reachedHome:false,startPosition:"2,0"}]
-				,allCoins);
-		});
-	});
 	describe('stateOfGame',function(){
 		it('gives the initial state of the game',function(){
 			defaultMaster.createPlayer("p1");
