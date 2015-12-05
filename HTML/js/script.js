@@ -88,6 +88,5 @@ window.onload = function(){
 	document.querySelector('#dice').onclick = rollDice;
 	document.querySelector('#updateDice').onclick = updateDiceValues;
 	document.querySelector('#refreshBoard').onclick = refreshBoard;
-
 };
 

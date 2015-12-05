@@ -44,6 +44,13 @@ entities.Board.prototype={
 			}.bind(this));
 			return lodash.pull(validMoves,false);
 		}
+	},
+	anyMoreMoves: function(player){
+		var movesPerCoin = Object.keys(player.coins).map(function(coin){
+			return this.getAllValidMovesOfCoin(player.coins[coin],player.diceValues,player.path,[6]);
+		}.bind(this));
+		var totalMoves = lodash.flatten(movesPerCoin);
+		return !!lodash.pull(totalMoves,undefined)[0];
 	}
 };
 
@@ -100,8 +107,8 @@ entities.Player = function(id,startPosition,colour,parkingPosition){
 
 var createCoins =  function(id,numberOfCoins,startPosition,parkingPosition){
 	var coins = new Object;
-	for(var i=1; i<=numberOfCoins; i++){
-		coins[id+i] = new entities.Coin(id+i,startPosition,parkingPosition);
+	for(var count=1; count<=numberOfCoins; count++){
+		coins[id+count] = new entities.Coin(id+count,startPosition,parkingPosition);
 	};
 	return coins;
 };
@@ -127,9 +134,8 @@ entities.Player.prototype = {
 		this.matured = true;
 	},
 	get path(){
-		if(this.matured){
+		if(this.matured)
 			return path.generateFullPath(this.startPosition);
-		};
 		var playerPath = path.generateHalfPath(this.startPosition);
 		return playerPath.concat(playerPath);
 	}
@@ -225,16 +231,4 @@ entities.createSafePlaces = function(size){
 	});
 	return safePlaces;
 };
-
-
-
-
-
-
-
-
-
-
-
-
 

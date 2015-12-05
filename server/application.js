@@ -6,7 +6,6 @@ var enquiries = operations.enquiries;
 var lib = require('./../javascript/sourceCode/kavidiKaliLib.js');
 var	gameMaster = new lib.entities.GameMaster([6],5,[1,2,3,4,5,6]);
 
-
 exports.handleInstruction = function(obj){
 	if(obj.player == gameMaster.getCurrentPlayer().id)
 		return actions[obj.action](obj.player,gameMaster);

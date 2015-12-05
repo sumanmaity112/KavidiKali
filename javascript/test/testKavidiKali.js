@@ -167,7 +167,7 @@ describe('board',function(){
 			assert.deepEqual(master.board.getAllValidMovesOfCoin(master.players['red'].coins['red2'],diceValues,path,[6]),['2,0']);	
 		});
 		it('gives undefined if the player is off board and player doesnt got special value to enter',function(){
-			var master =new entities.GameMaster([6],5,[1,2,3,4,5,6]);
+			var master = new entities.GameMaster([6],5,[1,2,3,4,5,6]);
 			master.createPlayer('red');
 			var coin = master.players['red'].coins['red2'];
 			var path =['0,0','1,0','2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1'];
@@ -175,6 +175,39 @@ describe('board',function(){
 			assert.deepEqual(master.board.getAllValidMovesOfCoin(coin,diceValues,path,[6]),undefined);	
 		});
 
+	});
+	describe('anyMoreMoves',function(){
+		it('gives true if the player has more moves available',function(){
+			var master = new entities.GameMaster([6],5,[1,2,3,4,5,6]);
+			master.createPlayer('red');
+			var player = master.players['red'];
+			player.coins['red1'].move('0,4');
+			player.diceValues = [1,2,3];
+			assert.equal(master.board.anyMoreMoves(player),true);
+		});
+		it('gives false if the player has no coins on board and hasn\'t got "6"',function(){
+			var master = new entities.GameMaster([6],5,[1,2,3,4,5,6]);
+			master.createPlayer('red');
+			var player = master.players['red'];
+			player.diceValues = [1,2,3];
+			assert.equal(master.board.anyMoreMoves(player),false);
+		});
+		it('gives false if the player has coin at destination and other coin off board',function(){
+			var master = new entities.GameMaster([6],5,[1,2,3,4,5,6]);
+			master.createPlayer('red');
+			var player = master.players['red'];
+			player.matured = true;
+			player.coins['red1'].move('2,2');
+			player.diceValues = [1,2,3];
+			assert.equal(master.board.anyMoreMoves(player),false);
+		});
+		it('gives true if the player has coins all off board and got "6" as dice value',function(){
+			var master = new entities.GameMaster([6],5,[1,2,3,4,5,6]);
+			master.createPlayer('red');
+			var player = master.players['red'];
+			player.diceValues = [6];
+			assert.equal(master.board.anyMoreMoves(player),true);
+		});
 	});
 });
 
