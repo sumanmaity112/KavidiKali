@@ -19,13 +19,8 @@ var getAllDiceValues = function(gameMaster, player){
 };
 
 var refreshBoard = function(gameMaster){
-	var obj = {};
-	Object.keys(gameMaster.players).forEach(function(player){
-		Object.keys(gameMaster.players[player].coins).forEach(function(coin){
-			obj[coin] = gameMaster.players[player].coins[coin].currentPosition;
-		});
-	});
-	return queryString.stringify(obj);
+	var stateOfGame=gameMaster.stateOfGame();
+	return JSON.stringify(stateOfGame);
 }
 
 exports.updates = {

@@ -174,6 +174,7 @@ describe('board',function(){
 			var diceValues = [1,2,3,4,5];
 			assert.deepEqual(master.board.getAllValidMovesOfCoin(coin,diceValues,path,[6]),undefined);	
 		});
+
 	});
 });
 
@@ -338,6 +339,10 @@ describe('Player',function(){
 });
 
 describe('GameMaster',function(){
+	var defaultMaster;
+	beforeEach(function(){
+		defaultMaster= new entities.GameMaster([6],5,[1,2,3,4,5,6]);
+	});
 	describe('analyzeDiceValue',function(){
 		it('return true when dice value is same as special value',function(){
 			var gameMaster = new entities.GameMaster([6]);
@@ -354,7 +359,9 @@ describe('GameMaster',function(){
 			master.createPlayer('red');
 			assert.ok(Object.keys(master.players).length==1)
 			assert.ok(master.players['red'] instanceof entities.Player);
+			assert.equal("red",master.players['red'].colour);
 			master.createPlayer('blue');
+			assert.equal("green",master.players['blue'].colour);
 			assert.ok(Object.keys(master.players).length==2);
 		});
 		it('creates a player with given playerId and gives startPosition',function(){
@@ -407,18 +414,37 @@ describe('GameMaster',function(){
 			assert.ok(master.dice instanceof entities.Dice);
 		});
 	});
+	describe('allCoins',function(){
+		it('returns all the coins on the board',function() {
+			defaultMaster.createPlayer("p1");
+			var allCoins=defaultMaster.allCoins();
+			assert.equal(4,allCoins.length);
+			assert.deepEqual([{currentPosition:undefined,id:"p11",reachedHome:false,startPosition:"2,0"},
+				{currentPosition:undefined,id:"p12",reachedHome:false,startPosition:"2,0"},
+				{currentPosition:undefined,id:"p13",reachedHome:false,startPosition:"2,0"},
+				{currentPosition:undefined,id:"p14",reachedHome:false,startPosition:"2,0"}]
+				,allCoins);
+		});
+	});
+	describe('stateOfGame',function(){
+		it('gives the initial state of the game',function(){
+			defaultMaster.createPlayer("p1");
+			var stateOfGame=defaultMaster.stateOfGame();
+			assert.equal(1,stateOfGame.players.length);
+			assert.equal(4,stateOfGame.players[0].coins.length);
+		});
+	})
 	describe('isPlayerMatured',function(){
 		it('it checks the players is matured or not',function(){
-			var master = new entities.GameMaster([6],5,[1,2,3,4,5,6]);
-			master.createPlayer('red');
-			master.createPlayer('blue');
-			assert.ok(!master.isPlayerMatured(master.players['red']));
-			assert.ok(!master.isPlayerMatured(master.players['blue']));
-			master.players['red'].matured = true;
-			assert.ok(master.isPlayerMatured(master.players['red']));
-			master.createPlayer('yellow');
-			master.players['red'].chances = 1;
-			assert.equal(master.getCurrentPlayer().id,'red');
+			defaultMaster.createPlayer('red');
+			defaultMaster.createPlayer('blue');
+			assert.ok(!defaultMaster.isPlayerMatured(defaultMaster.players['red']));
+			assert.ok(!defaultMaster.isPlayerMatured(defaultMaster.players['blue']));
+			defaultMaster.players['red'].matured = true;
+			assert.ok(defaultMaster.isPlayerMatured(defaultMaster.players['red']));
+			defaultMaster.createPlayer('yellow');
+			defaultMaster.players['red'].chances = 1;
+			assert.equal(defaultMaster.getCurrentPlayer().id,'red');
 		});
 	});
 	describe('getCurrentPlayer',function(){

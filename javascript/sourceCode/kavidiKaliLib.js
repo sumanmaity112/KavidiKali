@@ -44,7 +44,7 @@ entities.Board.prototype={
 			}.bind(this));
 			return lodash.pull(validMoves,false);
 		}
-	},
+	}
 };
 
 var getTheValidMove = function(coin,movesBy,path){
@@ -68,7 +68,7 @@ var createGrid = function(safePlaces,size){
 
 entities.Coin = function(id,startPosition){
 	this.id = id;
-	this.currentPosition = undefined;
+	this.currentPosition = "2,5";
 	this.reachedHome = false;
 	this.startPosition = startPosition;
 };
@@ -87,13 +87,14 @@ entities.Coin.prototype = {
 	}
 };
 
-entities.Player = function(id,startPosition){
+entities.Player = function(id,startPosition,colour){
 	this.id = id;
 	this.matured = false;
 	this.coins = createCoins(id,4,startPosition);
 	this.diceValues = new Array;
 	this.chances = 0;
 	this.startPosition = startPosition;
+	this.colour=colour;
 };
 
 var createCoins =  function(id,numberOfCoins,startPosition){
@@ -157,8 +158,11 @@ entities.GameMaster.prototype = {
 		return (this.specialValues.indexOf(diceValue)>=0);
 	},
 	createPlayer : function(playerId){
-		var playersCount = Object.keys(this.players).length; 
-		this.players[playerId] = new entities.Player(playerId,this.board.safePlaces[playersCount]);
+		var playersCount = Object.keys(this.players).length;
+		var colorSequence=["red","green","blue","yellow"]; 
+		this.players[playerId] = new entities.Player(playerId,
+													this.board.safePlaces[playersCount],
+													colorSequence[playersCount]);
 	},
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue))
@@ -173,6 +177,34 @@ entities.GameMaster.prototype = {
 	},
 	isPlayerMatured : function(player){
 		return player.matured;
+	},
+	allCoins: function() {
+		var coins=[];
+		var players=this.players;
+		return Object.keys(players).reduce(function(coins,player){
+			var playersCoins=players[player].coins;
+			return coins.concat(Object.keys(playersCoins).map(function(coin){
+				return playersCoins[coin];
+			}));	
+		},coins);
+	},
+	stateOfGame: function() {
+		var state={};
+		state.players=[];
+		var players=this.players;
+		Object.keys(players).forEach(function(player){
+			var playerObject={};
+			var actualPlayer=players[player];
+			playerObject.coins=Object.keys(actualPlayer.coins).map(function(coin){
+				return {
+					position:actualPlayer.coins[coin].currentPosition,
+					id:actualPlayer.coins[coin].id
+				};
+			});
+			playerObject.colour=actualPlayer.colour;
+			state.players.push(playerObject);
+		});
+		return state;
 	}
 };
 

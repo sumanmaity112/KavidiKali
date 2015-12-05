@@ -7,7 +7,7 @@ var Player = function(name, color, starting_position){
 	this.starting_position = starting_position;
 };
 
-var Coin = function(name, color, )
+// var Coin = function(name, color, )
 function makeGrid(){
 	var table='<table class="grid">'
 	for(var i=5;i>=-1;i--){
@@ -47,17 +47,19 @@ var parseQueryString = function( queryString ) {
     return params;
 };
 
+var coinToDOMElement = function(coin,colour) {
+	var svg=colour+"_coin.svg";
+	return '<img src="./../svg/'+svg+'" class="coins" id="'+coin.id+'">';
+}
+
 var refreshBoard = function(){
 	$.get('update/toUpdate=board',function(data,status){
-		var coins = parseQueryString(data);
-		Object.keys(coins).forEach(function(coin){
-				if(coins[coin])
-					document.getElementById(coins[coin]).innerHTML += '<img src="./../svg/blue_coin.svg">';
-				else
-					document.getElementById('2,5').innerHTML += '<img src="./../svg/blue_coin.svg" class="coins" id="'+coin+'"">';
-		});
-		$('.coins').on('click',function(){
-			alert('yeeehaaa');
+		var stateOfGame = JSON.parse(data);
+		stateOfGame.players.forEach(function(player){
+			var colour=player.colour;
+			player.coins.forEach(function(coin){
+				document.getElementById(coin.position).innerHTML += coinToDOMElement(coin,colour);
+			});
 		});
 	});
 };
