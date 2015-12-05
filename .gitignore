@@ -3,3 +3,4 @@ node_modules/
 javascript/sourceCode/jquery-2.1.4.min.js
 .DS_Store
 **/.DS_Store
+npm-debug.log
