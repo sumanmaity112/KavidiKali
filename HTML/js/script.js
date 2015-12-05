@@ -1,3 +1,13 @@
+var playerSequence = ['red','yellow','green','blue'];
+var players = {};
+
+var Player = function(name, color, starting_position){
+	this.name = name;
+	this.color = color;
+	this.starting_position = starting_position;
+};
+
+var Coin = function(name, color, )
 function makeGrid(){
 	var table='<table class="grid">'
 	for(var i=5;i>=-1;i--){
@@ -27,6 +37,37 @@ var updateDiceValues = function(){
 	});
 };
 
+var parseQueryString = function( queryString ) {
+    var params = {};
+    var queries = queryString.split("&");
+    for ( var i = 0, l = queries.length; i < l; i++ ) {
+    	var temp = queries[i].split('=');
+        params[temp[0]] = temp[1];
+    };
+    return params;
+};
+
+var refreshBoard = function(){
+	$.get('update/toUpdate=board',function(data,status){
+		var coins = parseQueryString(data);
+		Object.keys(coins).forEach(function(coin){
+				if(coins[coin])
+					document.getElementById(coins[coin]).innerHTML += '<img src="./../svg/blue_coin.svg">';
+				else
+					document.getElementById('2,5').innerHTML += '<img src="./../svg/blue_coin.svg" class="coins" id="'+coin+'"">';
+		});
+		$('.coins').on('click',function(){
+			alert('yeeehaaa');
+		});
+	});
+};
+
+var getPlayers = function(){
+	$.get('enquiry/question=players',function(data,status){
+
+	});
+};
+
 window.onload = function(){
 	document.getElementById("board").innerHTML = makeGrid();
 	var safePlaces = ['4,2','2,4','2,2','0,2','2,0'];
@@ -44,5 +85,7 @@ window.onload = function(){
 	})
 	document.querySelector('#dice').onclick = rollDice;
 	document.querySelector('#updateDice').onclick = updateDiceValues;
+	document.querySelector('#refreshBoard').onclick = refreshBoard;
+
 };
 

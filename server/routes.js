@@ -48,7 +48,7 @@ var doRedirect = function(req, res, next ){
 	});
 	req.on('end',function(){
 		var userId = querystring.parse(data)['name'];
-		if(application.enquiry('numberOfPlayers').length <= 3)
+		if(application.enquiry('players').length <= 3)
 			createPlayer(userId, res);
 		else 
 			res.end('Please wait, a game is already started');
@@ -100,7 +100,7 @@ var createWaitingPage = function(req, res, next){
 			res.writeHead(200,{'content-type' : headers[path.extname(filePath)]});
 			var userId = querystring.parse(req.headers.cookie).userId;
 			var html = replaceRespectiveValue(data.toString(),'__userId__',userId);
-			html = replaceRespectiveValue(html.toString(),'__numberOfPlayer__',application.enquiry('numberOfPlayers').length);
+			html = replaceRespectiveValue(html.toString(),'__numberOfPlayer__',application.enquiry('players').length);
 			res.end(html);
 		}
 		else
@@ -135,11 +135,23 @@ var handleUpdate = function(req, res, next){
 	if(application.enquiry('isValidPlayer',player)){
 		var obj = querystring.parse(req.url.slice(8));
 		obj.player = player;
-		res.end(application.handleUpdates(obj));
+		var result = application.handleUpdates(obj);
+		res.end(result);
+		console.log(result);
 	}
 	else{
 		next();
 	}
+};
+
+var handleEnquiry = function(req,res,next){
+	var player = querystring.parse(req.headers.cookie).userId;
+	if(application.enquiry('isValidPlayer',player)){
+		var obj = querystring.parse(req.url.slice(9));
+		res.end('players='+application.enquiry(obj.question,player));
+	}
+	else
+		next();
 };
 
 exports.post_handlers = [
@@ -155,6 +167,7 @@ exports.get_handlers = [
 	{path: '^/$', handler: serveIndex},
 	{path: '', handler: serveStaticFile},
 	{path: '^/update', handler: handleUpdate},
+	{path: '^/enquiry',handler: handleEnquiry},
 	{path: '', handler: fileNotFound}
 ];
 
