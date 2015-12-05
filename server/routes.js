@@ -133,7 +133,6 @@ var handleUpdate = function(req, res, next){
 		obj.player = player;
 		var result = application.handleUpdates(obj);
 		res.end(result);
-		console.log(result);
 	}
 	else
 		next();

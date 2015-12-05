@@ -73,12 +73,13 @@ var createGrid = function(safePlaces,size){
 	return grid;
 };
 
-entities.Coin = function(id,startPosition,parkingPosition){
+entities.Coin = function(id,startPosition,parkingPosition,colour){
 	this.id = id;
 	this.currentPosition = parkingPosition;
 	this.reachedHome = false;
 	this.startPosition = startPosition;
 	this.parkingPosition=parkingPosition;
+	this.colour=colour;
 };
 
 entities.Coin.prototype = {
@@ -98,17 +99,16 @@ entities.Coin.prototype = {
 entities.Player = function(id,startPosition,colour,parkingPosition){
 	this.id = id;
 	this.matured = false;
-	this.coins = createCoins(id,4,startPosition,parkingPosition);
+	this.coins = createCoins(id,4,startPosition,parkingPosition,colour);
 	this.diceValues = new Array;
 	this.chances = 0;
 	this.startPosition = startPosition;
-	this.colour=colour;
 };
 
-var createCoins =  function(id,numberOfCoins,startPosition,parkingPosition){
+var createCoins =  function(id,numberOfCoins,startPosition,parkingPosition,colour){
 	var coins = new Object;
 	for(var count=1; count<=numberOfCoins; count++){
-		coins[id+count] = new entities.Coin(id+count,startPosition,parkingPosition);
+		coins[id+count] = new entities.Coin(id+count,startPosition,parkingPosition,colour);
 	};
 	return coins;
 };
@@ -188,20 +188,13 @@ entities.GameMaster.prototype = {
 	},
 	stateOfGame: function() {
 		var state={};
-		state.players=[];
 		var players=this.players;
-		Object.keys(players).forEach(function(player){
-			var playerObject={};
-			var actualPlayer=players[player];
-			playerObject.coins=Object.keys(actualPlayer.coins).map(function(coin){
-				return {
-					position:actualPlayer.coins[coin].currentPosition,
-					id:actualPlayer.coins[coin].id
-				};
-			});
-			playerObject.colour=actualPlayer.colour;
-			state.players.push(playerObject);
-		});
+		for (player in players) {
+			var coins=players[player].coins
+			for (coin in coins) {
+				state[coin]=coins[coin];
+			}
+		}
 		return state;
 	}
 };

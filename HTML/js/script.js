@@ -1,5 +1,6 @@
 var playerSequence = ['red','yellow','green','blue'];
 var players = {};
+var currentStateOfGame;
 
 var Player = function(name, color, starting_position){
 	this.name = name;
@@ -47,20 +48,33 @@ var parseQueryString = function( queryString ) {
     return params;
 };
 
-var coinToDOMElement = function(coin,colour) {
-	var svg=colour+"_coin.svg";
-	return '<img src="./../svg/'+svg+'" class="coins" id="'+coin.id+'">';
+var coinToDOMElement = function(coin) {
+	var coinImage=coin.colour+"_coin.svg";
+	return '<img src="/svg/'+coinImage+'" class="coins" id="'+coin.id+'">';
 }
+
+var coinsThatHaveMoved=function(oldStatus,newStatus) {
+	if(!oldStatus)
+		return Object.keys(newStatus);
+	return Object.keys(oldStatus).filter(function(coinId){
+		return oldStatus[coinId].currentPosition!=newStatus[coinId].currentPosition;
+	});
+}
+
+var placeCoinsInCurrentPosition=function(stateOfGame,coinsToBeUpdated){
+	coinsToBeUpdated.forEach(function(coinId) {
+		var coin=stateOfGame[coinId];
+		document.getElementById(coin.currentPosition).innerHTML+=coinToDOMElement(coin)
+	});
+};
 
 var refreshBoard = function(){
 	$.get('update/toUpdate=board',function(data,status){
 		var stateOfGame = JSON.parse(data);
-		stateOfGame.players.forEach(function(player){
-			var colour=player.colour;
-			player.coins.forEach(function(coin){
-				document.getElementById(coin.position).innerHTML += coinToDOMElement(coin,colour);
-			});
-		});
+		var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
+		// removeCoinsFromOldPositions(currentStateOfGame,coinsToBeUpdated);
+		placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
+		currentStateOfGame=stateOfGame;
 	});
 };
 

@@ -392,9 +392,7 @@ describe('GameMaster',function(){
 			master.createPlayer('red');
 			assert.ok(Object.keys(master.players).length==1)
 			assert.ok(master.players['red'] instanceof entities.Player);
-			assert.equal("red",master.players['red'].colour);
 			master.createPlayer('blue');
-			assert.equal("green",master.players['blue'].colour);
 			assert.ok(Object.keys(master.players).length==2);
 		});
 		it('creates a player with given playerId and gives startPosition',function(){
@@ -448,13 +446,44 @@ describe('GameMaster',function(){
 		});
 	});
 	describe('stateOfGame',function(){
-		it('gives the initial state of the game',function(){
+		it('gives the initial state of the game for a single player',function(){
 			defaultMaster.createPlayer("p1");
 			var stateOfGame=defaultMaster.stateOfGame();
-			assert.equal(1,stateOfGame.players.length);
-			assert.equal(4,stateOfGame.players[0].coins.length);
+			assert.equal(4,Object.keys(stateOfGame).length);
+			assert.equal("red",stateOfGame["p11"].colour);
+			assert.equal("red",stateOfGame["p12"].colour);
+			assert.equal("red",stateOfGame["p13"].colour);
+			assert.equal("red",stateOfGame["p14"].colour);
 		});
-	})
+		it('gives the initial state of the game for multiple players',function(){
+			defaultMaster.createPlayer("p1");
+			defaultMaster.createPlayer("p2");
+			defaultMaster.createPlayer("p3");
+			defaultMaster.createPlayer("p4");
+			var stateOfGame=defaultMaster.stateOfGame();
+			assert.equal(16,Object.keys(stateOfGame).length);
+			
+			assert.equal("red",stateOfGame["p11"].colour);
+			assert.equal("red",stateOfGame["p12"].colour);
+			assert.equal("red",stateOfGame["p13"].colour);
+			assert.equal("red",stateOfGame["p14"].colour);
+
+			assert.equal("green",stateOfGame["p21"].colour);
+			assert.equal("green",stateOfGame["p22"].colour);
+			assert.equal("green",stateOfGame["p23"].colour);
+			assert.equal("green",stateOfGame["p24"].colour);
+
+			assert.equal("blue",stateOfGame["p31"].colour);
+			assert.equal("blue",stateOfGame["p32"].colour);
+			assert.equal("blue",stateOfGame["p33"].colour);
+			assert.equal("blue",stateOfGame["p34"].colour);
+
+			assert.equal("yellow",stateOfGame["p41"].colour);
+			assert.equal("yellow",stateOfGame["p42"].colour);
+			assert.equal("yellow",stateOfGame["p43"].colour);
+			assert.equal("yellow",stateOfGame["p44"].colour);
+		});		
+	});
 	describe('isPlayerMatured',function(){
 		it('it checks the players is matured or not',function(){
 			defaultMaster.createPlayer('red');
