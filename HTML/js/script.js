@@ -8,13 +8,12 @@ var Player = function(name, color, starting_position){
 	this.starting_position = starting_position;
 };
 
-// var Coin = function(name, color, )
 function makeGrid(){
 	var table='<table class="grid">'
-	for(var i=5;i>=-1;i--){
+	for(var rowCount=5;rowCount>=-1;rowCount--){
 		var row = '<tr>';
-		for(var j=-1;j<6;j++)
-			row+='<td id="'+j+','+i+'" class="tile" onclick="print(this.id)"></td>';
+		for(var columnCount=-1;columnCount<6;columnCount++)
+			row+='<td id="'+columnCount+','+rowCount+'" class="tile" onclick="print(this.id)"></td>';
 		row += '</tr>';
 		table += row;
 	};
@@ -98,9 +97,17 @@ window.onload = function(){
 	});
 	playerCoins.forEach(function(place){
 		document.getElementById(place).className = 'parking';
-	})
+	});
+	setInterval(function(){
+		$.get('update/toUpdate=board',function(data,status){
+			var stateOfGame = JSON.parse(data);
+			var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
+			// removeCoinsFromOldPositions(currentStateOfGame,coinsToBeUpdated);
+			placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
+			currentStateOfGame=stateOfGame;
+		});
+	},500); 
 	document.querySelector('#dice').onclick = rollDice;
 	document.querySelector('#updateDice').onclick = updateDiceValues;
-	document.querySelector('#refreshBoard').onclick = refreshBoard;
 };
 

@@ -131,7 +131,7 @@ var handleUpdate = function(req, res, next){
 	if(application.enquiry('isValidPlayer',player)){
 		var obj = querystring.parse(req.url.slice(8));
 		obj.player = player;
-		var result = application.handleUpdates(obj);
+		var result = application.handleUpdates(obj,res);
 		res.end(result);
 	}
 	else

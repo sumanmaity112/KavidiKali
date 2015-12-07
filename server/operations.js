@@ -21,11 +21,19 @@ var getAllDiceValues = function(gameMaster, player){
 var refreshBoard = function(gameMaster){
 	var stateOfGame=gameMaster.stateOfGame();
 	return JSON.stringify(stateOfGame);
+};
+
+var updateWaitingPage = function(gameMaster,player,res){
+	if(Object.keys(gameMaster.players).length==4)
+		return false;
+	else
+		return (Object.keys(gameMaster.players).length).toString();
 }
 
 exports.updates = {
 	diceValues : getAllDiceValues,
-	board : refreshBoard
+	board : refreshBoard,
+	waitingPage : updateWaitingPage
 };
 
 //========================================================================================================

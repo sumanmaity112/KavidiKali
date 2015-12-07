@@ -2,16 +2,18 @@
 <html>
 <head>
 	<title>Waiting For Players</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"> </script>
+	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function(){
-			setTimeout(function(){
-			   window.location.reload(true);
-			}, 5000);
-			if(+($('#noOfPlayers').text()) >= 4){
-				window.location.href = "/main.html";
-			}
-		})
+		timer = setInterval(function(){
+			$.get('update/toUpdate=waitingPage',function(data,status){
+				if(data)
+					document.getElementById('noOfPlayers').innerHTML = data;
+				else{
+					clearInterval(timer);
+					$(location).attr('href','/main.html');
+				}
+			})
+		},1000);
 	</script>
 </head>
 <body>
