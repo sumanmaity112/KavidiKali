@@ -18,11 +18,11 @@ describe("Dice",function(){
 describe('create board',function(){
 	it('creates a board of given size',function(){
 		var board = entities.createBoard(5);
-		assert.deepEqual(board.isSafe(0,2));
-		assert.deepEqual(board.isSafe(2,4));
-		assert.deepEqual(board.isSafe(4,2));
-		assert.deepEqual(board.isSafe(2,0));
-		assert.deepEqual(board.isSafe(2,2));
+		assert.ok(board.isSafe(new entities.Position(0,2)));
+		assert.ok(board.isSafe(new entities.Position(2,4)));
+		assert.ok(board.isSafe(new entities.Position(4,2)));
+		assert.ok(board.isSafe(new entities.Position(2,0)));
+		assert.ok(board.isSafe(new entities.Position(2,2)));
 	});
 
 });

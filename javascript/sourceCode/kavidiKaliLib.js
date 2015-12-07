@@ -3,14 +3,18 @@ var entities = {};
 exports.entities = entities;
 var path = require('./generatePath.js');
 //===========================================================================
-entities.Board = function(grid,safePlaces){
-	this.grid = createGrid(safePlaces,size);
+var Board = function(grid,safePlaces){
+	this.grid = grid;
 	this.safePlaces = safePlaces;
 };
 
 entities.createBoard = function(size) {
 	var grid=createGrid(size);
-	var safePlaces=createSafePlaces(size);
+	var safePlaces=entities.createSafePlaces(size);
+	safePlaces.forEach(function(pos){
+		grid[pos.r][pos.c]=[];
+	});
+	return new Board(grid,safePlaces);
 }
 
 entities.Position=function(r,c) {
@@ -18,9 +22,9 @@ entities.Position=function(r,c) {
 	this.c=c;
 }
 
-entities.Board.prototype={
+Board.prototype={
 	isSafe : function(position){
-		return (lodash.indexOf(this.safePlaces,position)>=0);
+		return (lodash.findIndex(this.safePlaces,position)>=0);
 	},
 	isThereAnyCoin : function(position){
 		return (!this.isSafe(position) && !!this.grid[position]);
