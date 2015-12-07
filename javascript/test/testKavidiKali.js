@@ -15,6 +15,18 @@ describe("Dice",function(){
 	});
 });
 
+describe('create board',function(){
+	it('creates a board of given size',function(){
+		var board = entities.createBoard(5);
+		assert.deepEqual(board.isSafe(0,2));
+		assert.deepEqual(board.isSafe(2,4));
+		assert.deepEqual(board.isSafe(4,2));
+		assert.deepEqual(board.isSafe(2,0));
+		assert.deepEqual(board.isSafe(2,2));
+	});
+
+});
+
 describe('board',function(){
 	it('create a board of given size with given safe places',function(){
 		var safePlaces = ['0,2','2,4','4,2','2,0','2,2'];
@@ -212,11 +224,23 @@ describe('board',function(){
 });
 
 describe('createSafePlaces',function(){
-	it("create all the possible safe place of a given size's board",function(){
-		var safePlaces = ['2,0','4,2','2,4','0,2','2,2'];
+	it("create all the possible safe places for a board size of 5",function(){
+		var safePlaces = [];
+		safePlaces.push(new entities.Position(2,0));
+		safePlaces.push(new entities.Position(4,2));
+		safePlaces.push(new entities.Position(2,4));
+		safePlaces.push(new entities.Position(0,2));
+		safePlaces.push(new entities.Position(2,2));
 		assert.deepEqual(safePlaces,entities.createSafePlaces(5));
-		var safePlaces = ['3,0', '6,3', '3,6', '0,3', '3,3' ];
-		assert.deepEqual(safePlaces, entities.createSafePlaces(7));
+	});
+	it("create all the possible safe places for a board size of 7",function(){
+		var safePlaces = [];
+		safePlaces.push(new entities.Position(3,0));
+		safePlaces.push(new entities.Position(6,3));
+		safePlaces.push(new entities.Position(3,6));
+		safePlaces.push(new entities.Position(0,3));
+		safePlaces.push(new entities.Position(3,3));
+		assert.deepEqual(safePlaces,entities.createSafePlaces(7));
 	});
 });
  

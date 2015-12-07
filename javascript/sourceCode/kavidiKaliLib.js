@@ -3,10 +3,20 @@ var entities = {};
 exports.entities = entities;
 var path = require('./generatePath.js');
 //===========================================================================
-entities.Board = function(safePlaces,size){
+entities.Board = function(grid,safePlaces){
 	this.grid = createGrid(safePlaces,size);
 	this.safePlaces = safePlaces;
 };
+
+entities.createBoard = function(size) {
+	var grid=createGrid(size);
+	var safePlaces=createSafePlaces(size);
+}
+
+entities.Position=function(r,c) {
+	this.r=r;
+	this.c=c;
+}
 
 entities.Board.prototype={
 	isSafe : function(position){
@@ -62,15 +72,8 @@ var getTheValidMove = function(coin,movesBy,path){
 	return path[nextIndex];
 };
 
-var createGrid = function(safePlaces,size){
-	var grid = {};
-	for(var row = 0;row < size;row++)
-		for(var column = 0;column < size;column++)
-			grid[row+','+column] = undefined;
-	safePlaces.forEach(function(safePlace){
-		grid[safePlace] = [];
-	});
-	return grid;
+var createGrid = function(size){
+	return lodash.chunk(Array(size*size),size);
 };
 
 entities.Coin = function(id,startPosition,parkingPosition,colour){
@@ -214,14 +217,11 @@ var getCurrentPlayer = function(master){
 
 entities.createSafePlaces = function(size){
 	var safePlaces = [];
-	safePlaces.push([Math.floor(size/2),0]);
-	safePlaces.push([size-1,Math.floor(size/2)]);
-	safePlaces.push([Math.floor(size/2),size-1]);
-	safePlaces.push([0,Math.floor(size/2)]);
-	safePlaces.push([Math.floor(size/2),Math.floor(size/2)]);
-	safePlaces.forEach(function(safePlace,index){
-		return safePlaces[index] = safePlace.join();
-	});
+	safePlaces.push(new entities.Position(Math.floor(size/2),0));
+	safePlaces.push(new entities.Position(size-1,Math.floor(size/2)));
+	safePlaces.push(new entities.Position(Math.floor(size/2),size-1));
+	safePlaces.push(new entities.Position(0,Math.floor(size/2)));
+	safePlaces.push(new entities.Position(Math.floor(size/2),Math.floor(size/2)));
 	return safePlaces;
 };
 
