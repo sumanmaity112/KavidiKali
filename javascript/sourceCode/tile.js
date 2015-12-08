@@ -15,4 +15,18 @@ tile.SafeTile.prototype = {
 	}
 }
 
+tile.UnsafeTile=function(id) {
+	this.id=id;
+	this.coin=undefined;
+}
+
+tile.UnsafeTile.prototype = {
+	place:function(coin) {
+		this.coin=coin;
+	},
+	contains:function(coin) {
+		return this.coin.equals(coin);
+	}
+}
+
 exports.tile=tile;

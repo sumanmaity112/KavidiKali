@@ -6,6 +6,9 @@ var Coin = function(id,colour){
 };
 
 Coin.prototype = {
+	equals:function(other) {
+		return this.colour==other.colour && this.id==other.id;
+	}
 };
 
 exports.coin=Coin;
