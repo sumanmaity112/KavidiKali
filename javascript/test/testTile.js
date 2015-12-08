@@ -27,3 +27,21 @@ describe("Unsafe Tile",function(){
 		assert.ok(unsafeTile.contains(coin));
 	});
 });
+
+describe("Generate Tiles",function(){
+	it("should generate all the safe tiles required for a given size",function(){
+		var tiles=tile.generateTiles(5);
+		var c1=new Coin("p1","red");
+		var c2=new Coin("p2","yellow");
+		tiles["0,2"].place(c1);
+		tiles["0,2"].place(c2);
+		assert.ok(tiles["0,2"].contains(c1));
+		assert.ok(tiles["0,2"].contains(c2));
+		/* Position(0,2)
+	Position(2,4)
+	Position(4,2)
+	Position(2,0)
+	Position(2,2)
+	*/
+	});
+});
