@@ -2,12 +2,6 @@ var playerSequence = ['red','yellow','green','blue'];
 var players = {};
 var currentStateOfGame;
 
-var Player = function(name, color, starting_position){
-	this.name = name;
-	this.color = color;
-	this.starting_position = starting_position;
-};
-
 function makeGrid(){
 	var table='<table class="grid">'
 	for(var rowCount=5;rowCount>=-1;rowCount--){

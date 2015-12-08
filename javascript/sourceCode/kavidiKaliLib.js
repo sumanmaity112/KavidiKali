@@ -141,8 +141,10 @@ entities.Player.prototype = {
 		this.matured = true;
 	},
 	get path(){
-		if(this.matured)
-			return path.generateFullPath(this.startPosition);
+		if(this.matured){
+			var positions=path.generateFullPath(this.startPosition);
+			positions.map(function(pos){return tiles[pos]});
+		}
 		var playerPath = path.generateHalfPath(this.startPosition);
 		return playerPath.concat(playerPath);
 	}

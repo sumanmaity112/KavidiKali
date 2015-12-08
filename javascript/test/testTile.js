@@ -1,6 +1,7 @@
 var tile = require('../sourceCode/tile.js').tile;
 var Coin = require('../sourceCode/coin.js').coin;
 var assert = require('assert');
+var ld=require("lodash");
 
 describe("Safe Tile",function(){
 	it("should be able to answer if it holds a specific coin",function(){
@@ -33,15 +34,26 @@ describe("Generate Tiles",function(){
 		var tiles=tile.generateTiles(5);
 		var c1=new Coin("p1","red");
 		var c2=new Coin("p2","yellow");
-		tiles["0,2"].place(c1);
-		tiles["0,2"].place(c2);
-		assert.ok(tiles["0,2"].contains(c1));
-		assert.ok(tiles["0,2"].contains(c2));
-		/* Position(0,2)
-	Position(2,4)
-	Position(4,2)
-	Position(2,0)
-	Position(2,2)
-	*/
+		var safePositions=[ '2,0', '4,2', '2,4', '0,2', '2,2' ];
+		safePositions.forEach(function(pos){
+			tiles[pos].place(c1);
+			tiles[pos].place(c2);
+			assert.ok(tiles[pos].contains(c1));
+			assert.ok(tiles[pos].contains(c2));
+		})
+	});
+	it("should generate all the unsafe tiles required for a given size",function(){
+		var tiles=tile.generateTiles(5);
+		var c1=new Coin("p1","red");
+		var c2=new Coin("p2","yellow");
+		var safePositions=['2,0', '4,2', '2,4', '0,2','2,2'];
+		assert.equal(25,Object.keys(tiles).length);
+		var unsafePositions=ld.difference(Object.keys(tiles),safePositions);
+		unsafePositions.forEach(function(pos){
+			tiles[pos].place(c1);
+			tiles[pos].place(c2);
+			assert.ok(!tiles[pos].contains(c1));
+			assert.ok(tiles[pos].contains(c2));
+		})
 	});
 });

@@ -41,13 +41,13 @@ tile.generateTiles = function(size){
 			grid[id]= new tile.UnsafeTile(id);
 		};
 	};
-	generateSafePositions(size).forEach(function(pos){
+	exports.generateSafePositions(size).forEach(function(pos){
 		grid[pos]=new tile.SafeTile(pos);
 	});
 	return grid;
 };
 
-var generateSafePositions = function(size){
+exports.generateSafePositions = function(size){
 	var safePlaces = [];
 	safePlaces.push(idFromPos(Math.floor(size/2),0));
 	safePlaces.push(idFromPos(size-1,Math.floor(size/2)));
