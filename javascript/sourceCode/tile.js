@@ -37,7 +37,7 @@ tile.generateTiles = function(size){
 	var grid = {};
 	for (var i = 0; i < size; i++) {
 		for (var j = 0; j < size; j++) {
-			var id=idFromPos(i,j);
+			var id=idFromPos(j,i);
 			grid[id]= new tile.UnsafeTile(id);
 		};
 	};
