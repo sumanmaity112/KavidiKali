@@ -41,5 +41,6 @@ exports.updates = {
 exports.enquiries = [
 	{enquiry:'isValidPlayer', action : function(gameMaster,player){ return lodash.has(gameMaster.players,player)}},
 	{enquiry:'currentPlayer', action : function(gameMaster){ return gameMaster.getCurrentPlayer();}},
-	{enquiry:'players', action : function(gameMaster){ return Object.keys(gameMaster.players);}}
+	{enquiry:'players', action : function(gameMaster){ return Object.keys(gameMaster.players);}},
+	{enquiry:'isAllPlayersJoined',action: function(gameMaster){return Object.keys(gameMaster.players).length==4}}
 ];
