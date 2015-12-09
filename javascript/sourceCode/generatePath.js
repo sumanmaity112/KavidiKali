@@ -47,7 +47,7 @@ var getNeighbours = function (point){
 	});
 };
 
-var generateFullPath = function(start){
+exports.generateFullPath = function(start){
 	var size = 4, count = 0, path = [];
 	for(var initial = 0,startings = [start] ; initial<=size ; 
 			initial++,size--,startings=getNeighbours(list[0]),count = (count+1)%2){
@@ -60,7 +60,4 @@ var generateFullPath = function(start){
 
 exports.generateHalfPath = function(start){
 	return wrapArray(generateRoute(0,4),[start]);
-};
-exports.generateExtendedPath = function(start){
-	lodash.difference(generateFullPath(start),exports.generateHalfPath(start));
 };

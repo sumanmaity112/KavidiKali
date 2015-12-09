@@ -1,6 +1,6 @@
-var Coin = function(id,colour,defaultCurrentPos){
+var Coin = function(id,colour){
 	this.id = id;
-	this.currentPosition = defaultCurrentPos;
+	this.currentPosition = -1 ;
 	this.reachedDestination = false;
 	this.colour=colour;
 };

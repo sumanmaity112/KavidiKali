@@ -4,7 +4,7 @@ var generateSafePositions = lib.generateSafePositions;
 var pathLib = require('./generatePath.js');
 var dice = require('./dice.js').dice;
 var player = require('./player.js').player;
-var coin = require('./coin.js').coin;
+var Coin = require('./coin.js').coin;
 
 var Game = function(specialValues,size,diceValues){
 	this.safePositions = generateSafePositions(size);
@@ -12,7 +12,6 @@ var Game = function(specialValues,size,diceValues){
 	this.specialValues = specialValues;
 	this.tiles = tiles.generateTiles(size);
 	this.dice = new dice(diceValues);
-	this.getCurrentPlayer = getCurrentPlayer(this);
 };
 
 Game.prototype = {
@@ -22,14 +21,13 @@ Game.prototype = {
 	createPlayer : function(playerId){
 		var playersCount = Object.keys(this.players).length;
 		var colorSequence=["red","green","blue","yellow"];
-		var yardSequence = ["2,-1",'5,2','2,5','-1,2'];
-		var path = {}, tiles = this.tiles;
-		pathLib.generateHalfPath(this.safePositions[playersCount]).forEach(function(id){
-			path[id] = tiles[id];
+		var startingPosition = this.safePositions[playersCount];
+		var tiles = this.tiles;
+		var path = pathLib.generateHalfPath(startingPosition).map(function(pos){
+			return tiles[pos];
 		});
-		path['-1']=yardSequence[playersCount];
-		var coins = createCoins(playerId,4,colorSequence[playersCount],path['-1']);
-		this.players[playerId] = new player(playerId,path,coins);
+		var coins = createCoins(playerId,4,colorSequence[playersCount]);
+		this.players[playerId] = new player(playerId, path, coins);
 	},
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue))
@@ -41,9 +39,9 @@ Game.prototype = {
 	stateOfGame: function() {
 		var state={};
 		var players=this.players;
-		for (player in players) {
+		for (var player in players) {
 			var coins=players[player].coins
-			for (coin in coins) {
+			for (var coin in coins) {
 				state[coin]=coins[coin];
 			}
 		}
@@ -51,24 +49,12 @@ Game.prototype = {
 	}
 };
 
-var createCoins =  function(id,numberOfCoins,colour,defaultCurrentPos){
+var createCoins =  function(id,numberOfCoins,colour){
 	var coins = new Object;
 	for(var count=1; count<=numberOfCoins; count++){
-		coins[id+count] = new coin(id+count,colour,defaultCurrentPos);
+		coins[id+count] = new Coin(id+count,colour);
 	}
 	return coins;
 };
 
-var getCurrentPlayer = function(master){
-	var counter = 0;
-	return (function(){
-		var players = Object.keys(this.players);
-		var currPlayer = this.players[players[counter]]
-		if(!currPlayer.chances){
-			counter = (counter+1)%players.length;
-			this.players[players[counter]].chances++;
-	 	};	
-		return this.players[players[counter]];
-	}).bind(master);
-};
 exports.game = Game;
