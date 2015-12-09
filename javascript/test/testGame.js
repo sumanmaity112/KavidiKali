@@ -24,6 +24,7 @@ describe('Game',function(){
 			assert.ok(game.players['red'] instanceof player);
 			game.createPlayer('blue');
 			assert.ok(Object.keys(game.players).length==2);
+			assert.ok(game.players['blue'] instanceof player);
 		});
 	});
 	describe('setChances',function(){
@@ -97,6 +98,42 @@ describe('Game',function(){
 			game.players['red'].chances = 1;
 		});
 	});
+	describe('getCurrentPlayer',function(){
+		it('gives the chance the player if the player has not completed his chances',function(){
+			game.createPlayer('red');
+			game.createPlayer('yellow');
+			game.players['red'].chances++;
+			var currPlayer = game.getCurrentPlayer();
+			assert.equal(currPlayer.id,'red');
+		});
+		it('gives the next player if the current player has no further chance to play',function(){
+			game.createPlayer('red');
+			game.createPlayer('yellow');
+			game.players['red'].chances++;
+			var currPlayer = game.getCurrentPlayer();
+			assert.equal(currPlayer.id,'red');
+			currPlayer.rollDice(game.dice);
+			currPlayer = game.getCurrentPlayer()
+			assert.equal(currPlayer.id,'yellow');
+		});
+		it('gives the next player if the current player has no further chance to play and also gives chance to next player',function(){
+			game.createPlayer('red');
+			game.createPlayer('yellow');
+			game.createPlayer('blue');
+			game.createPlayer('green');
+			game.players['red'].chances++;
+			var currPlayer = game.getCurrentPlayer();
+			assert.equal(currPlayer.id,'red');
+			currPlayer.rollDice(game.dice);
+			currPlayer = game.getCurrentPlayer()
+			assert.equal(currPlayer.id,'yellow');
+			currPlayer.rollDice(game.dice);
+			currPlayer = game.getCurrentPlayer()
+			assert.equal(currPlayer.id,'blue');
+			currPlayer.rollDice(game.dice);
+			currPlayer = game.getCurrentPlayer()
+			assert.equal(currPlayer.id,'green');
+		});
+	});
 });
-
 
