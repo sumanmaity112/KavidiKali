@@ -12,9 +12,10 @@ exports.handleInstruction = function(obj){
 	return 'Wrong Player';
 };
 
-exports.handleUpdates = function(obj,res){
-	var update = updates[obj.toUpdate];
-	return update(gameMaster,obj.player,res);
+exports.handleUpdates = function(obj){
+	var updater = updates[obj.toUpdate];
+	var update = updater(gameMaster,obj.player);
+	return update;
 };
 
 exports.enquiry = function(question,player){

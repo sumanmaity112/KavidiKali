@@ -57,9 +57,16 @@ var coinsThatHaveMoved=function(oldStatus,newStatus) {
 var placeCoinsInCurrentPosition=function(stateOfGame,coinsToBeUpdated){
 	coinsToBeUpdated.forEach(function(coinId) {
 		var coin=stateOfGame[coinId];
-		document.getElementById(coin.currentPosition).innerHTML+=coinToDOMElement(coin)
+		placeCoin(coin);
 	});
 };
+
+var placeCoin = function(coin){
+	if(coin.currentPosition == -1)
+		document.getElementById(coin.colour+'_yard').innerHTML+=coinToDOMElement(coin);
+	else
+		document.getElementById(coin.currentPosition).innerHTML+=coinToDOMElement(coin)
+}
 
 var refreshBoard = function(){
 	$.get('update/toUpdate=board',function(data,status){
@@ -82,15 +89,17 @@ window.onload = function(){
 	var safePlaces = ['4,2','2,4','2,2','0,2','2,0'];
 	var outerLoop = ['-1,5','0,5','1,5','2,5','3,5','4,5','5,5','-1,4','-1,3','-1,2','-1,1','-1,0','-1,-1',
 					'0,-1','1,-1','2,-1','3,-1','4,-1','5,-1','5,0','5,1','5,2','5,3','5,4','5,5'];
-	var playerCoins = ['2,5','5,2','2,-1','-1,2'];
+	var yards = ['2,-1','5,2','2,5','-1,2'];
 	safePlaces.forEach(function(safePlace){
 		document.getElementById(safePlace).className = 'safePlace';
 	});
 	outerLoop.forEach(function(tile){
 		document.getElementById(tile).className = 'outerTile'
 	});
-	playerCoins.forEach(function(place){
+	var colorSequence=["red","green","blue","yellow"];
+	yards.forEach(function(place,index){
 		document.getElementById(place).className = 'parking';
+		document.getElementById(place).id = colorSequence[index]+'_yard';
 	});
 	setInterval(function(){
 		$.get('update/toUpdate=board',function(data,status){
@@ -102,6 +111,5 @@ window.onload = function(){
 		});
 	},500); 
 	document.querySelector('#dice').onclick = rollDice;
-	document.querySelector('#updateDice').onclick = updateDiceValues;
 };
 

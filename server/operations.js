@@ -23,7 +23,7 @@ var refreshBoard = function(gameMaster){
 	return JSON.stringify(stateOfGame);
 };
 
-var updateWaitingPage = function(gameMaster,player,res){
+var updateWaitingPage = function(gameMaster,player){
 	if(Object.keys(gameMaster.players).length==4)
 		return false;
 	else
