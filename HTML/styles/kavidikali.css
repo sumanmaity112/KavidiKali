@@ -59,7 +59,10 @@ body{
 }
 
 #board {
-    width: 750px;
+    width: 800px;
+    table-layout:fixed;
+    min-width:800px;
+    max-width:800px;
 }
 
 .Dice{
@@ -77,16 +80,14 @@ body{
 .tile{
 	background-color: grey;
 	border:3px solid black;
-	height: 100px;
-	width : 100px;
-	max-width:100px;
-	min-width:100px; 
-    max-height:100px; 
-	min-height:100px;
+	height: 90px;
+	width : 90px;
+	table-layout: fixed;
 }
 
 .safePlace{
-	background-color: white;
+    background-image: url('/svg/safeCross.svg');
+    background-color: white;
 	border:3px solid black;
 	height: 100px;
 	width : 100px;

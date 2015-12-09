@@ -12,6 +12,8 @@ var Game = function(specialValues,size,diceValues){
 	this.specialValues = specialValues;
 	this.tiles = tiles.generateTiles(size);
 	this.dice = new dice(diceValues);
+	this.getCurrentPlayer = getCurrentPlayer(this);
+	
 };
 
 Game.prototype = {
@@ -48,6 +50,20 @@ Game.prototype = {
 		return state;
 	}
 };
+
+var getCurrentPlayer = function(master){
+	var counter = 0;
+	return (function(){
+		var players = Object.keys(this.players);
+		var currPlayer = this.players[players[counter]]
+		if(!currPlayer.chances){
+			counter = (counter+1)%players.length;
+			this.players[players[counter]].chances++;
+	 	};	
+		return this.players[players[counter]];
+	}).bind(master);
+};
+
 
 var createCoins =  function(id,numberOfCoins,colour){
 	var coins = new Object;
