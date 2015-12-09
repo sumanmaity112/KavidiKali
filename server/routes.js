@@ -48,7 +48,7 @@ var doRedirect = function(req, res, next){
 	});
 	req.on('end',function(){
 		var userId = querystring.parse(data)['name'];
-		if(application.enquiry('players').length <= 3)
+		if(application.enquiry({question:'players'}).length <= 3)
 			createPlayer(userId, res);
 		else 
 			res.end('Please wait, a game is already started');
@@ -56,7 +56,7 @@ var doRedirect = function(req, res, next){
 };
 
 var createPlayer = function(userId, res){
-	if(!application.enquiry('isValidPlayer',userId))
+	if(!application.enquiry({question:'isValidPlayer',player:userId}))
 		application.register(userId);
 	res.writeHead('301',{'Location':'/waitingPage.html',
 		'content-type':'text/html',
@@ -68,7 +68,7 @@ var createPlayer = function(userId, res){
 var createInformation = function(req, res, next){
 	var filePath = './HTML' + req.url;
 	var userId = querystring.parse(req.headers.cookie).userId;
-	if(!userId || !application.enquiry('isValidPlayer',userId)){
+	if(!userId || !application.enquiry({question:'isValidPlayer',player:userId})){
 		res.writeHead('301',{'Location':'/index.html',
 			'content-type':'text/html'
 		});
@@ -100,7 +100,7 @@ var createWaitingPage = function(req, res, next){
 			res.writeHead(200,{'content-type' : headers[path.extname(filePath)]});
 			var userId = querystring.parse(req.headers.cookie).userId;
 			var html = replaceRespectiveValue(data.toString(),'__userId__',userId);
-			html = replaceRespectiveValue(html.toString(),'__numberOfPlayer__',application.enquiry('players').length);
+			html = replaceRespectiveValue(html.toString(),'__numberOfPlayer__',application.enquiry({question:'players'}).length);
 			res.end(html);
 		}
 		else
@@ -110,7 +110,7 @@ var createWaitingPage = function(req, res, next){
 
 var doInstruction = function(req, res, next){
 	var player = querystring.parse(req.headers.cookie).userId;
-	if(application.enquiry('isValidPlayer',player)){
+	if(application.enquiry({question:'isValidPlayer',player:player})){
 		var data = '';
 		req.on('data',function(chunk){
 			data += chunk;
@@ -128,7 +128,7 @@ var doInstruction = function(req, res, next){
 
 var handleUpdate = function(req, res, next){
 	var player = querystring.parse(req.headers.cookie).userId;
-	if(application.enquiry('isValidPlayer',player)){
+	if(application.enquiry({question:'isValidPlayer',player:player})){
 		var obj = querystring.parse(req.url.slice(8));
 		obj.player = player;
 		var result = application.handleUpdates(obj,res);
@@ -140,9 +140,14 @@ var handleUpdate = function(req, res, next){
 
 var handleEnquiry = function(req,res,next){
 	var player = querystring.parse(req.headers.cookie).userId;
-	if(application.enquiry('isValidPlayer',player)){
+	if(application.enquiry({question:'isValidPlayer',player:player})){
 		var obj = querystring.parse(req.url.slice(9));
-		res.end('players='+application.enquiry(obj.question,player));
+		obj.player = player;
+		var response = application.enquiry(obj);
+		if(!response)
+			next();
+		else	
+			res.end(response);
 	}
 	else
 		next();

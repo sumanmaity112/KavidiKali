@@ -23,10 +23,10 @@ var refreshBoard = function(gameMaster){
 	return JSON.stringify(stateOfGame);
 };
 
-var updateWaitingPage = function(gameMaster,player){
-	if(Object.keys(gameMaster.players).length==4)
-		return false;
-	else
+var updateWaitingPage = function(gameMaster,obj){
+	// if(Object.keys(gameMaster.players).length==4)
+	// 	return false;
+	// else
 		return (Object.keys(gameMaster.players).length).toString();
 }
 
@@ -39,7 +39,8 @@ exports.updates = {
 //========================================================================================================
 
 exports.enquiries = [
-	{enquiry:'isValidPlayer', action : function(gameMaster,player){ return lodash.has(gameMaster.players,player)}},
+	{enquiry:'isValidPlayer', action : function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)}},
 	{enquiry:'currentPlayer', action : function(gameMaster){ return gameMaster.getCurrentPlayer();}},
-	{enquiry:'players', action : function(gameMaster){ return Object.keys(gameMaster.players);}}
+	{enquiry:'players', action : function(gameMaster){ return Object.keys(gameMaster.players);}},
+	{enquiry:'isItMyChance', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true';}},
 ];

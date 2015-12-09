@@ -48,6 +48,15 @@ Game.prototype = {
 			}
 		}
 		return state;
+	},
+	get currentPlayer(){
+		var players = this.players;
+		var currPlayer;
+		Object.keys(players).forEach(function(player){
+			if(players[player].chances)
+				currPlayer = players[player]
+		});
+		return currPlayer.id;
 	}
 };
 

@@ -6,6 +6,7 @@ var enquiries = operations.enquiries;
 var game = require('./../javascript/sourceCode/game.js').game;
 
 var gameMaster = new game([6],5,[1,2,3,4,5,6]);
+
 exports.handleInstruction = function(obj){
 	if(obj.player == gameMaster.getCurrentPlayer().id)
 		return actions[obj.action](obj.player,gameMaster);
@@ -18,11 +19,13 @@ exports.handleUpdates = function(obj){
 	return update;
 };
 
-exports.enquiry = function(question,player){
-	var action = lodash.findWhere(enquiries,{enquiry:question})['action'];
-	return action(gameMaster,player);
+exports.enquiry = function(obj){
+	var enquiry = lodash.findWhere(enquiries,{enquiry:obj.question});
+	return enquiry && enquiry.action(gameMaster,obj);
 };
 
 exports.register = function(name){
 	gameMaster.createPlayer(name);
+	var obj = {question:'players'};
+	exports.enquiry(obj).length == 1 && gameMaster.players[name].chances++;
 };

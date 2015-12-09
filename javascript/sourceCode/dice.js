@@ -10,4 +10,4 @@ Dice.prototype = {
 	}
 }
 
-exports.dice=Dice;
+exports.dice = Dice;

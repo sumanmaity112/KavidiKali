@@ -7,7 +7,7 @@ function makeGrid(){
 	for(var rowCount=5;rowCount>=-1;rowCount--){
 		var row = '<tr>';
 		for(var columnCount=-1;columnCount<6;columnCount++)
-			row+='<td id="'+columnCount+','+rowCount+'" class="tile" onclick="print(this.id)"></td>';
+			row+='<td id="'+columnCount+','+rowCount+'" class="tile" ></td>';
 		row += '</tr>';
 		table += row;
 	};
@@ -74,6 +74,12 @@ var refreshBoard = function(){
 		var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
 		// removeCoinsFromOldPositions(currentStateOfGame,coinsToBeUpdated);
 		placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
+		var coins = $('.coins')
+		for(var i=0; i<x.length;i++){
+			x[i].onclick = function(){
+				console.log(currentStateOfGame[this.id])
+			};
+		}; 
 		currentStateOfGame=stateOfGame;
 	});
 };
@@ -82,6 +88,10 @@ var getPlayers = function(){
 	$.get('enquiry/question=players',function(data,status){
 
 	});
+};
+
+var coinClick = function(){
+	$.get('enquiry/question=movesWhere&coin='+this.id)
 };
 
 window.onload = function(){
@@ -109,7 +119,9 @@ window.onload = function(){
 			placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
 			currentStateOfGame=stateOfGame;
 		});
+		check();
 	},500); 
 	document.querySelector('#dice').onclick = rollDice;
+	
 };
 
