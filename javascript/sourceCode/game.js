@@ -12,7 +12,7 @@ var Game = function(specialValues,size,diceValues){
 	this.specialValues = specialValues;
 	this.tiles = tiles.generateTiles(size);
 	this.dice = new dice(diceValues);
-	this.getCurrentPlayer = getCurrentPlayer(this);
+	this.nextPlayer = nextPlayer(this);
 	
 };
 
@@ -32,8 +32,10 @@ Game.prototype = {
 		this.players[playerId] = new player(playerId, path, coins);
 	},
 	setChances : function(diceValue,playerId){
-		if(this.analyzeDiceValue(diceValue))
-			this.players[playerId].chances++;  
+		if(this.analyzeDiceValue(diceValue)){
+			this.players[playerId].chances++;
+			return true;  
+		}
 	},
 	isPlayerMatured : function(player){
 		return player.matured;
@@ -60,15 +62,13 @@ Game.prototype = {
 	}
 };
 
-var getCurrentPlayer = function(master){
+
+var nextPlayer = function(master){
 	var counter = 0;
 	return (function(){
 		var players = Object.keys(this.players);
-		var currPlayer = this.players[players[counter]]
-		if(!currPlayer.chances){
-			counter = (counter+1)%players.length;
-			this.players[players[counter]].chances++;
-	 	};	
+		counter = (counter+1)%players.length;
+		this.players[players[counter]].chances++;
 		return this.players[players[counter]];
 	}).bind(master);
 };
