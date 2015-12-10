@@ -20,9 +20,8 @@ var doHaveMoves = function(checkLen){
 		if(data=='false'){
 			counter = (counter+1)%checkLen;
 		}
-	})
+	});
 };
-
 
 var checkChance = [isItMyChance, moreChanceToRollDice, doHaveMoves];
 

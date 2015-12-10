@@ -9,8 +9,15 @@ var rollDice = function(gameMaster, obj){
 	return 'diceValue'+diceValue;
 };
 
+var moveCoin = function(gameMaster, obj){
+	console.log('reached moveCoin in operations ===============================================')
+	var player = gameMaster.players[obj.player];
+	player.moveCoin(obj.coin,obj.position);
+};
+
 exports.actions = {
-	rollDice: rollDice
+	rollDice: rollDice,
+	moveCoin: moveCoin
 };
 
 //========================================================================================================
@@ -39,12 +46,22 @@ exports.updates = {
 
 //========================================================================================================
 
+var movesTo = function(gameMaster, obj){
+	var player = gameMaster.players[obj.player];
+	var coin = player.coins[obj.coin];
+	var moves = gameMaster.getAllValidMovesOfCoin(coin,player.diceValues,player.path);
+	var temp = JSON.stringify(moves);
+	return temp;
+};
+
+
 exports.enquiries = [
 	{enquiry:'isValidPlayer', action : function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)}},
 	{enquiry:'currentPlayer', action : function(gameMaster){ return gameMaster.currentPlayer;}},
 	{enquiry:'players', action : function(gameMaster){ return Object.keys(gameMaster.players);}},
-	{enquiry:'isItMyChance', action : function(gameMaster,obj){console.log(gameMaster.currentPlayer, obj.player);return gameMaster.currentPlayer == obj.player && 'true';}},
+	{enquiry:'isItMyChance', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true';}},
 	{enquiry:'moreChanceToRollDice', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true' || 'false';}},
 	{enquiry:'isAllPlayersJoined', action: function(gameMaster){return Object.keys(gameMaster.players).length==4}},
-	{enquiry:'doHaveMoves', action : function(gameMaster,obj){ return gameMaster.anyMoreMoves(obj.player).toString();}}
+	{enquiry:'doHaveMoves', action : function(gameMaster,obj){ return gameMaster.anyMoreMoves(obj.player).toString();}},
+	{enquiry:'movesTo', action : movesTo}
 ];

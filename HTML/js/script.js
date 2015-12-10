@@ -1,6 +1,6 @@
-var playerSequence = ['red','yellow','green','blue'];
-var players = {};
+var selectedCoin;
 var currentStateOfGame;
+var activeTiles;
 
 function makeGrid(){
 	var table='<table class="grid">'
@@ -75,24 +75,48 @@ var refreshBoard = function(){
 		var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
 		// removeCoinsFromOldPositions(currentStateOfGame,coinsToBeUpdated);
 		placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
-		var coins = $('.coins')
-		for(var i=0; i<x.length;i++){
-			x[i].onclick = function(){
-				console.log(currentStateOfGame[this.id])
-			};
-		}; 
 		currentStateOfGame=stateOfGame;
+		var coins = $('.coins')
+		for(var i=0; i<coins.length;i++){
+			coins[i].onclick = coinClick;
+		}; 
 	});
 };
 
-var getPlayers = function(){
-	$.get('enquiry/question=players',function(data,status){
+// var getPlayers = function(){
+// 	$.get('enquiry/question=players',function(data,status){
 
-	});
-};
+// 	});
+// };
 
 var coinClick = function(){
-	$.get('enquiry/question=movesWhere&coin='+this.id)
+	selectedCoin = this.id;
+	$.get('enquiry/question=movesTo&coin='+selectedCoin,function(data){
+		activeTiles = JSON.parse(data);
+		console.log(activeTiles);
+		for(var pos in activeTiles){
+			console.log(document.getElementById(activeTiles[pos]))
+			document.getElementById(activeTiles[pos]).onclick = tileClick;
+		};
+	});
+};
+
+var tileClick = function(){
+	if(selectedCoin){
+		$.post('instruction/action=moveCoin&coin='+selectedCoin+'&position='+this.id,function(data){
+			selectedCoin = undefined;
+			refreshBoard();
+			for(var pos in activeTiles){
+				document.getElementById(activeTiles[pos]).onclick = null
+			};
+			activeTiles=undefined;
+		});
+	};
+};
+
+var chumma = function(){
+	refreshBoard();
+	check();
 };
 
 window.onload = function(){
@@ -112,16 +136,10 @@ window.onload = function(){
 		document.getElementById(place).className = 'parking';
 		document.getElementById(place).id = colorSequence[index]+'_yard';
 	});
-	setInterval(function(){
-		$.get('update/toUpdate=board',function(data,status){
-			var stateOfGame = JSON.parse(data);
-			var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
-			// removeCoinsFromOldPositions(currentStateOfGame,coinsToBeUpdated);
-			placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
-			currentStateOfGame=stateOfGame;
-		});
-		check();
-	},500); 
+	// setInterval(function(){
+	// 	refreshBoard();
+	// 	check();
+	// },500); 
 	document.querySelector('#dice').onclick = rollDice;	
 };
 

@@ -14,6 +14,7 @@ var Game = function(specialValues,size,diceValues){
 	this.tiles = tiles.generateTiles(size);
 	this.dice = new dice(diceValues);
 	this.nextPlayer = nextPlayer(this);
+	this.counter = 0;
 	
 };
 
@@ -59,12 +60,12 @@ Game.prototype = {
 			if(players[player].chances)
 				currPlayer = players[player].id
 		});
-		return currPlayer
+		return currPlayer || this.players[Object.keys(this.players)[this.counter]]
 	},
 	getAllValidMovesOfCoin : function(coin,diceValues,path){
 		var specialValue = this.specialValues;
 		if(coin.currentPosition==-1){
-			return ld.intersection(diceValues,specialValue).length && path[0] || undefined;
+			return ld.intersection(diceValues,specialValue).length && [path[0].id] || undefined;
 		}
 		else{
 			var validMoves = diceValues.map(function(diceValue){
@@ -89,9 +90,10 @@ Game.prototype = {
 var getTheValidMove = function(coin,movesBy,path){
 	var coinPos = ld.findIndex(path,{id:coin.currentPosition});
 	var nextIndex = coinPos+movesBy;
-	if(path[nextIndex].contains(coin))
-		return false;
-	return path[nextIndex];
+	var nextPos = path[nextIndex]
+	if(nextPos.hasAnyCoin() && nextPos.contains(coin))
+		return false;	
+	return path[nextIndex].id;
 };
 
 var nextPlayer = function(master){
@@ -99,7 +101,9 @@ var nextPlayer = function(master){
 	return (function(){
 		var players = Object.keys(this.players);
 		if(!this.anyMoreMoves(players[counter])){
+			this.players[players[counter]].diceValues = [];
 			counter = (counter+1)%players.length;
+			this.counter = counter;
 			this.players[players[counter]].chances++;
 		};
 		return this.players[players[counter]].id;

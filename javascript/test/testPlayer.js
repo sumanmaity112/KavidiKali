@@ -16,7 +16,6 @@ describe('Player',function(){
 			var dice = new Dice([2]);
 			assert.deepEqual(2,player.rollDice(dice));
 			assert.deepEqual(player.diceValues,[2]);
-			
 		});
 	});
 

@@ -18,7 +18,7 @@ tile.SafeTile.prototype = {
 		this.coins = this.coins.filter(function(value,index){
 			return ind!=index;
 		});
-	}
+	},
 }
 
 tile.UnsafeTile=function(id) {
@@ -35,6 +35,9 @@ tile.UnsafeTile.prototype = {
 	},
 	removeCoin:function(coin) {
 		this.coin = undefined;
+	},
+	hasAnyCoin:function(){
+		return this.coin;
 	}
 }
 

@@ -115,9 +115,11 @@ var createWaitingPage = function(req, res, next){
 var doInstruction = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(13));
 	var player = querystring.parse(req.headers.cookie).userId;
+	console.log(obj);
 	if(application.enquiry({question:'isValidPlayer',player:player})){
 		obj.player = player;
 		var result = application.handleInstruction(obj);
+		console.log('entered if in routes====================================')
 		res.end(result)
 	}
 	else
