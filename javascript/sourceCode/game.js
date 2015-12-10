@@ -69,7 +69,7 @@ var nextPlayer = function(master){
 		var players = Object.keys(this.players);
 		counter = (counter+1)%players.length;
 		this.players[players[counter]].chances++;
-		return this.players[players[counter]];
+		return this.players[players[counter]].id;
 	}).bind(master);
 };
 

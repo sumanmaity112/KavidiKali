@@ -2,8 +2,12 @@ var fs = require('fs');
 var path = require('path');
 var lodash = require('lodash');
 var querystring = require('querystring');
-var application = require('./application.js')
+var application = require('./application.js');
+var operations = require('./operations.js');
 var main = application.main;
+var updates = operations.updates;
+var enquiries = operations.enquiries;
+var instructions = operations.instructions;
 
 var headers = {
 	".html" : "text/html",
@@ -74,6 +78,12 @@ var createInformation = function(req, res, next){
 		});
 		res.end();
 	}
+	else if(!application.enquiry({question:'isAllPlayersJoined'})){
+		res.writeHead('301',{'Location':'/waitingPage.html',
+			'content-type':'text/html'
+		});
+		res.end();
+	}
 	else{
 		fs.readFile(filePath, function(err, data){
 			if(data){
@@ -118,8 +128,10 @@ var doInstruction = function(req, res, next){
 		req.on('end',function(){
 			var obj = querystring.parse(data);
 			obj.player = player;
-			var result = application.handleInstruction(obj);
-			res.end(result)
+			if(lodash.has(instructions,obj.action)){
+				var result = application.handleInstruction(obj);
+				res.end(result)
+			}
 		});
 	}
 	else
@@ -127,9 +139,9 @@ var doInstruction = function(req, res, next){
 };
 
 var handleUpdate = function(req, res, next){
+	var obj = querystring.parse(req.url.slice(8));
 	var player = querystring.parse(req.headers.cookie).userId;
-	if(application.enquiry({question:'isValidPlayer',player:player})){
-		var obj = querystring.parse(req.url.slice(8));
+	if(application.enquiry({question:'isValidPlayer',player:player}) && lodash.has(updates,obj.toUpdate)){
 		obj.player = player;
 		var result = application.handleUpdates(obj,res);
 		res.end(result);
@@ -139,9 +151,9 @@ var handleUpdate = function(req, res, next){
 };
 
 var handleEnquiry = function(req,res,next){
+	var obj = querystring.parse(req.url.slice(9));
 	var player = querystring.parse(req.headers.cookie).userId;
-	if(application.enquiry({question:'isValidPlayer',player:player})){
-		var obj = querystring.parse(req.url.slice(9));
+	if(application.enquiry({question:'isValidPlayer',player:player})&& lodash.has(updates,obj.question)){
 		obj.player = player;
 		var response = application.enquiry(obj);
 		if(!response)

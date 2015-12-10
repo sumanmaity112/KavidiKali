@@ -15,8 +15,8 @@ exports.actions = {
 
 //========================================================================================================
 
-var getAllDiceValues = function(gameMaster, player){
-	return 'diceValues='+gameMaster.players[player].diceValues;
+var getAllDiceValues = function(gameMaster, obj){
+	return 'diceValues='+gameMaster.players[obj.player].diceValues;
 };
 
 var refreshBoard = function(gameMaster){
@@ -44,5 +44,7 @@ exports.enquiries = [
 	{enquiry:'currentPlayer', action : function(gameMaster){ return gameMaster.currentPlayer;}},
 	{enquiry:'players', action : function(gameMaster){ return Object.keys(gameMaster.players);}},
 	{enquiry:'isItMyChance', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true';}},
-	{enquiry:'moreChanceToRollDice', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true';}}
+	{enquiry:'moreChanceToRollDice', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true';}},
+	{enquiry:'isAllPlayersJoined', action: function(gameMaster){return Object.keys(gameMaster.players).length==4}}
+
 ];

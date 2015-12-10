@@ -1,6 +1,6 @@
 var Game = require('../sourceCode/game.js').game;
 var player = require('../sourceCode/player.js').player;
-var dice = require('../sourceCode/dice.js').dice;
+var Dice = require('../sourceCode/dice.js').dice;
 
 var assert = require('assert');
 
@@ -24,6 +24,7 @@ describe('Game',function(){
 			assert.ok(game.players['red'] instanceof player);
 			game.createPlayer('blue');
 			assert.ok(Object.keys(game.players).length==2);
+			assert.ok(game.players['blue'] instanceof player);
 		});
 	});
 	describe('setChances',function(){
@@ -31,7 +32,7 @@ describe('Game',function(){
 			game.createPlayer('red');
 			var player = game.players['red'];
 			player.chances = 1;
-			player.rollDice(new dice([1,2,3,4,5,6]));
+			player.rollDice(new Dice([1,2,3,4,5,6]));
 			assert.equal(player.chances,0);
 			game.setChances(6,'red');
 			assert.equal(player.chances,1);
@@ -40,7 +41,7 @@ describe('Game',function(){
 			game.createPlayer('red');
 			var player = game.players['red'];
 			player.chances = 1;
-			player.rollDice(new dice([]));
+			player.rollDice(new Dice([]));
 			assert.equal(player.chances,0);
 			game.setChances(4,'red');
 			assert.equal(player.chances,0);
@@ -93,10 +94,52 @@ describe('Game',function(){
 			assert.ok(!game.isPlayerMatured(game.players['blue']));
 			game.players['red'].matured = true;
 			assert.ok(game.isPlayerMatured(game.players['red']));
+		});
+	});
+	describe('currentPlayer',function(){
+		it('gives the current player',function(){
+			game.createPlayer('red');
 			game.createPlayer('yellow');
-			game.players['red'].chances = 1;
+			game.players['red'].chances++;
+			var currPlayer = game.currentPlayer;
+			assert.equal(currPlayer,'red');
+		});
+	});
+	describe('nextPlayer',function(){
+		it('gives the next player who have chance to play',function(){
+			var dice = new Dice([1,2,3,4,5]);
+			game.createPlayer('red');
+			game.createPlayer('yellow');
+			game.players['red'].chances++;
+			var currPlayer = game.currentPlayer;
+			assert.equal(currPlayer,'red');
+			game.players[currPlayer].rollDice(dice);
+			assert.equal(game.nextPlayer(),'yellow');
+			currPlayer = game.currentPlayer;
+			assert.equal(currPlayer,'yellow');
+		});
+		it('gives the next player a chance to roll dice',function(){
+			var dice = new Dice([1,2,3,4,5]);
+			game.createPlayer('red');
+			game.createPlayer('yellow');
+			game.createPlayer('blue');
+			game.createPlayer('green');
+			game.players['red'].chances++;
+			var currPlayer = game.currentPlayer;
+			assert.equal(currPlayer,'red');
+			game.players[currPlayer].rollDice(dice);
+			game.nextPlayer();
+			currPlayer = game.currentPlayer;
+			assert.equal(currPlayer,'yellow');
+			game.players[currPlayer].rollDice(dice);
+			game.nextPlayer();
+			currPlayer = game.currentPlayer;
+			assert.equal(currPlayer,'blue');
+			game.players[currPlayer].rollDice(dice);
+			game.nextPlayer();
+			currPlayer = game.currentPlayer;
+			assert.equal(currPlayer,'green');
 		});
 	});
 });
-
 

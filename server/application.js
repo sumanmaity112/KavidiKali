@@ -15,7 +15,7 @@ exports.handleInstruction = function(obj){
 
 exports.handleUpdates = function(obj){
 	var updater = updates[obj.toUpdate];
-	var update = updater(gameMaster,obj.player);
+	var update = updater(gameMaster,obj);
 	return update;
 };
 
