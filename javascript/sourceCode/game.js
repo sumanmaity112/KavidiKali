@@ -13,7 +13,6 @@ var Game = function(specialValues,size,diceValues){
 	this.tiles = tiles.generateTiles(size);
 	this.dice = new dice(diceValues);
 	this.nextPlayer = nextPlayer(this);
-	
 };
 
 Game.prototype = {
