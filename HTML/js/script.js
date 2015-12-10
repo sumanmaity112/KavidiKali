@@ -31,15 +31,18 @@ var updateDiceValues = function(){
 	});
 };
 
-var parseQueryString = function( queryString ) {
-    var params = {};
-    var queries = queryString.split("&");
-    for ( var i = 0, l = queries.length; i < l; i++ ) {
-    	var temp = queries[i].split('=');
-        params[temp[0]] = temp[1];
-    };
-    return params;
-};
+var currentPlyer = function(){
+	setTimeout(function(){
+		console.log("hdyafhikljhgfds+++++++++")
+		$.get('enquiry/question=currentPlyer',function(data,status){
+			console.log(data+'++++++++++++++')
+			var html=document.querySelector('#playerTurn').innerHTML;
+			html=html.replace('__UserID__',data.id);
+			document.querySelector('#playerTurn').innerHTML=html;
+		});
+	},1000);
+}
+
 
 var coinToDOMElement = function(coin) {
 	var coinImage=coin.colour+"_coin.svg";
@@ -89,6 +92,7 @@ var getPlayers = function(){
 
 	});
 };
+
 
 var coinClick = function(){
 	$.get('enquiry/question=movesWhere&coin='+this.id)
