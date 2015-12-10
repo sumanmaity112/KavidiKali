@@ -34,6 +34,15 @@ describe('Game',function(){
 			var path = ['2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2',
 						'0,1','0,0','1,0'];
 			assert.deepEqual(playerPathIdGivenByGame,path);
+		});
+		it("creates multiple players with their respective path",function(){
+			game.createPlayer('suman');
+			var playerPathIdGivenByGame = game.players.suman.path.map(function(tile){
+				return tile.id;
+			});
+			var path = ['2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2',
+						'0,1','0,0','1,0'];
+			assert.deepEqual(playerPathIdGivenByGame,path);
 			game.createPlayer('supriya');
 			playerPathIdGivenByGame = game.players.supriya.path.map(function(tile){
 				return tile.id;
@@ -56,6 +65,47 @@ describe('Game',function(){
 					'0,4','0,3'];
 			assert.deepEqual(playerPathIdGivenByGame,path);
 		});
+		it('creates a player with respective coins',function(){
+			game.createPlayer('suman');
+			var coins = {suman1 : { id: 'suman1',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						suman2 : { id: 'suman2',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						suman3 : { id: 'suman3',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						suman4 : { id: 'suman4',currentPosition: -1,reachedDestination: false,colour: 'red'}
+					};
+			assert.deepEqual(coins,game.players.suman.coins);
+		});
+		it('creates multiple players with their respective coins',function(){
+			game.createPlayer('suman');
+			var coins ={suman1 : { id: 'suman1',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						suman2 : { id: 'suman2',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						suman3 : { id: 'suman3',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						suman4 : { id: 'suman4',currentPosition: -1,reachedDestination: false,colour: 'red'}
+					};
+			assert.deepEqual(coins,game.players.suman.coins);
+
+			game.createPlayer('syani');
+			coins = {syani1 : { id: 'syani1',currentPosition: -1,reachedDestination: false,colour: 'green'},
+					syani2 : { id: 'syani2',currentPosition: -1,reachedDestination: false,colour: 'green'},
+					syani3 : { id: 'syani3',currentPosition: -1,reachedDestination: false,colour: 'green'},
+					syani4 : { id: 'syani4',currentPosition: -1,reachedDestination: false,colour: 'green'}
+				};
+			assert.deepEqual(coins,game.players.syani.coins);
+			game.createPlayer('saran');
+			coins = {saran1 : { id: 'saran1',currentPosition: -1,reachedDestination: false,colour: 'blue'},
+					saran2 : { id: 'saran2',currentPosition: -1,reachedDestination: false,colour: 'blue'},
+					saran3 : { id: 'saran3',currentPosition: -1,reachedDestination: false,colour: 'blue'},
+					saran4 : { id: 'saran4',currentPosition: -1,reachedDestination: false,colour: 'blue'}
+				};
+			assert.deepEqual(coins,game.players.saran.coins);
+			game.createPlayer('supriya');
+			coins = {supriya1 : { id: 'supriya1',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
+					supriya2 : { id: 'supriya2',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
+					supriya3 : { id: 'supriya3',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
+					supriya4 : { id: 'supriya4',currentPosition: -1,reachedDestination: false,colour: 'yellow'}
+				};
+			assert.deepEqual(coins,game.players.supriya.coins);
+		});
+		
 	});
 	describe('setChances',function(){
 		it('analyses the given dice value and then gives chance to the given player if dice value is one of special value',function(){
