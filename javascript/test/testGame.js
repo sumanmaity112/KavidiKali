@@ -26,6 +26,36 @@ describe('Game',function(){
 			assert.ok(Object.keys(game.players).length==2);
 			assert.ok(game.players['blue'] instanceof player);
 		});
+		it("creates a player with respective path",function(){
+			game.createPlayer('suman');
+			var playerPathIdGivenByGame = game.players.suman.path.map(function(tile){
+				return tile.id;
+			});
+			var path = ['2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2',
+						'0,1','0,0','1,0'];
+			assert.deepEqual(playerPathIdGivenByGame,path);
+			game.createPlayer('supriya');
+			playerPathIdGivenByGame = game.players.supriya.path.map(function(tile){
+				return tile.id;
+			});
+			path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0',
+					'4,0','4,1'];
+			assert.deepEqual(playerPathIdGivenByGame,path);
+			game.createPlayer('saran');
+			playerPathIdGivenByGame = game.players.saran.path.map(function(tile){
+				return tile.id;
+			});
+			path = ['2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1','4,2','4,3',
+					'4,4','3,4'];
+			assert.deepEqual(playerPathIdGivenByGame,path);
+			game.createPlayer('syani');
+			playerPathIdGivenByGame = game.players.syani.path.map(function(tile){
+				return tile.id;
+			});
+			path = ['0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4',
+					'0,4','0,3'];
+			assert.deepEqual(playerPathIdGivenByGame,path);
+		});
 	});
 	describe('setChances',function(){
 		it('analyses the given dice value and then gives chance to the given player if dice value is one of special value',function(){
