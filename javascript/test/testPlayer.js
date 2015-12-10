@@ -56,8 +56,8 @@ describe('Player',function(){
 			assert.deepEqual(coin.currentPosition,player.path[0].id);
 			var dice1 = new Dice([2]);
 			player.rollDice(dice1);
-			player.moveCoin('red1','4,0');
-			assert.notDeepEqual(coin.currentPosition,player.path[1].id);
+			player.moveCoin('red1','4,2');
+			assert.deepEqual(coin.currentPosition,player.path[0].id);
 		});
 	// 	it.skip('kills the coin present in the position to be moved',function(){
 	// 		var board = new Board(['2,3','4,2'],5);
@@ -81,23 +81,4 @@ describe('Player',function(){
 	// 		assert.deepEqual(board.getCoins(movesBy),[player1.coins['red1'],player2.coins['blue2']]);
 	// 	});
 	});
-});
-
-// # [pair1/pair2] - subject -----------------------
-// [Sooraj/Saran] created moveCoin function
-
-// # ----------------------------------------------------------------------
-
-// What changes have you made?
-
-// * We have created moveCoin function which moves the coin to another given
-// tile according to the dice value. 
-// * It will do nothing if the position given and dice values doesnt match.
-
-// Why do we need this change?
-
-// * We need it as a part of moving the coin on board.
-
-// What can this change impact?
-
-// * 
+}); 
