@@ -61,3 +61,4 @@ exports.generateFullPath = function(start){
 exports.generateHalfPath = function(start){
 	return wrapArray(generateRoute(0,4),[start]);
 };
+

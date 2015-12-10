@@ -13,7 +13,6 @@ var Game = function(specialValues,size,diceValues){
 	this.tiles = tiles.generateTiles(size);
 	this.dice = new dice(diceValues);
 	this.nextPlayer = nextPlayer(this);
-	
 };
 
 Game.prototype = {
@@ -24,10 +23,7 @@ Game.prototype = {
 		var playersCount = Object.keys(this.players).length;
 		var colorSequence=["red","green","blue","yellow"];
 		var startingPosition = this.safePositions[playersCount];
-		var tiles = this.tiles;
-		var path = pathLib.generateHalfPath(startingPosition).map(function(pos){
-			return tiles[pos];
-		});
+		var path = createPath(startingPosition,this.tiles);
 		var coins = createCoins(playerId,4,colorSequence[playersCount]);
 		this.players[playerId] = new player(playerId, path, coins);
 	},
@@ -62,6 +58,11 @@ Game.prototype = {
 	}
 };
 
+var createPath = function(startingPosition,tiles){
+	return pathLib.generateHalfPath(startingPosition).map(function(pos){
+			return tiles[pos];
+		});
+};
 
 var nextPlayer = function(master){
 	var counter = 0;

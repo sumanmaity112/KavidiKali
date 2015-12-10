@@ -5,6 +5,7 @@ var Player = function(id, path, coins){
 	this.chances = 0;
 	this.diceValues=[];
 	this.coins = coins;
+	this.path = path;
 };
 
 Player.prototype = {
