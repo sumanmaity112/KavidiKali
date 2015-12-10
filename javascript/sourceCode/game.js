@@ -57,9 +57,9 @@ Game.prototype = {
 		var currPlayer;
 		Object.keys(players).forEach(function(player){
 			if(players[player].chances)
-				currPlayer = players[player]
+				currPlayer = players[player].id
 		});
-		return currPlayer.id;
+		return currPlayer
 	},
 	getAllValidMovesOfCoin : function(coin,diceValues,path){
 		var specialValue = this.specialValues;
@@ -98,8 +98,10 @@ var nextPlayer = function(master){
 	var counter = 0;
 	return (function(){
 		var players = Object.keys(this.players);
-		counter = (counter+1)%players.length;
-		this.players[players[counter]].chances++;
+		if(!this.anyMoreMoves(players[counter])){
+			counter = (counter+1)%players.length;
+			this.players[players[counter]].chances++;
+		};
 		return this.players[players[counter]].id;
 	}).bind(master);
 };

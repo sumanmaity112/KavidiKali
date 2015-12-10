@@ -12,6 +12,12 @@ tile.SafeTile.prototype = {
 	},
 	contains:function(coin) {
 		return ld.findIndex(this.coins,coin)>=0;
+	},
+	removeCoin:function(coin) {
+		var ind = ld.findIndex(this.coins,coin);
+		this.coins = this.coins.filter(function(value,index){
+			return ind!=index;
+		});
 	}
 }
 
@@ -26,6 +32,9 @@ tile.UnsafeTile.prototype = {
 	},
 	contains:function(coin) {
 		return this.coin.equals(coin);
+	},
+	removeCoin:function(coin) {
+		this.coin = undefined;
 	}
 }
 
