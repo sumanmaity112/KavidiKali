@@ -78,12 +78,6 @@ var createInformation = function(req, res, next){
 		});
 		res.end();
 	}
-	else if(!application.enquiry({question:'isAllPlayersJoined'})){
-		res.writeHead('301',{'Location':'/waitingPage.html',
-			'content-type':'text/html'
-		});
-		res.end();
-	}
 	else{
 		fs.readFile(filePath, function(err, data){
 			if(data){
@@ -119,20 +113,12 @@ var createWaitingPage = function(req, res, next){
 };
 
 var doInstruction = function(req, res, next){
+	var obj = querystring.parse(req.url.slice(13));
 	var player = querystring.parse(req.headers.cookie).userId;
 	if(application.enquiry({question:'isValidPlayer',player:player})){
-		var data = '';
-		req.on('data',function(chunk){
-			data += chunk;
-		});
-		req.on('end',function(){
-			var obj = querystring.parse(data);
-			obj.player = player;
-			if(lodash.has(instructions,obj.action)){
-				var result = application.handleInstruction(obj);
-				res.end(result)
-			}
-		});
+		obj.player = player;
+		var result = application.handleInstruction(obj);
+		res.end(result)
 	}
 	else
 		next();
@@ -141,7 +127,7 @@ var doInstruction = function(req, res, next){
 var handleUpdate = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(8));
 	var player = querystring.parse(req.headers.cookie).userId;
-	if(application.enquiry({question:'isValidPlayer',player:player}) && lodash.has(updates,obj.toUpdate)){
+	if(application.enquiry({question:'isValidPlayer',player:player})){
 		obj.player = player;
 		var result = application.handleUpdates(obj,res);
 		res.end(result);
@@ -153,7 +139,7 @@ var handleUpdate = function(req, res, next){
 var handleEnquiry = function(req,res,next){
 	var obj = querystring.parse(req.url.slice(9));
 	var player = querystring.parse(req.headers.cookie).userId;
-	if(application.enquiry({question:'isValidPlayer',player:player})&& lodash.has(updates,obj.question)){
+	if(application.enquiry({question:'isValidPlayer',player:player})){
 		obj.player = player;
 		var response = application.enquiry(obj);
 		if(!response)
@@ -168,7 +154,7 @@ var handleEnquiry = function(req,res,next){
 exports.post_handlers = [
 	{path: '^/index.html$', handler: doRedirect},
 	{path: '^/$', handler: doRedirect},
-	{path: '^/instruction$', handler: doInstruction},
+	{path: '^/instruction', handler: doInstruction},
 	{path: '', handler: method_not_allowed}
 ];
 

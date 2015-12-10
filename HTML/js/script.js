@@ -20,7 +20,8 @@ function print(x){
 };
 
 var rollDice = function(){
-	$.post('instruction',{"action":"rollDice"},function(data,status){
+	$.post('instruction/action=rollDice',function(data,status){
+		console.log(data);
 		updateDiceValues();
 	});
 };
@@ -121,7 +122,6 @@ window.onload = function(){
 		});
 		check();
 	},500); 
-	document.querySelector('#dice').onclick = rollDice;
-	
+	document.querySelector('#dice').onclick = rollDice;	
 };
 

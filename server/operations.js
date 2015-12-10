@@ -43,8 +43,8 @@ exports.enquiries = [
 	{enquiry:'isValidPlayer', action : function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)}},
 	{enquiry:'currentPlayer', action : function(gameMaster){ return gameMaster.currentPlayer;}},
 	{enquiry:'players', action : function(gameMaster){ return Object.keys(gameMaster.players);}},
-	{enquiry:'isItMyChance', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true';}},
-	{enquiry:'moreChanceToRollDice', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true';}},
-	{enquiry:'isAllPlayersJoined', action: function(gameMaster){return Object.keys(gameMaster.players).length==4}}
-
+	{enquiry:'isItMyChance', action : function(gameMaster,obj){console.log(gameMaster.currentPlayer, obj.player);return gameMaster.currentPlayer == obj.player && 'true';}},
+	{enquiry:'moreChanceToRollDice', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true' || 'false';}},
+	{enquiry:'isAllPlayersJoined', action: function(gameMaster){return Object.keys(gameMaster.players).length==4}},
+	{enquiry:'doHaveMoves', action : function(gameMaster,obj){ return gameMaster.anyMoreMoves(obj.player).toString();}}
 ];

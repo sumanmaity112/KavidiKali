@@ -5,6 +5,7 @@ var pathLib = require('./generatePath.js');
 var dice = require('./dice.js').dice;
 var player = require('./player.js').player;
 var Coin = require('./coin.js').coin;
+var ld  =  require('lodash');
 
 var Game = function(specialValues,size,diceValues){
 	this.safePositions = generateSafePositions(size);
@@ -59,9 +60,39 @@ Game.prototype = {
 				currPlayer = players[player]
 		});
 		return currPlayer.id;
+	},
+	getAllValidMovesOfCoin : function(coin,diceValues,path){
+		var specialValue = this.specialValues;
+		if(coin.currentPosition==-1){
+			return ld.intersection(diceValues,specialValue).length && path[0] || undefined;
+		}
+		else{
+			var validMoves = diceValues.map(function(diceValue){
+				return getTheValidMove(coin,diceValue,path);
+			});
+			return ld.pull(validMoves,false);
+		}
+	},
+	anyMoreMoves: function(player){
+		var player = this.players[player];
+		var getMoves = this.getAllValidMovesOfCoin.bind(this);
+		var specialValue = this.specialValues;
+		var movesPerCoin = Object.keys(player.coins).map(function(coin){
+			return getMoves(player.coins[coin],player.diceValues,player.path,specialValue);
+		});
+		var totalMoves = ld.flatten(movesPerCoin);
+		return !!ld.pull(totalMoves,undefined)[0];
 	}
 };
 
+
+var getTheValidMove = function(coin,movesBy,path){
+	var coinPos = ld.findIndex(path,{id:coin.currentPosition});
+	var nextIndex = coinPos+movesBy;
+	if(path[nextIndex].contains(coin))
+		return false;
+	return path[nextIndex];
+};
 
 var nextPlayer = function(master){
 	var counter = 0;
