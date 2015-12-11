@@ -85,12 +85,6 @@ var refreshBoard = function(){
 	});
 };
 
-// var getPlayers = function(){
-// 	$.get('enquiry/question=players',function(data,status){
-
-// 	});
-// };
-
 var coinClick = function(){
 	selectedCoin = this.id;
 	$.get('enquiry/question=movesTo&coin='+selectedCoin,function(data){
@@ -103,7 +97,6 @@ var coinClick = function(){
 	});
 };
 
-<<<<<<< HEAD
 var tileClick = function(){
 	if(selectedCoin){
 		$.post('instruction/action=moveCoin&coin='+selectedCoin+'&position='+this.id,function(data){
@@ -117,14 +110,8 @@ var tileClick = function(){
 	};
 };
 
-var chumma = function(){
-	refreshBoard();
-	check();
-=======
-
 var coinClick = function(){
 	$.get('enquiry/question=movesWhere&coin='+this.id)
->>>>>>> 17b438d1c2403f8a1cc01654d57f9c1895e6e98f
 };
 
 window.onload = function(){
@@ -144,26 +131,10 @@ window.onload = function(){
 		document.getElementById(place).className = 'parking';
 		document.getElementById(place).id = colorSequence[index]+'_yard';
 	});
-<<<<<<< HEAD
-	// setInterval(function(){
-	// 	refreshBoard();
-	// 	check();
-	// },500); 
-	document.querySelector('#dice').onclick = rollDice;	
-=======
-	currentPlayer();
 	setInterval(function(){
-		$.get('update/toUpdate=board',function(data,status){
-			var stateOfGame = JSON.parse(data);
-			var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
-			// removeCoinsFromOldPositions(currentStateOfGame,coinsToBeUpdated);
-			placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
-			currentStateOfGame=stateOfGame;
-		});
+		refreshBoard();
 		check();
 	},500); 
-	document.querySelector('#dice').onclick = rollDice;
-	
->>>>>>> 17b438d1c2403f8a1cc01654d57f9c1895e6e98f
+	document.querySelector('#dice').onclick = rollDice;	
 };
 
