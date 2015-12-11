@@ -15,7 +15,7 @@ describe("generateHalfPath",function(){
 
 });
 
-describe("generateHalfPath",function(){
+describe("generateFullPath",function(){
 	it("gives the outerloop for any given position",function(){
 		var path = ['2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0',
 					'1,1','1,2','1,3','2,3','3,3','3,2','3,1','2,1','2,2'];
@@ -29,6 +29,20 @@ describe("generateHalfPath",function(){
 		path = ['2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4',
 				'3,3','3,2','3,1','2,1','1,1','1,2','1,3','2,3','2,2'];
 		assert.deepEqual(path,lib.generateFullPath('2,4'));
+	});
+
+});
+
+describe("generateExtendedPath",function(){
+	it("gives the outerloop for any given position",function(){
+		var path = ['1,1','1,2','1,3','2,3','3,3','3,2','3,1','2,1','2,2'];
+		assert.deepEqual(path,lib.generateExtendedPath('2,0'));
+		path = ['1,3','2,3','3,3','3,2','3,1','2,1','1,1','1,2','2,2'];
+		assert.deepEqual(path,lib.generateExtendedPath('0,2'));
+		path = ['3,1','2,1','1,1','1,2','1,3','2,3','3,3','3,2','2,2'];
+		assert.deepEqual(path,lib.generateExtendedPath('4,2'));
+		path = ['3,3','3,2','3,1','2,1','1,1','1,2','1,3','2,3','2,2'];
+		assert.deepEqual(path,lib.generateExtendedPath('2,4'));
 	});
 
 });
