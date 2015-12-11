@@ -23,9 +23,9 @@ Game.prototype = {
 		var playersCount = Object.keys(this.players).length;
 		var colorSequence=["red","green","blue","yellow"];
 		var startingPosition = this.safePositions[playersCount];
-		var path = createPath(startingPosition,this.tiles);
+		var path = createPath(startingPosition,this.tiles,pathLib.generateHalfPath);
 		var coins = createCoins(playerId,4,colorSequence[playersCount]);
-		this.players[playerId] = new player(playerId, path, coins);
+		this.players[playerId] = new player(playerId, path, coins,extendedPath);
 	},
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue)){
@@ -58,8 +58,8 @@ Game.prototype = {
 	}
 };
 
-var createPath = function(startingPosition,tiles){
-	return pathLib.generateHalfPath(startingPosition).map(function(pos){
+var createPath = function(startingPosition,tiles,operationName){
+	return operationName(startingPosition).map(function(pos){
 			return tiles[pos];
 		});
 };

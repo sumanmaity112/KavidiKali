@@ -62,3 +62,6 @@ exports.generateHalfPath = function(start){
 	return wrapArray(generateRoute(0,4),[start]);
 };
 
+exports.generateExtendedPath = function(start){
+	return lodash.difference(exports.generateFullPath(start),exports.generateHalfPath(start));
+}
