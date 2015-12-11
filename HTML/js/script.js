@@ -32,16 +32,6 @@ var updateDiceValues = function(){
 	});
 };
 
-var parseQueryString = function( queryString ) {
-    var params = {};
-    var queries = queryString.split("&");
-    for ( var i = 0, l = queries.length; i < l; i++ ) {
-    	var temp = queries[i].split('=');
-        params[temp[0]] = temp[1];
-    };
-    return params;
-};
-
 var coinToDOMElement = function(coin) {
 	var coinImage=coin.colour+"_coin.svg";
 	return '<img src="/svg/'+coinImage+'" class="coins" id="'+coin.id+'">';

@@ -10,7 +10,6 @@ var rollDice = function(gameMaster, obj){
 };
 
 var moveCoin = function(gameMaster, obj){
-	console.log('reached moveCoin in operations ===============================================')
 	var player = gameMaster.players[obj.player];
 	player.moveCoin(obj.coin,obj.position);
 };

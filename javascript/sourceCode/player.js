@@ -24,7 +24,6 @@ Player.prototype = {
 				this.path[0].place(coin);
 				coin.move(movesTo);
 				this.diceValues = removeValue(this.diceValues, 6);
-				console.log('======================================================== move Done')
 			};
 		}
 		else{
@@ -36,7 +35,6 @@ Player.prototype = {
 				this.path[nextTileIndex].place(coin);
 				this.diceValues = removeValue(this.diceValues, dice);
 				this.path[currTileIndex].removeCoin(coin);
-				console.log('======================================================== move Done')
 			};
 		};
 	}

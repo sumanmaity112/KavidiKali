@@ -119,7 +119,6 @@ var doInstruction = function(req, res, next){
 	if(application.enquiry({question:'isValidPlayer',player:player})){
 		obj.player = player;
 		var result = application.handleInstruction(obj);
-		console.log('entered if in routes====================================')
 		res.end(result)
 	}
 	else

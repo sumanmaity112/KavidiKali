@@ -160,7 +160,7 @@ describe('Game',function(){
 			game.createPlayer('orange');
 			var player = game.players['orange'];
 			var diceValues = [6];
-			assert.deepEqual(game.getAllValidMovesOfCoin(player.coins['orange1'],diceValues,player.path),player.path[0]);	
+			assert.deepEqual(game.getAllValidMovesOfCoin(player.coins['orange1'],diceValues,player.path),[player.path[0].id]);	
 		});
 		it('gives undefined if the player is off board and player doesnt got special value to enter',function(){
 			game.createPlayer('orange');
