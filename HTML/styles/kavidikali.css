@@ -27,16 +27,17 @@ body{
     padding-left: 0px;
 }
 
-.rightPane{
-	float: left;
-	padding: 5px;
-	margin: 10px;
+.rightPane {
+    float: left;
+    padding: 5px;
+    margin: 10px;
     padding-top: 15px;
     width: 300px;
     height: 420px;
     padding-left: 10px;
-    margin-left: 50px;
-	padding-right: 10px;	
+    margin-top: 109px;
+    margin-left: 136px;
+    padding-right: 10px;
 }
 
 .leftPane{
@@ -56,6 +57,8 @@ body{
     color: white;
     border-radius: 5px;
     font-size: 18px;
+    margin-left: -59px;
+    margin-top: 826px;
 }
 
 #board {
@@ -63,6 +66,7 @@ body{
     table-layout:fixed;
     min-width:800px;
     max-width:800px;
+    margin-top: 79px;
 }
 
 .Dice{
@@ -96,6 +100,7 @@ body{
 
 .header{
 	background-color: lightgrey;
+    margin-top: -66px;
 }
 
 #information{
@@ -105,11 +110,11 @@ body{
 	height: 100%;
 }
 
-#notification{
-    padding-left: 0px;
-    padding-top: 25px;
-    height: 350px;
-    width: 300px;
+#notification {
+    padding-left: 41px;
+    padding-top: 28px;
+    height: 369px;
+    width: 349px;
 }
 
 #name{
@@ -194,8 +199,6 @@ body{
 #userID_table{
     width: 300px;
     border-left-width: 1px;
-    padding-left: 0px;
-    margin-left: 0px;
 }
 
 #diceValues{
@@ -207,6 +210,10 @@ body{
     width: 119px;
 }
 
-
+#playerTurn {
+    font-family: monospace;
+    font-size: 27px;
+    margin-top: -103%;
+}
 
 

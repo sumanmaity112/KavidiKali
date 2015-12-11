@@ -31,9 +31,9 @@ var refreshBoard = function(gameMaster){
 };
 
 var updateWaitingPage = function(gameMaster,obj){
-	// if(Object.keys(gameMaster.players).length==4)
-	// 	return false;
-	// else
+	if(Object.keys(gameMaster.players).length==4)
+		return false;
+	else
 		return (Object.keys(gameMaster.players).length).toString();
 }
 

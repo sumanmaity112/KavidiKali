@@ -8,7 +8,7 @@ describe('Player',function(){
 	it('creates an object with given id and properties "matured" and "diceValues"', function(){
 		var player = new Player('p1');
 		assert.equal('p1',player.id);
-		assert.deepEqual(false,player.matured);
+		assert.equal(false,player.matured);
 	});
 	describe('rollDice',function(){
 		it('rolls the given dice and adds the values to diceValues',function(){

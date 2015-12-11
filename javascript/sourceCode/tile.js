@@ -41,8 +41,24 @@ tile.UnsafeTile.prototype = {
 	},
 	hasAnyCoin:function(){
 		return this.coin;
+	},
+	capture:function(coin,game){
+		if(this.coin && !this.coin.equals(coin)){
+			this.coin.currentPosition = -1;
+			this.coin = coin;
+			informKillerPlayer(coin,game);
+		}
 	}
-}
+};
+
+var informKillerPlayer = function(coin,game){
+	var players = Object.keys(game.players);
+	var killerPlayer = players.filter(function(player){
+		return ld.has(game.players[player].coins,coin.id);
+	})[0];
+	game.players[killerPlayer].matured = true;
+	game.players[killerPlayer].chances++;
+};
 
 var idFromPos= function(i,j) {
 	return i+","+j;

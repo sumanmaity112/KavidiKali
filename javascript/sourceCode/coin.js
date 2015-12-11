@@ -7,11 +7,11 @@ var Coin = function(id,colour){
 
 Coin.prototype = {
 	equals:function(other) {
-		return this.colour==other.colour && this.id==other.id;
+		return this.colour==other.colour;
 	},
 	move:function(movesTo) {
 		this.currentPosition = movesTo;
-	},
+	}
 };
 
 exports.coin=Coin;

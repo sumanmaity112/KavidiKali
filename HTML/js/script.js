@@ -32,6 +32,18 @@ var updateDiceValues = function(){
 	});
 };
 
+var currentPlayer = function(){
+	setInterval(function(){
+		console.log("hdyafhikljhgfds+++++++++")
+		$.get('enquiry/question=currentPlayer',function(data,status){
+			console.log(data+'++++++++++++++')
+			var html=document.querySelector('#playerTurn').innerHTML;
+			html=html.replace('__UserID__',data);
+			document.querySelector('#playerTurn').innerHTML=html;
+		});
+	},1000);
+}
+
 var coinToDOMElement = function(coin) {
 	var coinImage=coin.colour+"_coin.svg";
 	return '<img src="/svg/'+coinImage+'" class="coins" id="'+coin.id+'">';
@@ -91,6 +103,7 @@ var coinClick = function(){
 	});
 };
 
+<<<<<<< HEAD
 var tileClick = function(){
 	if(selectedCoin){
 		$.post('instruction/action=moveCoin&coin='+selectedCoin+'&position='+this.id,function(data){
@@ -107,6 +120,11 @@ var tileClick = function(){
 var chumma = function(){
 	refreshBoard();
 	check();
+=======
+
+var coinClick = function(){
+	$.get('enquiry/question=movesWhere&coin='+this.id)
+>>>>>>> 17b438d1c2403f8a1cc01654d57f9c1895e6e98f
 };
 
 window.onload = function(){
@@ -126,10 +144,26 @@ window.onload = function(){
 		document.getElementById(place).className = 'parking';
 		document.getElementById(place).id = colorSequence[index]+'_yard';
 	});
+<<<<<<< HEAD
 	// setInterval(function(){
 	// 	refreshBoard();
 	// 	check();
 	// },500); 
 	document.querySelector('#dice').onclick = rollDice;	
+=======
+	currentPlayer();
+	setInterval(function(){
+		$.get('update/toUpdate=board',function(data,status){
+			var stateOfGame = JSON.parse(data);
+			var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
+			// removeCoinsFromOldPositions(currentStateOfGame,coinsToBeUpdated);
+			placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
+			currentStateOfGame=stateOfGame;
+		});
+		check();
+	},500); 
+	document.querySelector('#dice').onclick = rollDice;
+	
+>>>>>>> 17b438d1c2403f8a1cc01654d57f9c1895e6e98f
 };
 

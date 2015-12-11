@@ -12,11 +12,6 @@ describe("Coin",function(){
 		assert.ok(c1.equals(c2));
 		
 	});
-	it("equals should negate different coin of same player",function(){
-		var c1=new Coin("p1","red");
-		var c2=new Coin("p2","red");		
-		assert.ok(!c1.equals(c2));
-	});
 	it("equals should negate coin of different color",function(){
 		var c1=new Coin("p1","yellow");
 		var c2=new Coin("p1","red");		
