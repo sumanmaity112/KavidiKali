@@ -1,6 +1,6 @@
-var playerSequence = ['red','yellow','green','blue'];
-var players = {};
+var selectedCoin;
 var currentStateOfGame;
+var activeTiles;
 
 function makeGrid(){
 	var table='<table class="grid">'
@@ -20,7 +20,8 @@ function print(x){
 };
 
 var rollDice = function(){
-	$.post('instruction',{"action":"rollDice"},function(data,status){
+	$.post('instruction/action=rollDice',function(data,status){
+		console.log(data);
 		updateDiceValues();
 	});
 };
@@ -42,7 +43,6 @@ var currentPlayer = function(){
 		});
 	},1000);
 }
-
 
 var coinToDOMElement = function(coin) {
 	var coinImage=coin.colour+"_coin.svg";
@@ -77,22 +77,38 @@ var refreshBoard = function(){
 		var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
 		// removeCoinsFromOldPositions(currentStateOfGame,coinsToBeUpdated);
 		placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
-		var coins = $('.coins')
-		for(var i=0; i<x.length;i++){
-			x[i].onclick = function(){
-				console.log(currentStateOfGame[this.id])
-			};
-		}; 
 		currentStateOfGame=stateOfGame;
+		var coins = $('.coins')
+		for(var i=0; i<coins.length;i++){
+			coins[i].onclick = coinClick;
+		}; 
 	});
 };
 
-var getPlayers = function(){
-	$.get('enquiry/question=players',function(data,status){
-
+var coinClick = function(){
+	selectedCoin = this.id;
+	$.get('enquiry/question=movesTo&coin='+selectedCoin,function(data){
+		activeTiles = JSON.parse(data);
+		console.log(activeTiles);
+		for(var pos in activeTiles){
+			console.log(document.getElementById(activeTiles[pos]))
+			document.getElementById(activeTiles[pos]).onclick = tileClick;
+		};
 	});
 };
 
+var tileClick = function(){
+	if(selectedCoin){
+		$.post('instruction/action=moveCoin&coin='+selectedCoin+'&position='+this.id,function(data){
+			selectedCoin = undefined;
+			refreshBoard();
+			for(var pos in activeTiles){
+				document.getElementById(activeTiles[pos]).onclick = null
+			};
+			activeTiles=undefined;
+		});
+	};
+};
 
 var coinClick = function(){
 	$.get('enquiry/question=movesWhere&coin='+this.id)
@@ -115,18 +131,10 @@ window.onload = function(){
 		document.getElementById(place).className = 'parking';
 		document.getElementById(place).id = colorSequence[index]+'_yard';
 	});
-	currentPlayer();
 	setInterval(function(){
-		$.get('update/toUpdate=board',function(data,status){
-			var stateOfGame = JSON.parse(data);
-			var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
-			// removeCoinsFromOldPositions(currentStateOfGame,coinsToBeUpdated);
-			placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
-			currentStateOfGame=stateOfGame;
-		});
+		refreshBoard();
 		check();
 	},500); 
-	document.querySelector('#dice').onclick = rollDice;
-	
+	document.querySelector('#dice').onclick = rollDice;	
 };
 

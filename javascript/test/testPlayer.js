@@ -1,3 +1,4 @@
+var Game = require('../sourceCode/game.js').game;
 var Player = require('../sourceCode/player.js').player;
 var Dice = require('../sourceCode/dice.js').dice;
 var Coin = require('../sourceCode/coin.js').coin;
@@ -15,21 +16,48 @@ describe('Player',function(){
 			var dice = new Dice([2]);
 			assert.deepEqual(2,player.rollDice(dice));
 			assert.deepEqual(player.diceValues,[2]);
-			
 		});
 	});
 
-	// describe('moveCoin',function(){
-	// 	it.skip('moves the selected coin to the given place',function(){
-	// 		var board = new Board(['2,3','4,2'],5);
-	// 		var player = new Player('red');
-	// 		var coin = player.coins['red1'];
-	// 		player.moveCoin(coin.id,'3,3',board);
-	// 		assert.deepEqual(coin.currentPosition,'3,3');
-	// 		player.moveCoin(coin.id,'1,1',board);
-	// 		assert.deepEqual(coin.currentPosition,'1,1');
-			
-	// 	});
+	describe('moveCoin',function(){
+		it('moves the selected coin to home if coin is off-Board and player has six on dice',function(){
+			var game = new Game([6],5,[1,2,3,4,5,6])
+			var dice = new Dice([6]);
+			game.createPlayer('red');
+			var player = game.players['red'];
+			player.rollDice(dice);
+			var coin = player.coins['red1'];
+			player.moveCoin('red1',player.path[0].id);
+			assert.deepEqual(coin.currentPosition,player.path[0].id);
+		});
+		it('moves the selected coin to the given place',function(){
+			var game = new Game([6],5,[1,2,3,4,5,6])
+			var dice = new Dice([6]);
+			game.createPlayer('red');
+			var player = game.players['red'];
+			player.rollDice(dice);
+			var coin = player.coins['red1'];
+			player.moveCoin('red1',player.path[0].id);
+			assert.deepEqual(coin.currentPosition,player.path[0].id);
+			var dice1 = new Dice([2]);
+			player.rollDice(dice1);
+			player.moveCoin('red1','4,0');
+			assert.deepEqual(coin.currentPosition,player.path[2].id);
+		});
+		it('doesn\'t moves the selected coin to the unvalid position',function(){
+			var game = new Game([6],5,[1,2,3,4,5,6])
+			var dice = new Dice([6]);
+			game.createPlayer('red');
+			var player = game.players['red'];
+			player.rollDice(dice);
+			var coin = player.coins['red1'];
+			player.moveCoin('red1',player.path[0].id);
+			assert.deepEqual(coin.currentPosition,player.path[0].id);
+			var dice1 = new Dice([2]);
+			player.rollDice(dice1);
+			player.moveCoin('red1','4,2');
+			assert.deepEqual(coin.currentPosition,player.path[0].id);
+		});
 	// 	it.skip('kills the coin present in the position to be moved',function(){
 	// 		var board = new Board(['2,3','4,2'],5);
 	// 		var player1 = new Player('red');
@@ -51,5 +79,5 @@ describe('Player',function(){
 	// 		player2.moveCoin('blue2',movesBy,board);
 	// 		assert.deepEqual(board.getCoins(movesBy),[player1.coins['red1'],player2.coins['blue2']]);
 	// 	});
-	// });
-});
+	});
+}); 

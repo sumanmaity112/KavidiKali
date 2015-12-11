@@ -7,7 +7,10 @@ var Coin = function(id,colour){
 
 Coin.prototype = {
 	equals:function(other) {
-		return this.colour==other.colour ;
+		return this.colour==other.colour;
+	},
+	move:function(movesTo) {
+		this.currentPosition = movesTo;
 	}
 };
 

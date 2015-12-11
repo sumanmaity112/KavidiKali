@@ -12,6 +12,15 @@ tile.SafeTile.prototype = {
 	},
 	contains:function(coin) {
 		return ld.findIndex(this.coins,coin)>=0;
+	},
+	removeCoin:function(coin) {
+		var ind = ld.findIndex(this.coins,coin);
+		this.coins = this.coins.filter(function(value,index){
+			return ind!=index;
+		});
+	},
+	hasAnyCoin:function(){
+		return false;
 	}
 }
 
@@ -25,7 +34,13 @@ tile.UnsafeTile.prototype = {
 		this.coin=coin;
 	},
 	contains:function(coin) {
-		return this.coin.equals(coin);
+		return this.hasAnyCoin() && this.coin.equals(coin);
+	},
+	removeCoin:function(coin) {
+		this.coin = undefined;
+	},
+	hasAnyCoin:function(){
+		return this.coin;
 	},
 	capture:function(coin,game){
 		if(this.coin && !this.coin.equals(coin)){
