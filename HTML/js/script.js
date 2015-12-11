@@ -31,13 +31,13 @@ var updateDiceValues = function(){
 	});
 };
 
-var currentPlyer = function(){
-	setTimeout(function(){
+var currentPlayer = function(){
+	setInterval(function(){
 		console.log("hdyafhikljhgfds+++++++++")
-		$.get('enquiry/question=currentPlyer',function(data,status){
+		$.get('enquiry/question=currentPlayer',function(data,status){
 			console.log(data+'++++++++++++++')
 			var html=document.querySelector('#playerTurn').innerHTML;
-			html=html.replace('__UserID__',data.id);
+			html=html.replace('__UserID__',data);
 			document.querySelector('#playerTurn').innerHTML=html;
 		});
 	},1000);
@@ -115,6 +115,7 @@ window.onload = function(){
 		document.getElementById(place).className = 'parking';
 		document.getElementById(place).id = colorSequence[index]+'_yard';
 	});
+	currentPlayer();
 	setInterval(function(){
 		$.get('update/toUpdate=board',function(data,status){
 			var stateOfGame = JSON.parse(data);

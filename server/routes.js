@@ -153,7 +153,7 @@ var handleUpdate = function(req, res, next){
 var handleEnquiry = function(req,res,next){
 	var obj = querystring.parse(req.url.slice(9));
 	var player = querystring.parse(req.headers.cookie).userId;
-	if(application.enquiry({question:'isValidPlayer',player:player})&& lodash.has(updates,obj.question)){
+	if(application.enquiry({question:'isValidPlayer',player:player})){
 		obj.player = player;
 		var response = application.enquiry(obj);
 		if(!response)
