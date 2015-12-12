@@ -33,15 +33,11 @@ var updateDiceValues = function(){
 };
 
 var currentPlayer = function(){
-	setInterval(function(){
-		console.log("hdyafhikljhgfds+++++++++")
-		$.get('enquiry/question=currentPlayer',function(data,status){
-			console.log(data+'++++++++++++++')
-			var html=document.querySelector('#playerTurn').innerHTML;
-			html=html.replace('__UserID__',data);
-			document.querySelector('#playerTurn').innerHTML=html;
-		});
-	},1000);
+	$.get('enquiry/question=currentPlayer',function(data,status){
+		var html=document.querySelector('#playerTurn').innerHTML;
+		html=html.replace('__UserID__',data);
+		document.querySelector('#playerTurn').innerHTML=html;
+	});
 }
 
 var coinToDOMElement = function(coin) {
@@ -103,7 +99,7 @@ var tileClick = function(){
 			selectedCoin = undefined;
 			refreshBoard();
 			for(var pos in activeTiles){
-				document.getElementById(activeTiles[pos]).onclick = null
+				document.getElementById(activeTiles[pos]).onclick = null;
 			};
 			activeTiles=undefined;
 		});
@@ -134,6 +130,7 @@ window.onload = function(){
 	setInterval(function(){
 		refreshBoard();
 		check();
+		currentPlayer();
 	},500); 
 	document.querySelector('#dice').onclick = rollDice;	
 };

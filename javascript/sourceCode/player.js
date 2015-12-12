@@ -1,13 +1,14 @@
 var coin = require('./coin.js').coin;
 var ld = require('lodash');
 
-var Player = function(id, path, coins){
+var Player = function(id, path, coins,extendedPath){
 	this.id = id;
 	this.matured = false;
 	this.chances = 0;
 	this.diceValues=[];
 	this.coins = coins;
 	this.path = path;
+	this.extendedPath = extendedPath;
 };
 
 Player.prototype = {
@@ -16,6 +17,12 @@ Player.prototype = {
 		this.diceValues.push(diceValue);
 		this.chances--;
 		return diceValue;
+	},
+	whenCoinKills:function(){
+		this.matured = true;
+		this.chances++;
+		if(this.path.length==16)
+			this.path = this.path.concat(this.extendedPath);
 	},
 	moveCoin : function(coinID,movesTo){
 		var coin = this.coins[coinID];

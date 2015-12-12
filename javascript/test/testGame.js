@@ -4,6 +4,16 @@ var Dice = require('../sourceCode/dice.js').dice;
 
 var assert = require('assert');
 
+var findPlayersCoinDetails = function(coins){
+	var coinsDetails={};
+	Object.keys(coins).forEach(function(coin){
+		coinsDetails[coin] = {'id':coins[coin].id,'currentPosition':coins[coin].currentPosition,
+				'reachedDestination' : coins[coin].reachedDestination, 'colour': coins[coin].colour};
+	})
+	return coinsDetails;
+}
+
+
 describe('Game',function(){
 	var game;
 	beforeEach(function(){
@@ -72,7 +82,7 @@ describe('Game',function(){
 						suman3 : { id: 'suman3',currentPosition: -1,reachedDestination: false,colour: 'red'},
 						suman4 : { id: 'suman4',currentPosition: -1,reachedDestination: false,colour: 'red'}
 					};
-			assert.deepEqual(coins,game.players.suman.coins);
+			assert.deepEqual(coins,findPlayersCoinDetails(game.players.suman.coins));
 		});
 		it('creates multiple players with their respective coins',function(){
 			game.createPlayer('suman');
@@ -81,7 +91,7 @@ describe('Game',function(){
 						suman3 : { id: 'suman3',currentPosition: -1,reachedDestination: false,colour: 'red'},
 						suman4 : { id: 'suman4',currentPosition: -1,reachedDestination: false,colour: 'red'}
 					};
-			assert.deepEqual(coins,game.players.suman.coins);
+			assert.deepEqual(coins,findPlayersCoinDetails(game.players.suman.coins));
 
 			game.createPlayer('syani');
 			coins = {syani1 : { id: 'syani1',currentPosition: -1,reachedDestination: false,colour: 'green'},
@@ -89,21 +99,21 @@ describe('Game',function(){
 					syani3 : { id: 'syani3',currentPosition: -1,reachedDestination: false,colour: 'green'},
 					syani4 : { id: 'syani4',currentPosition: -1,reachedDestination: false,colour: 'green'}
 				};
-			assert.deepEqual(coins,game.players.syani.coins);
+			assert.deepEqual(coins,findPlayersCoinDetails(game.players.syani.coins));
 			game.createPlayer('saran');
 			coins = {saran1 : { id: 'saran1',currentPosition: -1,reachedDestination: false,colour: 'blue'},
 					saran2 : { id: 'saran2',currentPosition: -1,reachedDestination: false,colour: 'blue'},
 					saran3 : { id: 'saran3',currentPosition: -1,reachedDestination: false,colour: 'blue'},
 					saran4 : { id: 'saran4',currentPosition: -1,reachedDestination: false,colour: 'blue'}
 				};
-			assert.deepEqual(coins,game.players.saran.coins);
+			assert.deepEqual(coins,findPlayersCoinDetails(game.players.saran.coins));
 			game.createPlayer('supriya');
 			coins = {supriya1 : { id: 'supriya1',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
 					supriya2 : { id: 'supriya2',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
 					supriya3 : { id: 'supriya3',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
 					supriya4 : { id: 'supriya4',currentPosition: -1,reachedDestination: false,colour: 'yellow'}
 				};
-			assert.deepEqual(coins,game.players.supriya.coins);
+			assert.deepEqual(coins,findPlayersCoinDetails(game.players.supriya.coins));
 		});
 		
 	});
