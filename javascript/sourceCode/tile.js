@@ -64,7 +64,7 @@ tile.generateTiles = function(size){
 		};
 	};
 	exports.generateSafePositions(size).forEach(function(pos){
-		grid[pos]=new tile.SafeTile(pos);
+		grid[pos]= new tile.SafeTile(pos);
 	});
 	return grid;
 };

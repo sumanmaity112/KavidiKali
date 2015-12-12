@@ -45,19 +45,6 @@ Player.prototype = {
 			};
 		};
 	}
-// 	kill : function(coin){
-// 		coin.die();
-// 		this.chances++;
-// 		this.matured = true;
-// 	},
-// 	get path(){
-// 		if(this.matured){
-// 			var positions=path.generateFullPath(this.startPosition);
-// 			positions.map(function(pos){return tiles[pos]});
-// 		}
-// 		var playerPath = path.generateHalfPath(this.startPosition);
-// 		return playerPath.concat(playerPath);
-// 	}
 };
 
 
