@@ -39,13 +39,33 @@ describe("Unsafe Tile",function(){
 			defaultGame.createPlayer("suman");
 			var suman = defaultGame.players.suman;
 			var tilesId = '2,1';
+			var sumanPath = suman.path.map(function(tile){return tile.id});
+			var path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1'];
+			assert.deepEqual(sumanPath,path);
+
 			defaultGame.tiles[tilesId].coin=sooraj.coins.sooraj1;
 			sooraj.coins.sooraj1.currentPosition = tilesId;
 			suman.coins.suman1.currentPosition = tilesId;
 			defaultGame.tiles[tilesId].capture(suman.coins.suman1,defaultGame);
-
 			assert.equal(sooraj.coins.sooraj1.currentPosition,-1);
-			assert.equal(suman.chances,1)
+			assert.equal(suman.chances,1);
+			assert.ok(suman.matured);
+			sumanPathAfterKilling = suman.path.map(function(tile){return tile.id});
+			path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1',
+				'3,1','2,1','1,1','1,2','1,3','2,3','3,3','3,2','2,2'];
+			assert.deepEqual(sumanPathAfterKilling,path);
+			
+			tilesId = '2,3';
+			defaultGame.tiles[tilesId].place(sooraj.coins.sooraj2);
+			defaultGame.tiles[tilesId].place(suman.coins.suman2);
+			defaultGame.tiles[tilesId].capture(suman.coins.suman1,defaultGame);
+			assert.equal(sooraj.coins.sooraj2.currentPosition,-1);
+			assert.equal(suman.chances,1);
+			assert.ok(suman.matured);
+			sumanPathAfterKilling = suman.path.map(function(tile){return tile.id});
+			path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1',
+				'3,1','2,1','1,1','1,2','1,3','2,3','3,3','3,2','2,2'];
+			assert.deepEqual(sumanPathAfterKilling,path);
 		});
 		it("does not do anything for similar coin",function(){
 			defaultGame.createPlayer("suman");
@@ -55,7 +75,6 @@ describe("Unsafe Tile",function(){
 			suman.coins.suman1.currentPosition = tilesId;
 			suman.coins.suman2.currentPosition = tilesId;
 			defaultGame.tiles[tilesId].capture(suman.coins.suman1,defaultGame);
-			
 			assert.equal(suman.coins.suman2.currentPosition,tilesId);
 			assert.equal(suman.chances,0)
 		});

@@ -33,15 +33,11 @@ var updateDiceValues = function(){
 };
 
 var currentPlayer = function(){
-	setInterval(function(){
-		console.log("hdyafhikljhgfds+++++++++")
-		$.get('enquiry/question=currentPlayer',function(data,status){
-			console.log(data+'++++++++++++++')
-			var html=document.querySelector('#playerTurn').innerHTML;
-			html=html.replace('__UserID__',data);
-			document.querySelector('#playerTurn').innerHTML=html;
-		});
-	},1000);
+	$.get('enquiry/question=currentPlayer',function(data,status){
+		var html=document.querySelector('#playerTurn').innerHTML;
+		html=html.replace('__UserID__',data);
+		document.querySelector('#playerTurn').innerHTML=html;
+	});
 }
 
 var coinToDOMElement = function(coin) {
@@ -69,16 +65,23 @@ var placeCoin = function(coin){
 		document.getElementById(coin.colour+'_yard').innerHTML+=coinToDOMElement(coin);
 	else
 		document.getElementById(coin.currentPosition).innerHTML+=coinToDOMElement(coin)
-}
+};
+
+var removeCoinsFromOldPositions = function(eraseCoin){
+	eraseCoin.forEach(function(coinId) {
+		$(coinId).remove();
+	});
+} 
 
 var refreshBoard = function(){
 	$.get('update/toUpdate=board',function(data,status){
 		var stateOfGame = JSON.parse(data);
 		var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
-		// removeCoinsFromOldPositions(currentStateOfGame,coinsToBeUpdated);
+		removeCoinsFromOldPositions(coinsToBeUpdated);
+		
 		placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
 		currentStateOfGame=stateOfGame;
-		var coins = $('.coins')
+		var coins = $('.coins');
 		for(var i=0; i<coins.length;i++){
 			coins[i].onclick = coinClick;
 		}; 
@@ -103,7 +106,7 @@ var tileClick = function(){
 			selectedCoin = undefined;
 			refreshBoard();
 			for(var pos in activeTiles){
-				document.getElementById(activeTiles[pos]).onclick = null
+				document.getElementById(activeTiles[pos]).onclick = null;
 			};
 			activeTiles=undefined;
 		});
@@ -130,6 +133,7 @@ window.onload = function(){
 	setInterval(function(){
 		refreshBoard();
 		check();
+		currentPlayer();
 	},500); 
 	document.querySelector('#dice').onclick = rollDice;	
 };

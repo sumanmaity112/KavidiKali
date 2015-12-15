@@ -42,38 +42,29 @@ tile.UnsafeTile.prototype = {
 	hasAnyCoin:function(){
 		return this.coin;
 	},
-	capture:function(coin,game){
+	capture:function(coin){
 		if(this.coin && !this.coin.equals(coin)){
-			this.coin.currentPosition = -1;
+			this.coin.kill();
 			this.coin = coin;
-			informKillerPlayer(coin,game);
+			this.coin.killed();
 		}
 	}
 };
 
-var informKillerPlayer = function(coin,game){
-	var players = Object.keys(game.players);
-	var killerPlayer = players.filter(function(player){
-		return ld.has(game.players[player].coins,coin.id);
-	})[0];
-	game.players[killerPlayer].matured = true;
-	game.players[killerPlayer].chances++;
-};
-
-var idFromPos= function(i,j) {
-	return i+","+j;
+var idFromPos= function(column,row) {
+	return column+","+row;
 };
 
 tile.generateTiles = function(size){
 	var grid = {};
-	for (var i = 0; i < size; i++) {
-		for (var j = 0; j < size; j++) {
-			var id=idFromPos(j,i);
+	for (var row = 0; row < size; row++) {
+		for (var column = 0; column < size; column++) {
+			var id=idFromPos(column,row);
 			grid[id]= new tile.UnsafeTile(id);
 		};
 	};
 	exports.generateSafePositions(size).forEach(function(pos){
-		grid[pos]=new tile.SafeTile(pos);
+		grid[pos]= new tile.SafeTile(pos);
 	});
 	return grid;
 };

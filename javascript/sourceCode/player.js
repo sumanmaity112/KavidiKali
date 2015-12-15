@@ -1,13 +1,17 @@
 var coin = require('./coin.js').coin;
 var ld = require('lodash');
+var EventEmitter=require('events').EventEmitter;
 
-var Player = function(id, path, coins){
+var Player = function(id, path, coins,extendedPath){
 	this.id = id;
 	this.matured = false;
 	this.chances = 0;
 	this.diceValues=[];
 	this.coins = coins;
 	this.path = path;
+	this.extendedPath = extendedPath;
+	this.emitter = new EventEmitter();
+
 };
 
 Player.prototype = {
@@ -16,6 +20,12 @@ Player.prototype = {
 		this.diceValues.push(diceValue);
 		this.chances--;
 		return diceValue;
+	},
+	whenCoinKills:function(){
+		this.matured = true;
+		this.chances++;
+		if(this.path.length==16)
+			this.path = this.path.concat(this.extendedPath);
 	},
 	moveCoin : function(coinID,movesTo){
 		var coin = this.coins[coinID];
@@ -37,20 +47,21 @@ Player.prototype = {
 				this.path[currTileIndex].removeCoin(coin);
 			};
 		};
+		this.isWin;
+	},
+	get isWin(){
+		var coins = this.coins;
+		var allCoinReachedDestination = Object.keys(this.coins).every(function(coin){
+			return coins[coin].currentPosition=='2,2';
+		});
+		if(allCoinReachedDestination){
+			this.emitter.emit("Game_over");
+			return true;
+		}
+	},
+	addListener: function(listener){
+		this.emitter.addListener("Game_over",listener.whenGameOver.bind(listener));
 	}
-// 	kill : function(coin){
-// 		coin.die();
-// 		this.chances++;
-// 		this.matured = true;
-// 	},
-// 	get path(){
-// 		if(this.matured){
-// 			var positions=path.generateFullPath(this.startPosition);
-// 			positions.map(function(pos){return tiles[pos]});
-// 		}
-// 		var playerPath = path.generateHalfPath(this.startPosition);
-// 		return playerPath.concat(playerPath);
-// 	}
 };
 
 
