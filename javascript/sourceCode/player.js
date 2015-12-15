@@ -1,5 +1,6 @@
 var coin = require('./coin.js').coin;
 var ld = require('lodash');
+var EventEmitter=require('events').EventEmitter;
 
 var Player = function(id, path, coins,extendedPath){
 	this.id = id;
@@ -9,6 +10,8 @@ var Player = function(id, path, coins,extendedPath){
 	this.coins = coins;
 	this.path = path;
 	this.extendedPath = extendedPath;
+	this.emitter = new EventEmitter();
+
 };
 
 Player.prototype = {
@@ -44,6 +47,20 @@ Player.prototype = {
 				this.path[currTileIndex].removeCoin(coin);
 			};
 		};
+		this.isWin;
+	},
+	get isWin(){
+		var coins = this.coins;
+		var allCoinReachedDestination = Object.keys(this.coins).every(function(coin){
+			return coins[coin].currentPosition=='2,2';
+		});
+		if(allCoinReachedDestination){
+			this.emitter.emit("Game_over");
+			return true;
+		}
+	},
+	addListener: function(listener){
+		this.emitter.addListener("Game_over",listener.whenGameOver.bind(listener));
 	}
 };
 

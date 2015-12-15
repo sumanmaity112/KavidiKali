@@ -11,7 +11,7 @@ var findPlayersCoinDetails = function(coins){
 				'reachedDestination' : coins[coin].reachedDestination, 'colour': coins[coin].colour};
 	})
 	return coinsDetails;
-}
+};
 
 
 describe('Game',function(){
@@ -286,6 +286,20 @@ describe('Game',function(){
 			game.createPlayer('red');
 			var player = game.players['red'].diceValues = [6];
 			assert.equal(game.anyMoreMoves('red'),true);
+		});
+	});
+	describe("whenGameOver",function(){
+		it("reset the game master when all coins of a player already reached destination",function(){
+			game.createPlayer("suman");
+			var suman = game.players.suman;
+			suman.diceValues.push(1);
+			suman.coins.suman1.currentPosition="2,2";
+			suman.coins.suman2.currentPosition="2,2";
+			suman.coins.suman3.currentPosition="2,2";
+			assert.ok(!suman.isWin);
+			suman.coins.suman4.currentPosition="2,2";
+			assert.ok(suman.isWin);
+			assert.ok(game.players,{});
 		});
 	});
 });

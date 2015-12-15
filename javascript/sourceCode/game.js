@@ -33,6 +33,7 @@ Game.prototype = {
 			var coin=newPlayer.coins[coinId];
 			coin.addListener(newPlayer);
 		});
+		newPlayer.addListener(this);
 		this.players[playerId]=newPlayer;
 	},
 	setChances : function(diceValue,playerId){
@@ -89,6 +90,10 @@ Game.prototype = {
 			this.currentPlayer.chances++;
 		};
 		return this.currentPlayer;
+	},
+	whenGameOver : function(){
+		this.players={};
+		this.counter=0;
 	}
 };
 

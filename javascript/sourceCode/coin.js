@@ -4,8 +4,8 @@ var Coin = function(id,colour){
 	this.id = id;
 	this.currentPosition = -1 ;
 	this.reachedDestination = false;
-	this.colour=colour;
-	this.emitter=new EventEmitter();
+	this.colour = colour;
+	this.emitter = new EventEmitter();
 };
 
 Coin.prototype = {
