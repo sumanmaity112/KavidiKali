@@ -1,6 +1,7 @@
 var selectedCoin;
 var currentStateOfGame;
 var activeTiles;
+var turnTemplate = "Its __UserID__'s turn "
 
 function makeGrid(){
 	var table='<table class="grid">'
@@ -34,8 +35,7 @@ var updateDiceValues = function(){
 
 var currentPlayer = function(){
 	$.get('enquiry/question=currentPlayer',function(data,status){
-		var html=document.querySelector('#playerTurn').innerHTML;
-		html=html.replace('__UserID__',data);
+		var html = turnTemplate.replace('__UserID__',data);
 		document.querySelector('#playerTurn').innerHTML=html;
 	});
 }
@@ -67,9 +67,10 @@ var placeCoin = function(coin){
 		document.getElementById(coin.currentPosition).innerHTML+=coinToDOMElement(coin)
 };
 
-var removeCoinsFromOldPositions = function(eraseCoin){
-	eraseCoin.forEach(function(coinId) {
-		$(coinId).remove();
+var removeCoinsFromOldPositions = function(coinsToBeErased){
+	coinsToBeErased.forEach(function(coinId) {
+		console.log('hahaha============================',coinId)
+		$("#"+coinId).remove();
 	});
 } 
 
@@ -78,7 +79,7 @@ var refreshBoard = function(){
 		var stateOfGame = JSON.parse(data);
 		var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
 		removeCoinsFromOldPositions(coinsToBeUpdated);
-		
+
 		placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
 		currentStateOfGame=stateOfGame;
 		var coins = $('.coins');

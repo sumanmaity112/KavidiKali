@@ -1,12 +1,11 @@
 var lib = require('./tile.js');
+var tiles = lib.tile;
+var generateSafePositions = lib.generateSafePositions;
 var pathLib = require('./generatePath.js');
 var dice = require('./dice.js').dice;
 var player = require('./player.js').player;
 var Coin = require('./coin.js').coin;
 var ld  =  require('lodash');
-
-var tiles = lib.tile;
-var generateSafePositions = lib.generateSafePositions;
 
 var Game = function(specialValues,size,diceValues){
 	this.safePositions = generateSafePositions(size);
@@ -25,16 +24,10 @@ Game.prototype = {
 		var playersCount = Object.keys(this.players).length;
 		var colorSequence=["red","green","blue","yellow"];
 		var startingPosition = this.safePositions[playersCount];
-		var path = createPath(startingPosition,this.tiles,pathLib.generateHalfPath);
-		var extendedPath  = createPath(startingPosition,this.tiles,pathLib.generateExtendedPath);
+		var operationName = pathLib.generateHalfPath;
+		var path = createPath(startingPosition,this.tiles,operationName);
 		var coins = createCoins(playerId,4,colorSequence[playersCount]);
-		var newPlayer = new player(playerId, path, coins,extendedPath);
-		Object.keys(coins).forEach(function(coinId){
-			var coin=newPlayer.coins[coinId];
-			coin.addListener(newPlayer);
-		});
-		newPlayer.addListener(this);
-		this.players[playerId]=newPlayer;
+		this.players[playerId] = new player(playerId, path, coins);
 	},
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue)){
@@ -92,10 +85,6 @@ Game.prototype = {
 			this.players[this.currentPlayer].chances++;
 		};
 		return this.currentPlayer;
-	},
-	whenGameOver : function(){
-		this.players={};
-		this.counter=0;
 	}
 };
 
@@ -114,10 +103,18 @@ var getTheValidMove = function(coin,movesBy,path){
 	return path[nextIndex].id;
 };
 
+// var createPath = function(startingPosition,tiles){
+// 	return pathLib.generateHalfPath(startingPosition).map(function(pos){
+// >>>>>>> d28af432d4796413fad3ba83dab9c7231a9a5ab9
+// 			return tiles[pos];
+// 		});
+// };	
+
 var createCoins =  function(id,numberOfCoins,colour){
 	var coins = new Object;
-	for(var count=1; count<=numberOfCoins; count++)
+	for(var count=1; count<=numberOfCoins; count++){
 		coins[id+count] = new Coin(id+count,colour);
+	}
 	return coins;
 };
 
