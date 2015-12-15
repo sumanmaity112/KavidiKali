@@ -3,15 +3,16 @@ var queryString = require('querystring');
 
 
 var rollDice = function(gameMaster, obj){
-	var player = obj.player;
-	var diceValue = gameMaster.players[player].rollDice(gameMaster.dice);
-	gameMaster.setChances(diceValue,player) || gameMaster.nextPlayer();
+	var player = gameMaster.players[obj.player];
+	var diceValue = player.chances>0 && player.rollDice(gameMaster.dice);
+	gameMaster.setChances(diceValue,player.id) || gameMaster.nextPlayer();
 	return 'diceValue'+diceValue;
 };
 
 var moveCoin = function(gameMaster, obj){
 	var player = gameMaster.players[obj.player];
 	player.moveCoin(obj.coin,obj.position);
+	gameMaster.anyMoreMoves(obj.player) || gameMaster.nextPlayer();
 };
 
 exports.actions = {
@@ -53,14 +54,21 @@ var movesTo = function(gameMaster, obj){
 	return temp;
 };
 
+var moreChanceToRollDice = function(gameMaster, obj){
+	var currPlayer = gameMaster.currentPlayer;
+	var chances = gameMaster.players[currPlayer].chances;
+	if(currPlayer==obj.player && chances>0)
+		return 'true';
+	return 'false';
+};
 
 exports.enquiries = [
 	{enquiry:'isValidPlayer', action : function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)}},
 	{enquiry:'currentPlayer', action : function(gameMaster){ return gameMaster.currentPlayer;}},
 	{enquiry:'players', action : function(gameMaster){ return Object.keys(gameMaster.players);}},
 	{enquiry:'isItMyChance', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true';}},
-	{enquiry:'moreChanceToRollDice', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true' || 'false';}},
+	{enquiry:'moreChanceToRollDice', action : moreChanceToRollDice},
 	{enquiry:'isAllPlayersJoined', action: function(gameMaster){return Object.keys(gameMaster.players).length==4}},
 	{enquiry:'doHaveMoves', action : function(gameMaster,obj){ return gameMaster.anyMoreMoves(obj.player).toString();}},
-	{enquiry:'movesTo', action : movesTo}
+	{enquiry:'movesWhere', action : movesTo}
 ];

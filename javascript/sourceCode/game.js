@@ -33,7 +33,8 @@ Game.prototype = {
 		if(this.analyzeDiceValue(diceValue)){
 			this.players[playerId].chances++;
 			return true;  
-		}
+		};
+		return false;
 	},
 	isPlayerMatured : function(player){
 		return player.matured;
@@ -45,8 +46,8 @@ Game.prototype = {
 			var coins=players[player].coins
 			for (var coin in coins) {
 				state[coin]=coins[coin];
-			}
-		}
+			};
+		};
 		return state;
 	},
 	get currentPlayer(){
@@ -78,21 +79,21 @@ Game.prototype = {
 	nextPlayer : function(master){
 		var players = Object.keys(this.players);
 		if(!this.anyMoreMoves(this.currentPlayer)){
-			this.currentPlayer = [];
+			var player = this.players[this.currentPlayer];
+			player.diceValues = [];
 			this.counter = (this.counter+1)%players.length;
-			this.currentPlayer.chances++;
+			this.players[this.currentPlayer].chances++;
 		};
 		return this.currentPlayer;
 	}
 };
 
-// <<<<<<< HEAD
 var createPath = function(startingPosition,tiles,operationName){
 	return operationName(startingPosition).map(function(pos){
 		return tiles[pos];
 	});
 };
-// =======
+
 var getTheValidMove = function(coin,movesBy,path){
 	var coinPos = ld.findIndex(path,{id:coin.currentPosition});
 	var nextIndex = coinPos+movesBy;

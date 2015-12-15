@@ -8,7 +8,7 @@ var game = require('./../javascript/sourceCode/game.js').game;
 var gameMaster = new game([6],5,[1,2,3,4,5,6]);
 
 exports.handleInstruction = function(obj){
-	if(obj.player == gameMaster.nextPlayer())
+	if(obj.player == gameMaster.currentPlayer)
 		return actions[obj.action](gameMaster, obj);
 	return 'Wrong Player';
 };

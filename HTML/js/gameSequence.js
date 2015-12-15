@@ -17,7 +17,7 @@ var moreChanceToRollDice = function(checkLen){
 
 var doHaveMoves = function(checkLen){
 	$.get('enquiry/question=doHaveMoves',function(data){
-		if(data=='false'){
+		if(data=='false'){				
 			counter = (counter+1)%checkLen;
 		}
 	});

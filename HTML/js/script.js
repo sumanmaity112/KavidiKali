@@ -87,7 +87,7 @@ var refreshBoard = function(){
 
 var coinClick = function(){
 	selectedCoin = this.id;
-	$.get('enquiry/question=movesTo&coin='+selectedCoin,function(data){
+	$.get('enquiry/question=movesWhere&coin='+selectedCoin,function(data){
 		activeTiles = JSON.parse(data);
 		console.log(activeTiles);
 		for(var pos in activeTiles){
@@ -108,10 +108,6 @@ var tileClick = function(){
 			activeTiles=undefined;
 		});
 	};
-};
-
-var coinClick = function(){
-	$.get('enquiry/question=movesWhere&coin='+this.id)
 };
 
 window.onload = function(){
@@ -137,4 +133,3 @@ window.onload = function(){
 	},500); 
 	document.querySelector('#dice').onclick = rollDice;	
 };
-
