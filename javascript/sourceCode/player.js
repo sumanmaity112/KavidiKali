@@ -29,25 +29,27 @@ Player.prototype = {
 	},
 	moveCoin : function(coinID,movesTo){
 		var coin = this.coins[coinID];
-		if(coin.currentPosition==-1){
-			if(this.path[0].id == movesTo && this.diceValues.indexOf(6)>=0){
-				this.path[0].place(coin);
-				coin.move(movesTo);
-				this.diceValues = removeValue(this.diceValues, 6);
+		if(coin){
+			if(coin.currentPosition==-1){
+				if(this.path[0].id == movesTo && this.diceValues.indexOf(6)>=0){
+					this.path[0].place(coin);
+					coin.move(movesTo);
+					this.diceValues = removeValue(this.diceValues, 6);
+				};
+			}
+			else{
+				var currTileIndex = ld.findIndex(this.path,{id:coin.currentPosition});
+				var nextTileIndex = ld.findIndex(this.path,{id:movesTo});
+				var dice = nextTileIndex - currTileIndex;
+				if(this.diceValues.indexOf(dice)>=0){
+					coin.move(movesTo);
+					this.path[nextTileIndex].place(coin);
+					this.diceValues = removeValue(this.diceValues, dice);
+					this.path[currTileIndex].removeCoin(coin);
+				};
 			};
+			this.isWin;	
 		}
-		else{
-			var currTileIndex = ld.findIndex(this.path,{id:coin.currentPosition});
-			var nextTileIndex = ld.findIndex(this.path,{id:movesTo});
-			var dice = nextTileIndex - currTileIndex;
-			if(this.diceValues.indexOf(dice)>=0){
-				coin.move(movesTo);
-				this.path[nextTileIndex].place(coin);
-				this.diceValues = removeValue(this.diceValues, dice);
-				this.path[currTileIndex].removeCoin(coin);
-			};
-		};
-		this.isWin;
 	},
 	get isWin(){
 		var coins = this.coins;
@@ -61,6 +63,9 @@ Player.prototype = {
 	},
 	addListener: function(listener){
 		this.emitter.addListener("Game_over",listener.whenGameOver.bind(listener));
+	},
+	get coinColor(){
+		return this.coins[this.id+'1'].colour;
 	}
 };
 

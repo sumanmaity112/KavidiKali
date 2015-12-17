@@ -24,10 +24,16 @@ Game.prototype = {
 		var playersCount = Object.keys(this.players).length;
 		var colorSequence=["red","green","blue","yellow"];
 		var startingPosition = this.safePositions[playersCount];
-		var operationName = pathLib.generateHalfPath;
-		var path = createPath(startingPosition,this.tiles,operationName);
+		var path = createPath(startingPosition,this.tiles,pathLib.generateHalfPath);
+		var extendedPath  = createPath(startingPosition,this.tiles,pathLib.generateExtendedPath);
 		var coins = createCoins(playerId,4,colorSequence[playersCount]);
-		this.players[playerId] = new player(playerId, path, coins);
+		var newPlayer = new player(playerId, path, coins,extendedPath);
+		Object.keys(coins).forEach(function(coinId){
+			var coin=newPlayer.coins[coinId];
+			coin.addListener(newPlayer);
+		});
+		newPlayer.addListener(this);
+		this.players[playerId]=newPlayer;
 	},
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue)){
@@ -56,14 +62,17 @@ Game.prototype = {
 	},
 	getAllValidMovesOfCoin : function(coin,diceValues,path){
 		var specialValue = this.specialValues;
-		if(coin.currentPosition==-1){
-			return ld.intersection(diceValues,specialValue).length && [path[0].id] || undefined;
-		}
-		else{
-			var validMoves = diceValues.map(function(diceValue){
-				return getTheValidMove(coin,diceValue,path);
-			});
-			return ld.pull(validMoves,false);
+		if(coin){
+			if(coin.currentPosition==-1){
+				getTheValidMove(coin,diceValues[0],path)
+				return ld.intersection(diceValues,specialValue).length && [path[0].id] || undefined;
+			}
+			else{
+				var validMoves = diceValues.map(function(diceValue){
+					return getTheValidMove(coin,diceValue,path);
+				});
+				return ld.pull(validMoves,false);
+			}	
 		}
 	},
 	anyMoreMoves: function(player){
@@ -85,7 +94,11 @@ Game.prototype = {
 			this.players[this.currentPlayer].chances++;
 		};
 		return this.currentPlayer;
-	}
+	},
+	whenGameOver : function(){
+		this.players={};
+		this.counter=0;
+ 	}
 };
 
 var createPath = function(startingPosition,tiles,operationName){
@@ -97,18 +110,11 @@ var createPath = function(startingPosition,tiles,operationName){
 var getTheValidMove = function(coin,movesBy,path){
 	var coinPos = ld.findIndex(path,{id:coin.currentPosition});
 	var nextIndex = coinPos+movesBy;
-	var nextPos = path[nextIndex]
+	var nextPos = path[nextIndex];
 	if(nextPos.hasAnyCoin() && nextPos.contains(coin))
 		return false;	
 	return path[nextIndex].id;
-};
-
-// var createPath = function(startingPosition,tiles){
-// 	return pathLib.generateHalfPath(startingPosition).map(function(pos){
-// >>>>>>> d28af432d4796413fad3ba83dab9c7231a9a5ab9
-// 			return tiles[pos];
-// 		});
-// };	
+};	
 
 var createCoins =  function(id,numberOfCoins,colour){
 	var coins = new Object;

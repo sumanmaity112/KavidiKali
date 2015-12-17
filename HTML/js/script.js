@@ -22,7 +22,7 @@ function print(x){
 
 var rollDice = function(){
 	$.post('instruction/action=rollDice',function(data,status){
-		console.log(data);
+		// console.log(data);
 		updateDiceValues();
 	});
 };
@@ -69,7 +69,6 @@ var placeCoin = function(coin){
 
 var removeCoinsFromOldPositions = function(coinsToBeErased){
 	coinsToBeErased.forEach(function(coinId) {
-		console.log('hahaha============================',coinId)
 		$("#"+coinId).remove();
 	});
 } 
@@ -93,9 +92,7 @@ var coinClick = function(){
 	selectedCoin = this.id;
 	$.get('enquiry/question=movesWhere&coin='+selectedCoin,function(data){
 		activeTiles = JSON.parse(data);
-		console.log(activeTiles);
 		for(var pos in activeTiles){
-			console.log(document.getElementById(activeTiles[pos]))
 			document.getElementById(activeTiles[pos]).onclick = tileClick;
 		};
 	});
@@ -105,7 +102,6 @@ var tileClick = function(){
 	if(selectedCoin){
 		$.post('instruction/action=moveCoin&coin='+selectedCoin+'&position='+this.id,function(data){
 			selectedCoin = undefined;
-			refreshBoard();
 			for(var pos in activeTiles){
 				document.getElementById(activeTiles[pos]).onclick = null;
 			};
@@ -131,9 +127,13 @@ window.onload = function(){
 		document.getElementById(place).className = 'parking';
 		document.getElementById(place).id = colorSequence[index]+'_yard';
 	});
+	// var coins = $('.coins');
+	// for(var i=0; i<coins.length;i++){
+	// 	coins[i].onclick = coinClick;
+	// }; 
 	setInterval(function(){
 		refreshBoard();
-		check();
+		// check();
 		currentPlayer();
 	},500); 
 	document.querySelector('#dice').onclick = rollDice;	

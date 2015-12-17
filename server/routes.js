@@ -62,9 +62,12 @@ var doRedirect = function(req, res, next){
 var createPlayer = function(userId, res){
 	if(!application.enquiry({question:'isValidPlayer',player:userId}))
 		application.register(userId);
+	// var color = application.findColor
+	// var cookie = 'userId='+userId+'; color='+color;
 	res.writeHead('301',{'Location':'/waitingPage.html',
 		'content-type':'text/html',
-		'Set-Cookie': 'userId='+userId 
+		'Set-Cookie':'userId='+userId,
+
 	});
 	res.end();
 };
@@ -72,6 +75,8 @@ var createPlayer = function(userId, res){
 var createInformation = function(req, res, next){
 	var filePath = './HTML' + req.url;
 	var userId = querystring.parse(req.headers.cookie).userId;
+	var color = application.findColor(userId);
+	console.log('color in cookie is ', color);
 	if(!userId || !application.enquiry({question:'isValidPlayer',player:userId})){
 		res.writeHead('301',{'Location':'/index.html',
 			'content-type':'text/html'
@@ -81,7 +86,8 @@ var createInformation = function(req, res, next){
 	else{
 		fs.readFile(filePath, function(err, data){
 			if(data){
-				var html = replaceRespectiveValue(data.toString(),'__userID__',userId);
+				var replaceWith = userId + '\nYour coin color : '+color;
+				var html = replaceRespectiveValue(data.toString(),'__userID__',replaceWith);
 				res.responseCode = 200;
 				res.end(html);
 				console.log(res.responseCode);

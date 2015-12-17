@@ -25,7 +25,11 @@ exports.enquiry = function(obj){
 };
 
 exports.register = function(name){
-	gameMaster.createPlayer(name);
+	var color = gameMaster.createPlayer(name);
 	var obj = {question:'players'};
 	exports.enquiry(obj).length == 1 && gameMaster.players[name].chances++;
 };
+
+exports.findColor=function(userId){
+	return gameMaster.players[userId].coinColor;
+}
