@@ -110,10 +110,18 @@ var createPath = function(startingPosition,tiles,operationName){
 var getTheValidMove = function(coin,movesBy,path){
 	var coinPos = ld.findIndex(path,{id:coin.currentPosition});
 	var nextIndex = coinPos+movesBy;
+	if(nextIndex >= path.length && path.length==16)
+		nextIndex = nextIndex%path.length;
 	var nextPos = path[nextIndex];
-	if(nextPos.hasAnyCoin() && nextPos.contains(coin))
-		return false;	
-	return path[nextIndex].id;
+	// if(!nextPos)
+	// 	return false;
+	console.log('--------- coin ',coin,'nextIndex',nextIndex,'\nnextPos ',nextPos,'\nPath',path.length,'-------------------')
+	console.log('*************',path,'**************');
+	if(nextPos){
+		if(nextPos.contains(coin))
+			return false;	
+		return path[nextIndex].id;
+	}
 };	
 
 var createCoins =  function(id,numberOfCoins,colour){

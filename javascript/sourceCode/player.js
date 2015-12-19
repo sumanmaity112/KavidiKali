@@ -26,6 +26,7 @@ Player.prototype = {
 		this.chances++;
 		if(this.path.length==16)
 			this.path = this.path.concat(this.extendedPath);
+		console.log('------------------OHHHH My '+this.id+' Killed a coin and mychances is ',this.chances,'-----------');
 	},
 	moveCoin : function(coinID,movesTo){
 		var coin = this.coins[coinID];
@@ -33,7 +34,7 @@ Player.prototype = {
 			if(coin.currentPosition==-1){
 				if(this.path[0].id == movesTo && this.diceValues.indexOf(6)>=0){
 					this.path[0].place(coin);
-					coin.move(movesTo);
+					// coin.move(movesTo);
 					this.diceValues = removeValue(this.diceValues, 6);
 				};
 			}
@@ -41,9 +42,11 @@ Player.prototype = {
 				var currTileIndex = ld.findIndex(this.path,{id:coin.currentPosition});
 				var nextTileIndex = ld.findIndex(this.path,{id:movesTo});
 				var dice = nextTileIndex - currTileIndex;
+				if(dice<0)
+					dice = (16+dice);
 				if(this.diceValues.indexOf(dice)>=0){
-					coin.move(movesTo);
 					this.path[nextTileIndex].place(coin);
+					// coin.move(movesTo);
 					this.diceValues = removeValue(this.diceValues, dice);
 					this.path[currTileIndex].removeCoin(coin);
 				};
@@ -71,9 +74,10 @@ Player.prototype = {
 
 
 var removeValue = function(list,value){
-	var index = list.indexOf(value);
-	return list.filter(function(value,ind){
-		return ind!=index;
-	});
+	return lodash.pull(list,value);
+	// var index = list.indexOf(value);
+	// return list.filter(function(value,ind){
+	// 	return ind!=index;
+	// });
 };
 exports.player = Player;

@@ -28,9 +28,11 @@ var rollDice = function(){
 };
 
 var updateDiceValues = function(){
-	$.get('update/toUpdate=diceValues',function(data,status){
-		document.querySelector('#diceValues').innerHTML = data;
-	});
+	setInterval(function(){
+		$.get('update/toUpdate=diceValues',function(data,status){
+			document.querySelector('#diceValues').innerHTML = data;
+		});
+	},1000);
 };
 
 var currentPlayer = function(){

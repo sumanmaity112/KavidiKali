@@ -1,6 +1,9 @@
 var http = require('http');
 var EventEmitter = require('events').EventEmitter;
 var routes = require('./routes.js');
+var assign = require('./application.js').assignGameMaster;
+var writeBackup = require('./application.js').writeBackup;
+var fs = require('fs');
 
 var get_handlers = routes.get_handlers;
 var post_handlers = routes.post_handlers;
@@ -36,6 +39,7 @@ var handle_all_get = function(req, res){
 };
 
 var requestHandler = function(req, res){
+	writeBackup();
 	console.log(req.method, req.url, req.headers.cookie);
 	if(req.method == 'GET')
 		handle_all_get(req, res);
@@ -47,6 +51,9 @@ var requestHandler = function(req, res){
 
 var server = http.createServer(requestHandler);
 server.listen(PORT,function(){
-	console.log('server is listen on ',PORT);
+	var master = fs.existsSync('./backup.JSON') && fs.readFileSync('./backup.JSON','utf8');
+
+	assign(JSON.parse(master));
+	console.log('server is listen on ',PORT,master);
 });
 
