@@ -7,7 +7,8 @@
     "test": "mocha --recursive ./javascript",
     "min": "mocha -R min --recursive ./javascript",
     "watch": "mocha -R min --watch --recursive ./javascript",
-    "start": "node ./server/server.js"
+    "start": "node ./server/server.js",
+    "testServer":"mocha --recursive ./server/test"
   },
   "repository": {
     "type": "git",

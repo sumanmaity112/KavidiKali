@@ -65,7 +65,7 @@ var createPlayer = function(userId, res){
 		application.register(userId);
 	// var color = application.findColor
 	// var cookie = 'userId='+userId+'; color='+color;
-	res.writeHead('301',{'Location':'/waitingPage.html',
+	res.writeHead('302',{'Location':'/waitingPage.html',
 		'content-type':'text/html',
 		'Set-Cookie':'userId='+userId,
 
@@ -80,7 +80,7 @@ var createInformation = function(req, res, next){
 	var userId = querystring.parse(req.headers.cookie).userId;
 	// console.log('color in cookie is ', color);
 	if(!userId || !application.enquiry({question:'isValidPlayer',player:userId})){
-		res.writeHead('301',{'Location':'/index.html',
+		res.writeHead('302',{'Location':'/index.html',
 			'content-type':'text/html'
 		});
 		res.end();
@@ -183,13 +183,13 @@ exports.post_handlers = [
 ];
 
 exports.get_handlers = [
-	{path:'^/waitingPage.html$',handler:createWaitingPage},
+	{path:'^/waitingPage.html$',handler:createWaitingPage},//finish testing
 	{path: '^/main.html$',handler:createInformation},
-	{path: '^/$', handler: serveIndex},
-	{path: '', handler: serveStaticFile},
+	{path: '^/$', handler: serveIndex},//finish testing
+	{path: '', handler: serveStaticFile},//finish testing
 	{path: '^/update', handler: handleUpdate},
 	{path: '^/enquiry',handler: handleEnquiry},
 	{path: '^/gameOver$', handler: createGameOverPage},
-	{path: '', handler: fileNotFound}
+	{path: '', handler: fileNotFound}//finish testing
 ];
 
