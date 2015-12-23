@@ -62,6 +62,13 @@ var moreChanceToRollDice = function(gameMaster, obj){
 	return 'false';
 };
 
+var checkStatus = function(gameMaster){
+	var status =  Object.keys(gameMaster.players).some(function(player){
+		return gameMaster.players[player].isWin;
+	});
+	return status.toString();
+};
+
 exports.enquiries = [
 	{enquiry:'isValidPlayer', action : function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)}},
 	{enquiry:'currentPlayer', action : function(gameMaster){ return gameMaster.currentPlayer;}},
@@ -70,5 +77,6 @@ exports.enquiries = [
 	{enquiry:'moreChanceToRollDice', action : moreChanceToRollDice},
 	{enquiry:'isAllPlayersJoined', action: function(gameMaster){return Object.keys(gameMaster.players).length==4}},
 	{enquiry:'doHaveMoves', action : function(gameMaster,obj){ return gameMaster.anyMoreMoves(obj.player).toString();}},
-	{enquiry:'movesWhere', action : movesTo}
+	{enquiry:'movesWhere', action : movesTo},
+	{enquiry:'isGameOver',action: checkStatus}
 ];

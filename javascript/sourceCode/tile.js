@@ -8,10 +8,8 @@ tile.SafeTile=function(id) {
 
 tile.SafeTile.prototype = {
 	place:function(coin) {
-		console.log('^^^^^Coin is placed',coin,'^^^^^^');
 		coin.move(this.id);
 		this.coins.push(coin);
-		console.log('After place coin.currentPosition = ',coin.currentPosition);
 	},
 	contains:function(coin) {
 		return ld.findIndex(this.coins,coin)>=0;
@@ -34,13 +32,10 @@ tile.UnsafeTile=function(id) {
 
 tile.UnsafeTile.prototype = {
 	place:function(coin) {
-		console.log('^^^^^Coin is placed',coin,'^^^^^^');
 		if(!this.capture(coin)){
 			this.coin=coin;
 			coin.move(this.id);
-		}
-		console.log('After place coin.currentPosition = ',coin.currentPosition);
-		// this.capture(coin);
+		};
 	},
 	contains:function(coin) {
 		return this.hasAnyCoin() && this.coin.equals(coin);

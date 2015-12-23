@@ -26,7 +26,6 @@ Player.prototype = {
 		this.chances++;
 		if(this.path.length==16)
 			this.path = this.path.concat(this.extendedPath);
-		console.log('------------------OHHHH My '+this.id+' Killed a coin and mychances is ',this.chances,'-----------');
 	},
 	moveCoin : function(coinID,movesTo){
 		var coin = this.coins[coinID];
@@ -51,18 +50,18 @@ Player.prototype = {
 					this.path[currTileIndex].removeCoin(coin);
 				};
 			};
-			this.isWin;	
+			if(this.isWin){
+				this.emitter.emit("Game_over");
+				return true;
+			}
 		}
 	},
 	get isWin(){
 		var coins = this.coins;
-		var allCoinReachedDestination = Object.keys(this.coins).every(function(coin){
-			return coins[coin].currentPosition=='2,2';
+		return Object.keys(this.coins).every(function(coin){
+			// console.log('^^^^^^',coins[coin].reachedDestination,'^^^^^^^^^^^^');
+			return coins[coin].reachedDestination;
 		});
-		if(allCoinReachedDestination){
-			this.emitter.emit("Game_over");
-			return true;
-		}
 	},
 	addListener: function(listener){
 		this.emitter.addListener("Game_over",listener.whenGameOver.bind(listener));
@@ -74,10 +73,10 @@ Player.prototype = {
 
 
 var removeValue = function(list,value){
-	return lodash.pull(list,value);
-	// var index = list.indexOf(value);
-	// return list.filter(function(value,ind){
-	// 	return ind!=index;
-	// });
+	// return ld.pull(list,value);
+	var index = list.indexOf(value);
+	return list.filter(function(value,ind){
+		return ind!=index;
+	});
 };
 exports.player = Player;

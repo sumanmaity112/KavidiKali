@@ -17,6 +17,8 @@ Coin.prototype = {
 	},
 	move:function(movesTo) {
 		this.currentPosition = movesTo;
+		if(this.currentPosition=='2,2')
+			this.reachedDestination=true;
 	},
 	kill:function() {
 		this.move(-1);	

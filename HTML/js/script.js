@@ -1,6 +1,6 @@
 var selectedCoin;
 var currentStateOfGame;
-var activeTiles;
+var activeTiles, refreshWindow, updateValues;
 var turnTemplate = "Its __UserID__'s turn "
 
 function makeGrid(){
@@ -16,23 +16,19 @@ function makeGrid(){
 	return table;
 };
 
-function print(x){
-	alert('x is clicked'+x);
-};
-
 var rollDice = function(){
-	$.post('instruction/action=rollDice',function(data,status){
-		// console.log(data);
-		updateDiceValues();
-	});
+	$.post('instruction/action=rollDice',function(data,status){});
+	// 	updateDiceValues();
+	// 	updateValues = setInterval(function(){
+	// 		updateDiceValues();
+	// 	},1000);
+	// });
 };
 
 var updateDiceValues = function(){
-	setInterval(function(){
-		$.get('update/toUpdate=diceValues',function(data,status){
-			document.querySelector('#diceValues').innerHTML = data;
-		});
-	},1000);
+	$.get('update/toUpdate=diceValues',function(data,status){
+		document.querySelector('#diceValues').innerHTML = data;
+	});
 };
 
 var currentPlayer = function(){
@@ -112,6 +108,18 @@ var tileClick = function(){
 	};
 };
 
+var restore = function(){
+	$.get('enquiry/question=isGameOver',function(data){
+		if(data=='true'){
+			$.get('/gameOver',function(data){
+				clearInterval(refreshWindow);
+				clearInterval(updateValues);
+				document.querySelector("#replace").innerHTML = data;
+			});
+		}
+	});
+}
+
 window.onload = function(){
 	document.getElementById("board").innerHTML = makeGrid();
 	var safePlaces = ['4,2','2,4','2,2','0,2','2,0'];
@@ -128,13 +136,11 @@ window.onload = function(){
 	yards.forEach(function(place,index){
 		document.getElementById(place).className = 'parking';
 		document.getElementById(place).id = colorSequence[index]+'_yard';
-	});
-	// var coins = $('.coins');
-	// for(var i=0; i<coins.length;i++){
-	// 	coins[i].onclick = coinClick;
-	// }; 
-	setInterval(function(){
+	}); 
+	refreshWindow = setInterval(function(){
 		refreshBoard();
+		restore();
+		updateDiceValues();
 		// check();
 		currentPlayer();
 	},500); 

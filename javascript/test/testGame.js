@@ -293,11 +293,12 @@ describe('Game',function(){
 			game.createPlayer("suman");
 			var suman = game.players.suman;
 			suman.diceValues.push(1);
-			suman.coins.suman1.currentPosition="2,2";
-			suman.coins.suman2.currentPosition="2,2";
-			suman.coins.suman3.currentPosition="2,2";
+			suman.coins.suman1.move("2,2");
+			suman.coins.suman2.move("2,2");
+			suman.coins.suman3.move("2,2");
 			assert.ok(!suman.isWin);
-			suman.coins.suman4.currentPosition="2,2";
+			suman.coins.suman4.move("2,2");
+			console.log('**********',suman.isWin,'**********');
 			assert.ok(suman.isWin);
 			assert.ok(game.players,{});
 		});

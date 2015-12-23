@@ -4,19 +4,8 @@ var actions = operations.actions;
 var updates = operations.updates;
 var enquiries = operations.enquiries;
 var game = require('./../javascript/sourceCode/game.js').game;
-var fs = require('fs');
-var gameMaster;
-exports.assignGameMaster=function(master){
-	if(master && master.dice)
-		gameMaster = master;
-	else
-		gameMaster = new game([6],5,[1,2,3,4,5,6]);	
-};
 
-exports.writeBackup=function(){
-	fs.writeFile('./backup.JSON',JSON.stringify(gameMaster),function(){});
-};
-// var gameMaster = new game([6],5,[1,2,3,4,5,6]);
+var gameMaster = new game([6],5,[1,2,3,4,5,6]);
 
 exports.handleInstruction = function(obj){
 	if(obj.player == gameMaster.currentPlayer)
@@ -36,11 +25,26 @@ exports.enquiry = function(obj){
 };
 
 exports.register = function(name){
-	var color = gameMaster.createPlayer(name);
+	gameMaster.createPlayer(name);
 	var obj = {question:'players'};
 	exports.enquiry(obj).length == 1 && gameMaster.players[name].chances++;
 };
 
 exports.findColor=function(userId){
 	return gameMaster.players[userId].coinColor;
-}
+};
+
+exports.findWinner=function(){
+	var winner = gameMaster.winner;
+	resetGame(gameMaster);
+	return winner;
+};
+
+var resetGame = function(){
+	var succefullySendRes = 0;
+	return function(gameMaster){
+		succefullySendRes++;
+		if(succefullySendRes==4)
+			gameMaster.reset();
+	};
+}();

@@ -14,6 +14,7 @@ var Game = function(specialValues,size,diceValues){
 	this.tiles = tiles.generateTiles(size);
 	this.dice = new dice(diceValues);
 	this.counter = 0;
+	this.winner=undefined;
 };
 
 Game.prototype = {
@@ -85,9 +86,12 @@ Game.prototype = {
 		var totalMoves = ld.flatten(movesPerCoin);
 		return !!ld.pull(totalMoves,undefined)[0];
 	},
+	anyMoreChances:function(player){
+		return this.players[player].chances;
+	},
 	nextPlayer : function(master){
 		var players = Object.keys(this.players);
-		if(!this.anyMoreMoves(this.currentPlayer)){
+		if(!this.anyMoreMoves(this.currentPlayer) && !this.anyMoreChances(this.currentPlayer)){
 			var player = this.players[this.currentPlayer];
 			player.diceValues = [];
 			this.counter = (this.counter+1)%players.length;
@@ -96,8 +100,16 @@ Game.prototype = {
 		return this.currentPlayer;
 	},
 	whenGameOver : function(){
-		this.players={};
+		console.log('________________________________________________________________');
+		console.log('Ohhhh Game Over ',this.currentPlayer,' Is win');
+		console.log('________________________________________________________________');
+		this.winner=this.currentPlayer;
+ 	},
+ 	reset : function(){
+ 		console.log('GAME SUCESSFULLY RESET');
+ 		this.players={};
 		this.counter=0;
+		this.winner=undefined;
  	}
 };
 
@@ -113,15 +125,12 @@ var getTheValidMove = function(coin,movesBy,path){
 	if(nextIndex >= path.length && path.length==16)
 		nextIndex = nextIndex%path.length;
 	var nextPos = path[nextIndex];
-	// if(!nextPos)
-	// 	return false;
-	console.log('--------- coin ',coin,'nextIndex',nextIndex,'\nnextPos ',nextPos,'\nPath',path.length,'-------------------')
-	console.log('*************',path,'**************');
 	if(nextPos){
 		if(nextPos.contains(coin))
 			return false;	
 		return path[nextIndex].id;
 	}
+	return false;
 };	
 
 var createCoins =  function(id,numberOfCoins,colour){

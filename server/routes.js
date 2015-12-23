@@ -8,6 +8,7 @@ var main = application.main;
 var updates = operations.updates;
 var enquiries = operations.enquiries;
 var instructions = operations.instructions;
+var getWinner = application.findWinner;
 
 var headers = {
 	".html" : "text/html",
@@ -73,10 +74,11 @@ var createPlayer = function(userId, res){
 };
 
 var createInformation = function(req, res, next){
+	// if(application.enquiry({question:'players'}).length < )
+
 	var filePath = './HTML' + req.url;
 	var userId = querystring.parse(req.headers.cookie).userId;
-	var color = application.findColor(userId);
-	console.log('color in cookie is ', color);
+	// console.log('color in cookie is ', color);
 	if(!userId || !application.enquiry({question:'isValidPlayer',player:userId})){
 		res.writeHead('301',{'Location':'/index.html',
 			'content-type':'text/html'
@@ -84,6 +86,7 @@ var createInformation = function(req, res, next){
 		res.end();
 	}
 	else{
+		var color = application.findColor(userId);
 		fs.readFile(filePath, function(err, data){
 			if(data){
 				var replaceWith = userId + '\nYour coin color : '+color;
@@ -157,6 +160,21 @@ var handleEnquiry = function(req,res,next){
 		next();
 };
 
+var createGameOverPage = function(req,res,next){
+	var html = '<h2>Sorry Game Over</h2><h3>__userId__ won the game</h3>';
+	html = replaceRespectiveValue(html,'__userId__',getWinner());
+	res.end(html);
+	// var filePath = './HTML' + req.url;
+	// fs.readFile(filePath,function(err, data){
+	// 	if(data){
+	// 		// var html = data.replace('__userId__',getWinner());
+	// 		res.end(html);
+	// 	}
+	// 	else
+	// 		next();
+	// });
+}
+
 exports.post_handlers = [
 	{path: '^/index.html$', handler: doRedirect},
 	{path: '^/$', handler: doRedirect},
@@ -171,6 +189,7 @@ exports.get_handlers = [
 	{path: '', handler: serveStaticFile},
 	{path: '^/update', handler: handleUpdate},
 	{path: '^/enquiry',handler: handleEnquiry},
+	{path: '^/gameOver$', handler: createGameOverPage},
 	{path: '', handler: fileNotFound}
 ];
 
