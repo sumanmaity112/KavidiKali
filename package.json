@@ -8,7 +8,7 @@
     "min": "mocha -R min --recursive ./javascript",
     "watch": "mocha -R min --watch --recursive ./javascript",
     "start": "node ./server/server.js",
-    "testServer":"mocha --recursive ./server/test"
+    "testServer": "mocha --recursive ./server/test"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/sumanmaity112/KavidiKali#readme",
   "devDependencies": {
-    "mocha": "^2.3.4"
+    "mocha": "^2.3.4",
+    "supertest": "^1.1.0"
   },
   "dependencies": {
     "body-parser": "^1.14.2",

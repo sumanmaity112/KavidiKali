@@ -53,6 +53,7 @@ var doRedirect = function(req, res, next){
 	});
 	req.on('end',function(){
 		var userId = querystring.parse(data)['name'];
+
 		if(application.enquiry({question:'players'}).length <= 3)
 			createPlayer(userId, res);
 		else 
