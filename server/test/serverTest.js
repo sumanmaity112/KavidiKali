@@ -45,11 +45,76 @@ describe("get handlers",function(){
 		});
 	});
 	describe("main.html",function(){
-		it("redirects to index page when joined player is less than 4 and the player is unregistered",function(done){
+		it("redirects to index page when player is unregistered",function(done){
 			request(controller)
 				.get('/main.html')
 				.expect(302)
 				.expect('Location','/index.html',done)
+		});
+	});
+	describe("index page",function(){
+		it("redirects player to the waiting page after login from url /",function(done){
+			request(controller)
+				.post('/')
+				.send("name=Suman")
+				.expect(302)
+				.expect('Location','/waitingPage.html',done);
+		});
+		it("redirects player to the waiting page after login from url /indexPage.html",function(done){
+			request(controller)
+				.post('/index.html')
+				.expect(302)
+				.expect('Location','/waitingPage.html',done);
+		});
+	});
+	describe(" ",function(){
+		it("gives method not allowed when the method is other than GET or POST",function(done){
+			request(controller)
+				.put('/anything')
+				.expect(405)
+				.expect('Method is not allowed',done);
+		});
+	});
+	describe("main.html",function(){
+		it("gives a waiting message when more than 4th player want to join the game",function(done){
+			request(controller)
+				.post('/')
+				.send('name=hey')
+				.set('Cookie', ['userId=hey'])
+				.expect(302)
+				.expect('Location','/waitingPage.html')
+				.end(function(){
+					request(controller)
+						.post('/')
+						.send('name=Saran')
+						.set('Cookie', ['userId=Saran'])
+						.expect(302)
+						.expect('Location','/waitingPage.html')
+						.end(function(){
+							request(controller)
+								.post('/')
+								.send('name=Satyam')
+								.set('Cookie', ['userId=Satyam'])
+								.expect(302)
+								.expect('Location','/waitingPage.html')
+								.end(function(){
+									request(controller)
+										.post('/')
+										.send('name=Shivani')
+										.set('Cookie', ['userId=Shivani'])
+										.expect(302)
+										.expect('Location','/waitingPage.html')
+										.end(function(){
+											request(controller)
+												.post('/')
+												.send('name=Shivam')
+												.set('Cookie', ['userId=Shivam'])
+												.expect(200)
+												.expect(/Please wait, a game is already started/,done);
+										})
+								})
+						})
+				})		
 		});
 	});
 });

@@ -33,6 +33,12 @@ var handle_all_get = function(req, res){
 	next();
 };
 
+var method_not_allowed = function(req, res){
+	res.statusCode = 405;
+	console.log(res.statusCode);
+	res.end('Method is not allowed');
+};
+
 var requestHandler = function(req, res){
 	console.log(req.method, req.url, req.headers.cookie);
 	if(req.method == 'GET')
