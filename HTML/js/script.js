@@ -114,7 +114,7 @@ var restore = function(){
 			$.get('/gameOver',function(data){
 				clearInterval(refreshWindow);
 				clearInterval(updateValues);
-				document.querySelector("#replace").innerHTML = data;
+				document.querySelector("#playerTurn").innerHTML = data;
 			});
 		}
 	});
@@ -139,10 +139,10 @@ window.onload = function(){
 	}); 
 	refreshWindow = setInterval(function(){
 		refreshBoard();
-		restore();
-		updateDiceValues();
 		// check();
 		currentPlayer();
+		restore();
+		updateDiceValues();
 	},500); 
 	document.querySelector('#dice').onclick = rollDice;	
 };

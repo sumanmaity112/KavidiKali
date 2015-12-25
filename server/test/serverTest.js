@@ -1,7 +1,16 @@
 var request = require('superTest');
-var controller = require('../routing.js');
+var requestHandler = require('../routing.js');
+var Game = require('../../javascript/sourceCode/game.js').game;
+var sinon = require('sinon');
+
+var game={};
+var controller = requestHandler(game);
 
 describe("get handlers",function(){
+	// beforeEach(function(){
+		// game = new Game([6],5,[1,2,3,4,5,6]);
+		// controller = requestHandler(game);
+	// });
 	describe("/",function(){
 		it("serves index file if '/' is given",function(done){
 			request(controller)
@@ -21,6 +30,9 @@ describe("get handlers",function(){
 	});	
 	describe("/waitingPage.html",function(){
 		it("serves waitingPage.html file when requested",function(done){
+			game={players:{}};
+			controller = requestHandler(game);
+
 			request(controller)
 				.get('/waitingPage.html')
 				.expect(200)
@@ -54,6 +66,10 @@ describe("get handlers",function(){
 	});
 	describe("index page",function(){
 		it("redirects player to the waiting page after login from url /",function(done){
+			game={players:{}};
+			game.createPlayer=function(){};
+
+			controller = requestHandler(game);
 			request(controller)
 				.post('/')
 				.send("name=Suman")
@@ -61,6 +77,10 @@ describe("get handlers",function(){
 				.expect('Location','/waitingPage.html',done);
 		});
 		it("redirects player to the waiting page after login from url /indexPage.html",function(done){
+			game={players:{}};
+			game.createPlayer=function(){};
+			controller = requestHandler(game);
+
 			request(controller)
 				.post('/index.html')
 				.expect(302)
@@ -75,47 +95,18 @@ describe("get handlers",function(){
 				.expect('Method is not allowed',done);
 		});
 	});
-	describe("main.html",function(){
-		it("gives a waiting message when more than 4th player want to join the game",function(done){
-			request(controller)
-				.post('/')
-				.send('name=hey')
-				.set('Cookie', ['userId=hey'])
-				.expect(302)
-				.expect('Location','/waitingPage.html')
-				.end(function(){
-					request(controller)
-						.post('/')
-						.send('name=Saran')
-						.set('Cookie', ['userId=Saran'])
-						.expect(302)
-						.expect('Location','/waitingPage.html')
-						.end(function(){
-							request(controller)
-								.post('/')
-								.send('name=Satyam')
-								.set('Cookie', ['userId=Satyam'])
-								.expect(302)
-								.expect('Location','/waitingPage.html')
-								.end(function(){
-									request(controller)
-										.post('/')
-										.send('name=Shivani')
-										.set('Cookie', ['userId=Shivani'])
-										.expect(302)
-										.expect('Location','/waitingPage.html')
-										.end(function(){
-											request(controller)
-												.post('/')
-												.send('name=Shivam')
-												.set('Cookie', ['userId=Shivam'])
-												.expect(200)
-												.expect(/Please wait, a game is already started/,done);
-										})
-								})
-						})
-				})		
-		});
+});
+
+describe("main.html",function(){
+	it("gives a waiting message when more than 4th player want to join the game",function(done){
+		game={};
+		game.players={rocky:{},jacky:{},joy:{},johnny:{}};
+		game.createPlayer=function(){};
+		controller = requestHandler(game);
+		request(controller)
+			.post('/').send('name=john')
+			.expect(200)
+			.expect("Please wait, a game is already started",done);
 	});
 });
 

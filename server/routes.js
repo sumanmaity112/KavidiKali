@@ -4,14 +4,14 @@ var lodash = require('lodash');
 var querystring = require('querystring');
 var application = require('./application.js');
 var operations = require('./operations.js');
-var game = require('./../javascript/sourceCode/game.js').game;
+// var game = require('./../javascript/sourceCode/game.js').game;
 
 var main = application.main;
 var updates = operations.updates;
 var enquiries = operations.enquiries;
 var instructions = operations.instructions;
 var getWinner = application.findWinner;
-var gameMaster = new game([6],5,[1,2,3,4,5,6]);
+// var req.game = new game([6],5,[1,2,3,4,5,6]);
 
 var headers = {
 	".html" : "text/html",
@@ -56,18 +56,16 @@ var doRedirect = function(req, res, next){
 	});
 	req.on('end',function(){
 		var userId = querystring.parse(data)['name'];
-		if(application.enquiry({question:'players'},gameMaster).length <= 3)
-			createPlayer(userId, res);
+		if(application.enquiry({question:'players'},req.game).length <= 3)
+			createPlayer(userId,req,res);
 		else 
 			res.end('Please wait, a game is already started');
 	});
 };
 
-var createPlayer = function(userId, res){
-	if(!application.enquiry({question:'isValidPlayer',player:userId},gameMaster))
-		application.register(userId,gameMaster);
-	// var color = application.findColor
-	// var cookie = 'userId='+userId+'; color='+color;
+var createPlayer = function(userId,req,res){
+	if(!application.enquiry({question:'isValidPlayer',player:userId},req.game))
+		application.register(userId,req.game);
 	res.writeHead('302',{'Location':'/waitingPage.html',
 		'content-type':'text/html',
 		'Set-Cookie':'userId='+userId,
@@ -77,19 +75,17 @@ var createPlayer = function(userId, res){
 };
 
 var createInformation = function(req, res, next){
-	// if(application.enquiry({question:'players'},gameMaster).length < )
 
 	var filePath = './HTML' + req.url;
 	var userId = querystring.parse(req.headers.cookie).userId;
-	// console.log('color in cookie is ', color);
-	if(!userId || !application.enquiry({question:'isValidPlayer',player:userId},gameMaster)){
+	if(!userId || !application.enquiry({question:'isValidPlayer',player:userId},req.game)){
 		res.writeHead('302',{'Location':'/index.html',
 			'content-type':'text/html'
 		});
 		res.end();
 	}
 	else{
-		var color = application.findColor(userId,gameMaster);
+		var color = application.findColor(userId,req.game);
 		fs.readFile(filePath, function(err, data){
 			if(data){
 				var replaceWith = userId + '\nYour coin color : '+color;
@@ -116,7 +112,7 @@ var createWaitingPage = function(req, res, next){
 			res.writeHead(200,{'content-type' : headers[path.extname(filePath)]});
 			var userId = querystring.parse(req.headers.cookie).userId;
 			var html = replaceRespectiveValue(data.toString(),'__userId__',userId);
-			html = replaceRespectiveValue(html.toString(),'__numberOfPlayer__',application.enquiry({question:'players'},gameMaster).length);
+			html = replaceRespectiveValue(html.toString(),'__numberOfPlayer__',application.enquiry({question:'players'},req.game).length);
 			res.end(html);
 		}
 		else
@@ -127,9 +123,9 @@ var createWaitingPage = function(req, res, next){
 var doInstruction = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(13));
 	var player = querystring.parse(req.headers.cookie).userId;
-	if(application.enquiry({question:'isValidPlayer',player:player},gameMaster)){
+	if(application.enquiry({question:'isValidPlayer',player:player},req.game)){
 		obj.player = player;
-		var result = application.handleInstruction(obj,gameMaster);
+		var result = application.handleInstruction(obj,req.game);
 		res.end(result)
 	}
 	else
@@ -139,9 +135,9 @@ var doInstruction = function(req, res, next){
 var handleUpdate = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(8));
 	var player = querystring.parse(req.headers.cookie).userId;
-	if(application.enquiry({question:'isValidPlayer',player:player},gameMaster)){
+	if(application.enquiry({question:'isValidPlayer',player:player},req.game)){
 		obj.player = player;
-		var result = application.handleUpdates(obj,gameMaster);
+		var result = application.handleUpdates(obj,req.game);
 		res.end(result);
 	}
 	else
@@ -151,9 +147,9 @@ var handleUpdate = function(req, res, next){
 var handleEnquiry = function(req,res,next){
 	var obj = querystring.parse(req.url.slice(9));
 	var player = querystring.parse(req.headers.cookie).userId;
-	if(application.enquiry({question:'isValidPlayer',player:player},gameMaster)){
+	if(application.enquiry({question:'isValidPlayer',player:player},req.game)){
 		obj.player = player;
-		var response = application.enquiry(obj,gameMaster);
+		var response = application.enquiry(obj,req.game);
 		if(!response)
 			next();
 		else	
@@ -164,18 +160,9 @@ var handleEnquiry = function(req,res,next){
 };
 
 var createGameOverPage = function(req,res,next){
-	var html = '<h2>Sorry Game Over</h2><h3>__userId__ won the game</h3>';
-	html = replaceRespectiveValue(html,'__userId__',getWinner(gameMaster));
+	var html = '<h3>Sorry Game Over  __userId__ won the game</h3>';
+	html = replaceRespectiveValue(html,'__userId__',getWinner(req.game));
 	res.end(html);
-	// var filePath = './HTML' + req.url;
-	// fs.readFile(filePath,function(err, data){
-	// 	if(data){
-	// 		// var html = data.replace('__userId__',getWinner());
-	// 		res.end(html);
-	// 	}
-	// 	else
-	// 		next();
-	// });
 }
 
 exports.post_handlers = [
