@@ -3,38 +3,35 @@ var operations = require('./operations.js');
 var actions = operations.actions;
 var updates = operations.updates;
 var enquiries = operations.enquiries;
-var game = require('./../javascript/sourceCode/game.js').game;
 
-var gameMaster = new game([6],5,[1,2,3,4,5,6]);
-
-exports.handleInstruction = function(obj){
+exports.handleInstruction = function(obj,gameMaster){
 	if(obj.player == gameMaster.currentPlayer)
 		return actions[obj.action](gameMaster, obj);
 	return 'Wrong Player';
 };
 
-exports.handleUpdates = function(obj){
+exports.handleUpdates = function(obj,gameMaster){
 	var updater = updates[obj.toUpdate];
 	var update = updater(gameMaster,obj);
 	return update;
 };
 
-exports.enquiry = function(obj){
+exports.enquiry = function(obj,gameMaster){
 	var enquiry = lodash.findWhere(enquiries,{enquiry:obj.question});
 	return enquiry && enquiry.action(gameMaster,obj);
 };
 
-exports.register = function(name){
+exports.register = function(name,gameMaster){
 	gameMaster.createPlayer(name);
 	var obj = {question:'players'};
-	exports.enquiry(obj).length == 1 && gameMaster.players[name].chances++;
+	exports.enquiry(obj,gameMaster).length == 1 && gameMaster.players[name].chances++;
 };
 
-exports.findColor=function(userId){
+exports.findColor=function(userId,gameMaster){
 	return gameMaster.players[userId].coinColor;
 };
 
-exports.findWinner=function(){
+exports.findWinner=function(gameMaster){
 	var winner = gameMaster.winner;
 	resetGame(gameMaster);
 	return winner;

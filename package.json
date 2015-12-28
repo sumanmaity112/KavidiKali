@@ -22,6 +22,7 @@
   "homepage": "https://github.com/sumanmaity112/KavidiKali#readme",
   "devDependencies": {
     "mocha": "^2.3.4",
+    "sinon": "^1.17.2",
     "supertest": "^1.1.0"
   },
   "dependencies": {

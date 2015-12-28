@@ -1,25 +1,25 @@
-var superTest = require('superTest');
-// var controller = require('../routing.js');
-var agent = superTest.agent();
-
-var request = null;
-
-
+var request = require('superTest');
+var requestHandler = require('../routing.js');
+var Game = require('../../javascript/sourceCode/game.js').game;
+var sinon = require('sinon');
+var game={};
+var controller = requestHandler(game);
 
 describe("get handlers",function(){
-	beforeEach(function(){
-		request = superTest(require('../routing.js'));
-	});
+	// beforeEach(function(){
+		// game = new Game([6],5,[1,2,3,4,5,6]);
+		// controller = requestHandler(game);
+	// });
 	describe("/",function(){
 		it("serves index file if '/' is given",function(done){
-			request.get('/')
+			request(controller).get('/')
 				.expect(200)
 				.expect(/Welcome To KavidiKali/,done)
 		});
 	});
 	describe("/index",function(){
 		it("serves index file index.html is requested",function(done){
-			request.get('/index.html')
+			request(controller).get('/index.html')
 				.expect(200)
 				.expect(/Welcome To KavidiKali/)
 				.expect('content-Type',/text\/html/,done);
@@ -27,7 +27,11 @@ describe("get handlers",function(){
 	});	
 	describe("/waitingPage.html",function(){
 		it("serves waitingPage.html file when requested",function(done){
-			request.get('/waitingPage.html')
+			game={players:{}};
+			controller = requestHandler(game);
+
+			request(controller)
+				.get('/waitingPage.html')
 				.expect(200)
 				.expect(/You are Successfully logged in/)
 				.expect('content-Type',/text\/html/,done);
@@ -35,138 +39,104 @@ describe("get handlers",function(){
 	});
 	describe("",function(){
 		it("serves index file if '' is given",function(done){
-			request.get('')
+			request(controller).get('')
 				.expect(200)
 				.expect(/Welcome To KavidiKali/,done)
 		});
 	});
 	describe("wrong url",function(){
 		it("response with status code 404 when file is not present",function(done){
-			request.get('/pikachu')
+			request(controller).get('/pikachu')
 				.expect(404)
 				.expect(/Not Found/,done)
 		});
 	});
+	describe(" ",function(){
+		it("gives method not allowed when the method is other than GET or POST",function(done){
+			request(controller)
+				.put('/anything')
+				.expect(405)
+				.expect('Method is not allowed',done);
+		});
+	});
 	describe("main.html",function(){
 		it("redirects to index page when joined player is less than 4 and the player is unregistered",function(done){
-			request.get('/main.html')
+			request(controller).get('/main.html')
 				.expect(302)
 				.expect('Location','/index.html',done)
 		});
+		describe("currentPlayer",function(){
+			it("gives the name of current player when it get request from registered player",function(done){
+				game={};
+				game.players={rocky:{},jacky:{},joy:{},rony:{}};
+				game.createPlayer = function(){};
+				game.currentPlayer = 'rony'
+
+				controller = requestHandler(game);
+				request(controller)
+					.get('/enquiry/question=currentPlayer')
+					.set('cookie',['userId=rony'])
+					.expect(200)
+					.expect('rony',done);
+			});
+			it("gives the status code 404 when it get request from unregistered player",function(done){
+				game={};
+				game.players={rocky:{},jacky:{},joy:{},rony:{}};
+				game.createPlayer = function(){};
+				game.currentPlayer = 'rony'
+
+				controller = requestHandler(game);
+				request(controller)
+					.get('/enquiry/question=currentPlayer')
+					.set('cookie',['userId=roy'])
+					.expect(404)
+					.expect('Not Found',done);
+			});
+			
+		});
 	});
 });
 
+describe("POST handlers",function(){
+	describe("index page",function(){
+		it("redirects player to the waiting page after login from url /",function(done){
+			game={players:{}};
+			game.createPlayer=function(){};
 
-describe("post handlers",function(){
-	beforeEach(function(){
-		request = superTest(require('../routing.js'));
-	});
-	describe("index.html",function(){
-		it("creates a player with given name",function(done){
-			request.post('/index.html')
-				.send('name=sooraj')
+			controller = requestHandler(game);
+			request(controller)
+				.post('/')
+				.send("name=rony")
+				.expect('set-cookie','userId=rony')
 				.expect(302)
 				.expect('Location','/waitingPage.html',done)
 		});
+		it("redirects player to the waiting page after login from url /indexPage.html",function(done){
+			game={players:{}};
+			game.createPlayer=function(){};
+			controller = requestHandler(game);
+
+			request(controller)
+				.post('/index.html')
+				.expect(302)
+				.expect('Location','/waitingPage.html',done)
+		});
+		it("gives a waiting message when more than 4th player want to join the game",function(done){
+			game={};
+			game.players={rocky:{},jacky:{},joy:{},johnny:{}};
+			game.createPlayer=function(){};
+			controller = requestHandler(game);
+			request(controller)
+				.post('/').send('name=john')
+				.expect(200)
+				.expect("Please wait, a game is already started",done);
+		});
+	});
+
+	describe("main.html",function(){
+
 	});	
-	describe("/",function(){
-		it("creates a player with given name",function(done){
-			request.post('/')
-				.send('name=syanima')
-				.expect(302)
-				.expect('Location','/waitingPage.html',done)
-		});
-	});
-	describe("wrong url",function(){
-		it("returns method not allowed for not allowed method",function(done){
-			request.post('/syanima')
-				.expect(405,done)
-		});
-	});
-	describe("instruction",function(){
-		describe('rollDice',function(){
-			it("returns method not allowed for instruction from unregistered user",function(done){
-				request
-					.post('/instruction/action=rollDice')
-					.set('cookie',['userId=arya'])
-					.expect(405,done)
-				
-			});
-			it("returns 200 and wrongPlayer for rollDice instruction from registered user but not his turn",function(done){
-				request
-					.post('/index.html')
-					.send('name=sooraj')
-					.expect('headers','set-cookie','userId=sooraj')
-					.expect(302,function(err, res){
-						request
-							.post('/instruction/action=rollDice')
-							.set('cookie',['userId=syanima'])
-							.expect(/Wrong Player/,done)
-							.expect(200,done)
-					});	
-			});
-			it("returns 200 and dice value for rollDice instruction from registered user",function(done){
-				request
-					.post('/index.html')
-					.send('name=saran')
-					.expect('headers','set-cookie','userId=saran')
-					.expect(302,function(err, res){
-							request
-								.post('/index.html')
-								.send('name=shibi')
-								.expect('headers','set-cookie','userId=shibi')
-								.expect(302,function(err, res){
-									request
-										.post('/instruction/action=rollDice')
-										.set('cookie',['userId=sooraj'])
-										.expect(/diceValue/)
-										.expect(200,done)
-							});
-					});	
-			});
-		})
-	});
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
