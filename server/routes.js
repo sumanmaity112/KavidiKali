@@ -168,7 +168,7 @@ var createGameOverPage = function(req,res,next){
 exports.post_handlers = [
 	{path: '^/index.html$', handler: doRedirect},//finish testing
 	{path: '^/$', handler: doRedirect},//finish testing
-	{path: '^/instruction', handler: doInstruction},
+	{path: '^/instruction', handler: doInstruction},//no need to test
 	{path: '', handler: method_not_allowed}//finish testing
 ];
 
@@ -178,8 +178,8 @@ exports.get_handlers = [
 	{path: '^/$', handler: serveIndex},//finish testing
 	{path: '', handler: serveStaticFile},//finish testing
 	{path: '^/update', handler: handleUpdate},
-	{path: '^/enquiry',handler: handleEnquiry},
-	{path: '^/gameOver$', handler: createGameOverPage},
+	{path: '^/enquiry',handler: handleEnquiry},//finish testing
+	{path: '^/gameOver$', handler: createGameOverPage},//finish testing
 	{path: '', handler: fileNotFound}//finish testing
 ];
 

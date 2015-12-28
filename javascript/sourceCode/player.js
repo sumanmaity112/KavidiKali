@@ -59,7 +59,6 @@ Player.prototype = {
 	get isWin(){
 		var coins = this.coins;
 		return Object.keys(this.coins).every(function(coin){
-			// console.log('^^^^^^',coins[coin].reachedDestination,'^^^^^^^^^^^^');
 			return coins[coin].reachedDestination;
 		});
 	},

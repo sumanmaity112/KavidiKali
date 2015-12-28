@@ -71,34 +71,126 @@ describe("get handlers",function(){
 				.expect(302)
 				.expect('Location','/index.html',done)
 		});
-		describe("currentPlayer",function(){
-			it("gives the name of current player when it get request from registered player",function(done){
-				game={};
-				game.players={rocky:{},jacky:{},joy:{},rony:{}};
-				game.createPlayer = function(){};
-				game.currentPlayer = 'rony'
+		describe("enquiry ",function(){
+			describe("currentPlayer",function(){
+				beforeEach(function(){
+					game={};
+					game.players={rocky:{},jacky:{},joy:{},rony:{}};
+					game.currentPlayer = 'rony'
+					controller = requestHandler(game);
+				});
 
-				controller = requestHandler(game);
-				request(controller)
-					.get('/enquiry/question=currentPlayer')
-					.set('cookie',['userId=rony'])
-					.expect(200)
-					.expect('rony',done);
+				it("gives the name of current player when it get request from registered player",function(done){
+					request(controller)
+						.get('/enquiry/question=currentPlayer')
+						.set('cookie',['userId=rony'])
+						.expect(200)
+						.expect('rony',done);
+				});
+				it("gives the status code 404 when it get request from unregistered player",function(done){
+					request(controller)
+						.get('/enquiry/question=currentPlayer')
+						.set('cookie',['userId=roy'])
+						.expect(404)
+						.expect('Not Found',done);
+				});
 			});
-			it("gives the status code 404 when it get request from unregistered player",function(done){
-				game={};
-				game.players={rocky:{},jacky:{},joy:{},rony:{}};
-				game.createPlayer = function(){};
-				game.currentPlayer = 'rony'
+		});
+	});
+	describe("createGameOverPage",function(){
+		it("informs player that game is over",function(done){
+			game={};
+			game.winner = 'rocky';
+			controller = requestHandler(game);
 
-				controller = requestHandler(game);
-				request(controller)
-					.get('/enquiry/question=currentPlayer')
-					.set('cookie',['userId=roy'])
-					.expect(404)
-					.expect('Not Found',done);
-			});
-			
+			request(controller)
+				.get('/gameOver')
+				.expect('<h3>Sorry Game Over  rocky won the game</h3>')
+				.expect(200,done);
+		});
+	});
+	describe("/update",function(){
+		it("updates dice values when it gets request from valid player",function(done){
+			game={};
+			var rocky = {rollDice:function(dice){return 5;},chances:0,
+						 diceValues:[5]};
+			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
+			game.setChances=function(){};
+			game.nextPlayer=function(){};
+			game.currentPlayer = 'rocky';
+			game.dice = {};
+			game.dice.roll = sinon.stub().returns(5);
+			controller = requestHandler(game);
+			request(controller)
+				.get('/update/toUpdate=diceValues')
+				.set('cookie',['userId=rocky'])
+				.expect('diceValues=5')
+				.expect(200,done)
+		});
+		it("doesn't updates dice values when it gets request from unvalid player",function(done){
+			game={};
+			var rocky = {rollDice:function(dice){return 5;},chances:0,
+						 diceValues:[5]};
+			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
+			game.setChances=function(){};
+			game.nextPlayer=function(){};
+			game.currentPlayer = 'rocky';
+			game.dice = {};
+			game.dice.roll = sinon.stub().returns(5);
+			controller = requestHandler(game);
+			request(controller)
+				.get('/update/toUpdate=diceValues')
+				.expect('Not Found')
+				.expect(404,done)
+		});
+		it("updates the number of player when it gets request from valid player",function(done){
+			game={};
+			game.players={jacky:{},joy:{},johnny:{}};
+			controller = requestHandler(game);
+			request(controller)
+				.get('/update/toUpdate=waitingPage')
+				.set('cookie',['userId=jacky'])
+				.expect('3')
+				.expect(200,done)
+
+		});
+		it("gives 404 when it gets request from an unvalid player",function(done){
+			game={};
+			game.players={jacky:{},joy:{},johnny:{}};
+			controller = requestHandler(game);
+			request(controller)
+				.get('/update/toUpdate=waitingPage')
+				.set('cookie',['userId=jack'])
+				.expect('Not Found')
+				.expect(404,done)
+		});
+		it("gives current state of the game when it gets request from valid player",function(done){
+			game={};
+			game.players={jacky:{},joy:{},johnny:{},rocky:{}};
+			game.stateOfGame = function(){
+				return {id:'jacky',coins:{jacky1:{currentPosition:'2,0'}}}
+			}
+			controller = requestHandler(game);
+			request(controller)
+				.get('/update/toUpdate=board')
+				.set('cookie',['userId=jacky'])
+				.expect('{"id":"jacky","coins":{"jacky1":{"currentPosition":"2,0"}}}')
+				.expect(200,done)
+
+		});
+		it("gives 404 when it gets update board request from valid player",function(done){
+			game={};
+			game.players={jacky:{},joy:{},johnny:{},rocky:{}};
+			game.stateOfGame = function(){
+				return {id:'jacky',coins:{jacky1:{currentPosition:'2,0'}}}
+			}
+			controller = requestHandler(game);
+			request(controller)
+				.get('/update/toUpdate=board')
+				.set('cookie',['userId=jack'])
+				.expect('Not Found')
+				.expect(404,done)
+
 		});
 	});
 });
@@ -140,10 +232,40 @@ describe("POST handlers",function(){
 				.expect("Please wait, a game is already started",done);
 		});
 	});
-
-	describe("main.html",function(){
-
-	});	
+	describe("doInstruction",function(){
+		it("performs action roll dice get from registered player",function(done){
+			game={};
+			var rocky = {rollDice:function(dice){return 5;},chances:1};
+			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
+			game.setChances=function(){};
+			game.nextPlayer=function(){};
+			game.currentPlayer = 'rocky';
+			game.dice = {};
+			game.dice.roll = sinon.stub().returns(5);
+			controller = requestHandler(game);
+			request(controller)
+				.post('/instruction/action=rollDice')
+				.set('cookie',['userId=rocky'])
+				.expect('diceValue5')
+				.expect(200,done);
+		});
+		it("doesn't performs action roll dice get from unregistered player",function(done){
+			game={};
+			var rocky = {rollDice:function(dice){return 5;},chances:1};
+			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
+			game.setChances=function(){};
+			game.nextPlayer=function(){};
+			game.currentPlayer = 'rocky';
+			game.dice = {};
+			game.dice.roll = sinon.stub().returns(5);
+			controller = requestHandler(game);
+			request(controller)
+				.post('/instruction/action=rollDice')
+				.set('cookie',['userId=piku'])
+				.expect('Method is not allowed')
+				.expect(405,done);
+		});
+	});
 });
 
 

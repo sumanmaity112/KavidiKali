@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive ./javascript",
+    "test": "mocha --recursive ./javascript && mocha --recursive ./server/test",
     "min": "mocha -R min --recursive ./javascript",
     "watch": "mocha -R min --watch --recursive ./javascript",
     "start": "node ./server/server.js",

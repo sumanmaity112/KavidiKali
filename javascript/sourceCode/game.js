@@ -100,9 +100,6 @@ Game.prototype = {
 		return this.currentPlayer;
 	},
 	whenGameOver : function(){
-		console.log('________________________________________________________________');
-		console.log('Ohhhh Game Over ',this.currentPlayer,' Is win');
-		console.log('________________________________________________________________');
 		this.winner=this.currentPlayer;
  	},
  	reset : function(){
