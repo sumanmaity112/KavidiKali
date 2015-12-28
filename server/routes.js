@@ -177,10 +177,10 @@ var createGameOverPage = function(req,res,next){
 }
 
 exports.post_handlers = [
-	{path: '^/index.html$', handler: doRedirect},
-	{path: '^/$', handler: doRedirect},
+	{path: '^/index.html$', handler: doRedirect},//finish testing
+	{path: '^/$', handler: doRedirect},//finish testing
 	{path: '^/instruction', handler: doInstruction},
-	{path: '', handler: method_not_allowed}
+	{path: '', handler: method_not_allowed}//finish testing
 ];
 
 exports.get_handlers = [
