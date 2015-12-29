@@ -17,7 +17,7 @@ function makeGrid(){
 };
 
 var rollDice = function(){
-	$.post('instruction/action=rollDice',function(data,status){});
+	$.post('instruction?action=rollDice',function(data,status){});
 	// 	updateDiceValues();
 	// 	updateValues = setInterval(function(){
 	// 		updateDiceValues();
@@ -26,13 +26,13 @@ var rollDice = function(){
 };
 
 var updateDiceValues = function(){
-	$.get('update/toUpdate=diceValues',function(data,status){
+	$.get('update?toUpdate=diceValues',function(data,status){
 		document.querySelector('#diceValues').innerHTML = data;
 	});
 };
 
 var currentPlayer = function(){
-	$.get('enquiry/question=currentPlayer',function(data,status){
+	$.get('enquiry?question=currentPlayer',function(data,status){
 		var html = turnTemplate.replace('__UserID__',data);
 		document.querySelector('#playerTurn').innerHTML=html;
 	});
@@ -72,7 +72,7 @@ var removeCoinsFromOldPositions = function(coinsToBeErased){
 } 
 
 var refreshBoard = function(){
-	$.get('update/toUpdate=board',function(data,status){
+	$.get('update?toUpdate=board',function(data,status){
 		var stateOfGame = JSON.parse(data);
 		var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
 		removeCoinsFromOldPositions(coinsToBeUpdated);
@@ -88,7 +88,7 @@ var refreshBoard = function(){
 
 var coinClick = function(){
 	selectedCoin = this.id;
-	$.get('enquiry/question=movesWhere&coin='+selectedCoin,function(data){
+	$.get('enquiry?question=movesWhere&coin='+selectedCoin,function(data){
 		activeTiles = JSON.parse(data);
 		for(var pos in activeTiles){
 			document.getElementById(activeTiles[pos]).onclick = tileClick;
@@ -98,7 +98,7 @@ var coinClick = function(){
 
 var tileClick = function(){
 	if(selectedCoin){
-		$.post('instruction/action=moveCoin&coin='+selectedCoin+'&position='+this.id,function(data){
+		$.post('instruction?action=moveCoin&coin='+selectedCoin+'&position='+this.id,function(data){
 			selectedCoin = undefined;
 			for(var pos in activeTiles){
 				document.getElementById(activeTiles[pos]).onclick = null;
@@ -109,7 +109,7 @@ var tileClick = function(){
 };
 
 var restore = function(){
-	$.get('enquiry/question=isGameOver',function(data){
+	$.get('enquiry?question=isGameOver',function(data){
 		if(data=='true'){
 			$.get('/gameOver',function(data){
 				clearInterval(refreshWindow);

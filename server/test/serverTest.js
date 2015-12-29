@@ -17,7 +17,7 @@ describe("get handlers",function(){
 				.expect(/Welcome To KavidiKali/,done)
 		});
 	});
-	describe("/index",function(){
+	describe("/index.html",function(){
 		it("serves index file index.html is requested",function(done){
 			request(controller).get('/index.html')
 				.expect(200)
@@ -37,21 +37,21 @@ describe("get handlers",function(){
 				.expect('content-Type',/text\/html/,done);
 		});
 	});
-	describe("",function(){
-		it("serves index file if '' is given",function(done){
+	describe("Empty URL",function(){
+		it("serves index file if '' is requested",function(done){
 			request(controller).get('')
 				.expect(200)
-				.expect(/Welcome To KavidiKali/,done)
+				.expect(/Welcome To KavidiKali/,done);
 		});
 	});
 	describe("wrong url",function(){
 		it("response with status code 404 when file is not present",function(done){
 			request(controller).get('/pikachu')
 				.expect(404)
-				.expect(/Not Found/,done)
+				.expect(/Not Found/,done);
 		});
 	});
-	describe(" ",function(){
+	describe("unallowed method",function(){
 		it("gives method not allowed when the method is other than GET or POST",function(done){
 			request(controller)
 				.put('/anything')
@@ -63,7 +63,7 @@ describe("get handlers",function(){
 		it("redirects to index page when joined player is less than 4 and the player is unregistered",function(done){
 			request(controller).get('/main.html')
 				.expect(302)
-				.expect('Location','/index.html',done)
+				.expect('Location','/index.html',done);
 		});
 		describe("enquiry ",function(){
 			describe("currentPlayer",function(){
@@ -76,14 +76,14 @@ describe("get handlers",function(){
 
 				it("gives the name of current player when it get request from registered player",function(done){
 					request(controller)
-						.get('/enquiry/question=currentPlayer')
+						.get('/enquiry?question=currentPlayer')
 						.set('cookie',['userId=rony'])
 						.expect(200)
 						.expect('rony',done);
 				});
 				it("gives the status code 404 when it get request from unregistered player",function(done){
 					request(controller)
-						.get('/enquiry/question=currentPlayer')
+						.get('/enquiry?question=currentPlayer')
 						.set('cookie',['userId=roy'])
 						.expect(404)
 						.expect('Not Found',done);
@@ -116,12 +116,12 @@ describe("get handlers",function(){
 			game.dice.roll = sinon.stub().returns(5);
 			controller = requestHandler(game);
 			request(controller)
-				.get('/update/toUpdate=diceValues')
+				.get('/update?toUpdate=diceValues')
 				.set('cookie',['userId=rocky'])
 				.expect('diceValues=5')
 				.expect(200,done)
 		});
-		it("doesn't updates dice values when it gets request from unvalid player",function(done){
+		it("doesn't updates dice values when it gets request from invalid player",function(done){
 			game={};
 			var rocky = {rollDice:function(dice){return 5;},chances:0,
 						 diceValues:[5]};
@@ -133,7 +133,7 @@ describe("get handlers",function(){
 			game.dice.roll = sinon.stub().returns(5);
 			controller = requestHandler(game);
 			request(controller)
-				.get('/update/toUpdate=diceValues')
+				.get('/update?toUpdate=diceValues')
 				.expect('Not Found')
 				.expect(404,done)
 		});
@@ -142,18 +142,18 @@ describe("get handlers",function(){
 			game.players={jacky:{},joy:{},johnny:{}};
 			controller = requestHandler(game);
 			request(controller)
-				.get('/update/toUpdate=waitingPage')
+				.get('/update?toUpdate=waitingPage')
 				.set('cookie',['userId=jacky'])
 				.expect('3')
 				.expect(200,done)
 
 		});
-		it("gives 404 when it gets request from an unvalid player",function(done){
+		it("gives 404 when it gets request from an invalid player",function(done){
 			game={};
 			game.players={jacky:{},joy:{},johnny:{}};
 			controller = requestHandler(game);
 			request(controller)
-				.get('/update/toUpdate=waitingPage')
+				.get('/update?toUpdate=waitingPage')
 				.set('cookie',['userId=jack'])
 				.expect('Not Found')
 				.expect(404,done)
@@ -166,7 +166,7 @@ describe("get handlers",function(){
 			}
 			controller = requestHandler(game);
 			request(controller)
-				.get('/update/toUpdate=board')
+				.get('/update?toUpdate=board')
 				.set('cookie',['userId=jacky'])
 				.expect('{"id":"jacky","coins":{"jacky1":{"currentPosition":"2,0"}}}')
 				.expect(200,done)
@@ -180,7 +180,7 @@ describe("get handlers",function(){
 			}
 			controller = requestHandler(game);
 			request(controller)
-				.get('/update/toUpdate=board')
+				.get('/update?toUpdate=board')
 				.set('cookie',['userId=jack'])
 				.expect('Not Found')
 				.expect(404,done)
@@ -197,7 +197,7 @@ describe("POST handlers",function(){
 
 			controller = requestHandler(game);
 			request(controller)
-				.post('/')
+				.post('/login')
 				.send("name=rony")
 				.expect('set-cookie','userId=rony')
 				.expect(302)
@@ -209,7 +209,7 @@ describe("POST handlers",function(){
 			controller = requestHandler(game);
 
 			request(controller)
-				.post('/index.html')
+				.post('/login')
 				.expect(302)
 				.expect('Location','/waitingPage.html',done)
 		});
@@ -219,7 +219,7 @@ describe("POST handlers",function(){
 			game.createPlayer=function(){};
 			controller = requestHandler(game);
 			request(controller)
-				.post('/').send('name=john')
+				.post('/login').send('name=john')
 				.expect(200)
 				.expect("Please wait, a game is already started",done);
 		});
@@ -236,7 +236,7 @@ describe("POST handlers",function(){
 			game.dice.roll = sinon.stub().returns(5);
 			controller = requestHandler(game);
 			request(controller)
-				.post('/instruction/action=rollDice')
+				.post('/instruction?action=rollDice')
 				.set('cookie',['userId=rocky'])
 				.expect('diceValue5')
 				.expect(200,done);
@@ -252,7 +252,7 @@ describe("POST handlers",function(){
 			game.dice.roll = sinon.stub().returns(5);
 			controller = requestHandler(game);
 			request(controller)
-				.post('/instruction/action=rollDice')
+				.post('/instruction?action=rollDice')
 				.set('cookie',['userId=piku'])
 				.expect('Method is not allowed')
 				.expect(405,done);

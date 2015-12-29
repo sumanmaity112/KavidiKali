@@ -166,8 +166,7 @@ var createGameOverPage = function(req,res,next){
 }
 
 exports.post_handlers = [
-	{path: '^/index.html$', handler: doRedirect},//finish testing
-	{path: '^/$', handler: doRedirect},//finish testing
+	{path: '^/login$', handler: doRedirect},//finish testing
 	{path: '^/instruction', handler: doInstruction},//no need to test
 	{path: '', handler: method_not_allowed}//finish testing
 ];
