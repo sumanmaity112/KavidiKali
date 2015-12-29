@@ -232,20 +232,6 @@ describe('Game',function(){
 		});
 	});
 	describe('getAllValidMovesOfCoin',function(){
-		it.skip('gives all possible moves of a coin in the given path',function(){
-			game.createPlayer('s2');
-			coin.currentPosition = '2,0';
-			var diceValues = [6,4,2,1];
-			assert.deepEqual(board.getAllValidMovesOfCoin(coin,diceValues,path),[ '4,4', '4,2', '4,0', '3,0' ]);
-		});
-		it.skip('will not give the position as valid if a coin of same player is at the place',function(){
-			game.createPlayer('red');
-			var diceValues = [6,4,2,1];
-			player.moveCoin('orange1','2,0',board);
-			player.moveCoin('orange2','4,4',board);
-			var coin = player.coins['orange1'];
-			assert.deepEqual(board.getAllValidMovesOfCoin(coin,diceValues,path),[ '4,2', '4,0', '3,0' ]);
-		});
 		it('gives players startPosition if coin is at off Board',function(){
 			game.createPlayer('orange');
 			var player = game.players['orange'];
@@ -262,25 +248,10 @@ describe('Game',function(){
 
 	});
 	describe('anyMoreMoves',function(){
-		it.skip('gives true if the player has more moves available',function(){
-			game.createPlayer('red');
-			var player = game.players['red'];
-			player.diceValues = [1,2,3];
-			assert.equal(master.board.anyMoreMoves(player),true);
-		});
 		it('gives false if the player has no coins on board and hasn\'t got "6"',function(){
 			game.createPlayer('red');
 			game.players['red'].diceValues = [1,2,3];
 			assert.equal(game.anyMoreMoves('red'),false);
-		});
-		it.skip('gives false if the player has coin at destination and other coin off board',function(){
-			var master = new e.GameMaster([6],5,[1,2,3,4,5,6]);
-			master.createPlayer('red');
-			var player = master.players['red'];
-			player.matured = true;
-			player.coins['red1'].move('2,2');
-			player.diceValues = [1,2,3];
-			assert.equal(master.board.anyMoreMoves(player),false);
 		});
 		it('gives true if the player has coins all off board and got "6" as dice value',function(){
 			game.createPlayer('red');
