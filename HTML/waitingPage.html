@@ -5,7 +5,7 @@
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
 		timer = setInterval(function(){
-			$.get('update/toUpdate=waitingPage',function(data,status){
+			$.get('update?toUpdate=waitingPage',function(data,status){
 				if(data)
 					document.getElementById('noOfPlayers').innerHTML = data;
 				else{

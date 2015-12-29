@@ -44,15 +44,15 @@ describe("get handlers",function(){
 		it("response with status code 404 when file is not present",function(done){
 			request(controller).get('/pikachu')
 				.expect(404)
-				.expect(/Not Found/,done);
+				.expect(/Cannot GET \/pikachu/,done);
 		});
 	});
 	describe("unallowed method",function(){
 		it("gives method not allowed when the method is other than GET or POST",function(done){
 			request(controller)
 				.put('/anything')
-				.expect(405)
-				.expect('Method is not allowed',done);
+				.expect(404)
+				.expect(/Cannot PUT \/anything/,done);
 		});
 	});
 	describe("main.html",function(){
@@ -82,7 +82,7 @@ describe("get handlers",function(){
 						.get('/enquiry?question=currentPlayer')
 						.set('cookie',['userId=roy'])
 						.expect(404)
-						.expect('Not Found',done);
+						.expect(/Cannot GET \/enquiry\?question=currentPlayer/,done);
 				});
 			});
 		});
@@ -130,7 +130,7 @@ describe("get handlers",function(){
 			controller = requestHandler(game);
 			request(controller)
 				.get('/update?toUpdate=diceValues')
-				.expect('Not Found')
+				.expect(/Cannot GET \/update\?toUpdate=diceValues/)
 				.expect(404,done)
 		});
 		it("updates the number of player when it gets request from valid player",function(done){
@@ -151,7 +151,7 @@ describe("get handlers",function(){
 			request(controller)
 				.get('/update?toUpdate=waitingPage')
 				.set('cookie',['userId=jack'])
-				.expect('Not Found')
+				.expect(/Cannot GET \/update\?toUpdate=waitingPage/)
 				.expect(404,done)
 		});
 		it("gives current state of the game when it gets request from valid player",function(done){
@@ -178,7 +178,7 @@ describe("get handlers",function(){
 			request(controller)
 				.get('/update?toUpdate=board')
 				.set('cookie',['userId=jack'])
-				.expect('Not Found')
+				.expect(/Cannot GET \/update\?toUpdate=board/)
 				.expect(404,done)
 
 		});

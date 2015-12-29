@@ -1,3 +1,4 @@
+var express = require('express');
 var fs = require('fs');
 var path = require('path');
 var lodash = require('lodash');
@@ -10,6 +11,7 @@ var enquiries = operations.enquiries;
 var instructions = operations.instructions;
 var getWinner = application.findWinner;
 
+var app=express();
 var headers = {
 	".html" : "text/html",
 	".svg"	: "image/svg+xml",
@@ -162,20 +164,38 @@ var createGameOverPage = function(req,res,next){
 	res.end(html);
 }
 
-exports.post_handlers = [
-	{path: '^/login$', handler: doRedirect},//finish testing
-	{path: '', handler: method_not_allowed}//finish testing
-];
+app.get('^/waitingPage.html$',function(req,res,next){
+	createWaitingPage(req,res,next);
+});
 
-exports.get_handlers = [
-	{path:'^/waitingPage.html$',handler:createWaitingPage},//finish testing
-	{path: '^/main.html$',handler:createInformation},
-	{path: '^/$', handler: serveIndex},//finish testing
-	{path: '', handler: serveStaticFile},//finish testing
-	{path: '^/update', handler: handleUpdate},
-	{path: '^/enquiry',handler: handleEnquiry},//finish testing
-	{path: '^/instruction', handler: doInstruction},//no need to test
-	{path: '^/gameOver$', handler: createGameOverPage},//finish testing
-	{path: '', handler: fileNotFound}//finish testing
-];
+app.get('^/main.html$',function(req,res,next){
+	createInformation(req,res,next);
+});
 
+app.get(/^\/$/,function(req,res,next){
+	serveIndex(req,res,next);
+});
+
+app.use(express.static('./HTML'));
+
+app.get(/^\/update/,function(req,res,next){
+	handleUpdate(req,res,next);
+});
+
+app.get(/^\/enquiry/,function(req,res,next){
+	handleEnquiry(req,res,next);
+});
+
+app.get(/^\/instruction/,function(req,res,next){
+	doInstruction(req,res,next);
+});
+
+app.get(/^\/gameOver$/,function(req,res,next){
+	createGameOverPage(req,res,next);
+});
+
+app.post('^/login$',function(req,res,next){
+	doRedirect(req,res,next);
+});
+
+module.exports = app;
