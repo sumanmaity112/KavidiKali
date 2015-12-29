@@ -58,27 +58,5 @@ describe('Player',function(){
 			player.moveCoin('red1','4,2');
 			assert.deepEqual(coin.currentPosition,player.path[0].id);
 		});
-		//it('kills the coin present in the position to be moved',function(){
-			//var game = new Game([6],5,[1,2,3,4,5,6]);
-			
-			// var player1 = new Player('red');
-			// var player2 = new Player('blue');
-			// var movesBy = '2,4';
-			// player1.moveCoin('red1',movesBy,board);
-			// assert.equal(board.getCoins(movesBy).id,'red1');
-			// player2.moveCoin('blue2',movesBy,board);
-			// assert.equal(board.getCoins(movesBy).id,'blue2');
-			// assert.ok(player1.coins['red1'].currentPosition == undefined)
-		//});
-	// 	it.skip('it will not kill the coin if the "movedTo" place is a safe plac Instead the coin will be added to the list of coins in that place',function(){
-	// 		var board = new Board(['2,3','4,2'],5);
-	// 		var player1 = new Player('red');
-	// 		var player2 = new Player('blue');
-	// 		var movesBy = '2,3';
-	// 		player1.moveCoin('red1',movesBy,board);
-	// 		assert.deepEqual(board.getCoins(movesBy),[player1.coins['red1']]);
-	// 		player2.moveCoin('blue2',movesBy,board);
-	// 		assert.deepEqual(board.getCoins(movesBy),[player1.coins['red1'],player2.coins['blue2']]);
-	// 	});
 	});
 }); 

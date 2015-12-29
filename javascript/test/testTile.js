@@ -60,7 +60,6 @@ describe("Unsafe Tile",function(){
 			defaultGame.tiles[tilesId].place(suman.coins.suman2);
 			defaultGame.tiles[tilesId].capture(suman.coins.suman1,defaultGame);
 			assert.equal(sooraj.coins.sooraj2.currentPosition,-1);
-			// assert.equal(suman.chances,1);
 			assert.ok(suman.matured);
 			sumanPathAfterKilling = suman.path.map(function(tile){return tile.id});
 			path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1',

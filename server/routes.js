@@ -4,14 +4,11 @@ var lodash = require('lodash');
 var querystring = require('querystring');
 var application = require('./application.js');
 var operations = require('./operations.js');
-// var game = require('./../javascript/sourceCode/game.js').game;
-
 var main = application.main;
 var updates = operations.updates;
 var enquiries = operations.enquiries;
 var instructions = operations.instructions;
 var getWinner = application.findWinner;
-// var req.game = new game([6],5,[1,2,3,4,5,6]);
 
 var headers = {
 	".html" : "text/html",
@@ -129,7 +126,7 @@ var doInstruction = function(req, res, next){
 		res.end(result)
 	}
 	else
-		next();
+		method_not_allowed(req, res);
 };
 
 var handleUpdate = function(req, res, next){
@@ -167,7 +164,6 @@ var createGameOverPage = function(req,res,next){
 
 exports.post_handlers = [
 	{path: '^/login$', handler: doRedirect},//finish testing
-	{path: '^/instruction', handler: doInstruction},//no need to test
 	{path: '', handler: method_not_allowed}//finish testing
 ];
 
@@ -178,6 +174,7 @@ exports.get_handlers = [
 	{path: '', handler: serveStaticFile},//finish testing
 	{path: '^/update', handler: handleUpdate},
 	{path: '^/enquiry',handler: handleEnquiry},//finish testing
+	{path: '^/instruction', handler: doInstruction},//no need to test
 	{path: '^/gameOver$', handler: createGameOverPage},//finish testing
 	{path: '', handler: fileNotFound}//finish testing
 ];

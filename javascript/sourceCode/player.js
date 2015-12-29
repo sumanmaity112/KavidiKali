@@ -33,7 +33,6 @@ Player.prototype = {
 			if(coin.currentPosition==-1){
 				if(this.path[0].id == movesTo && this.diceValues.indexOf(6)>=0){
 					this.path[0].place(coin);
-					// coin.move(movesTo);
 					this.diceValues = removeValue(this.diceValues, 6);
 				};
 			}
@@ -45,7 +44,6 @@ Player.prototype = {
 					dice = (16+dice);
 				if(this.diceValues.indexOf(dice)>=0){
 					this.path[nextTileIndex].place(coin);
-					// coin.move(movesTo);
 					this.diceValues = removeValue(this.diceValues, dice);
 					this.path[currTileIndex].removeCoin(coin);
 				};
@@ -72,7 +70,6 @@ Player.prototype = {
 
 
 var removeValue = function(list,value){
-	// return ld.pull(list,value);
 	var index = list.indexOf(value);
 	return list.filter(function(value,ind){
 		return ind!=index;

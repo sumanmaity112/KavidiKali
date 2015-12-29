@@ -17,12 +17,7 @@ function makeGrid(){
 };
 
 var rollDice = function(){
-	$.post('instruction?action=rollDice',function(data,status){});
-	// 	updateDiceValues();
-	// 	updateValues = setInterval(function(){
-	// 		updateDiceValues();
-	// 	},1000);
-	// });
+	$.get('instruction?action=rollDice');
 };
 
 var updateDiceValues = function(){
@@ -98,7 +93,7 @@ var coinClick = function(){
 
 var tileClick = function(){
 	if(selectedCoin){
-		$.post('instruction?action=moveCoin&coin='+selectedCoin+'&position='+this.id,function(data){
+		$.get('instruction?action=moveCoin&coin='+selectedCoin+'&position='+this.id,function(data){
 			selectedCoin = undefined;
 			for(var pos in activeTiles){
 				document.getElementById(activeTiles[pos]).onclick = null;
@@ -139,7 +134,6 @@ window.onload = function(){
 	}); 
 	refreshWindow = setInterval(function(){
 		refreshBoard();
-		// check();
 		currentPlayer();
 		restore();
 		updateDiceValues();

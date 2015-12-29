@@ -6,10 +6,6 @@ var game={};
 var controller = requestHandler(game);
 
 describe("get handlers",function(){
-	// beforeEach(function(){
-		// game = new Game([6],5,[1,2,3,4,5,6]);
-		// controller = requestHandler(game);
-	// });
 	describe("/",function(){
 		it("serves index file if '/' is given",function(done){
 			request(controller).get('/')
@@ -236,7 +232,7 @@ describe("POST handlers",function(){
 			game.dice.roll = sinon.stub().returns(5);
 			controller = requestHandler(game);
 			request(controller)
-				.post('/instruction?action=rollDice')
+				.get('/instruction?action=rollDice')
 				.set('cookie',['userId=rocky'])
 				.expect('diceValue5')
 				.expect(200,done);
@@ -252,7 +248,7 @@ describe("POST handlers",function(){
 			game.dice.roll = sinon.stub().returns(5);
 			controller = requestHandler(game);
 			request(controller)
-				.post('/instruction?action=rollDice')
+				.get('/instruction?action=rollDice')
 				.set('cookie',['userId=piku'])
 				.expect('Method is not allowed')
 				.expect(405,done);
