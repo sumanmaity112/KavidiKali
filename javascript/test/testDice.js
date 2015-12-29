@@ -1,4 +1,4 @@
-var Dice = require('../sourceCode/dice.js').dice;
+var Dice = require('../sourceCode/dice.js');
 var assert = require('assert');
 
 describe("Dice",function(){

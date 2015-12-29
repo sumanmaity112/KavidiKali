@@ -1,4 +1,4 @@
-var coin = require('./coin.js').coin;
+var coin = require('./coin.js');
 var ld = require('lodash');
 var EventEmitter=require('events').EventEmitter;
 
@@ -78,4 +78,5 @@ var removeValue = function(list,value){
 		return ind!=index;
 	});
 };
-exports.player = Player;
+
+module.exports = Player;

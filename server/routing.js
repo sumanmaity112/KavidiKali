@@ -1,12 +1,8 @@
 var EventEmitter = require('events').EventEmitter;
 var routes = require('./routes.js');
-var game = require('./../javascript/sourceCode/game.js').game;
-
 var get_handlers = routes.get_handlers;
 var post_handlers = routes.post_handlers;
 var rEmitter = new EventEmitter();
-
-var gameMaster = new game([6],5,[1,2,3,4,5,6]);
 
 var matchHandler = function(url){
 	return function(ph){

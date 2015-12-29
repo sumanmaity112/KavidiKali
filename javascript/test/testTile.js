@@ -1,6 +1,6 @@
 var tile = require('../sourceCode/tile.js').tile;
-var Coin = require('../sourceCode/coin.js').coin;
-var game =  require('../sourceCode/game.js').game;
+var Coin = require('../sourceCode/coin.js');
+var game =  require('../sourceCode/game.js');
 var assert = require('assert');
 var ld=require("lodash");
 

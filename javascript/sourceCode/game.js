@@ -2,9 +2,9 @@ var lib = require('./tile.js');
 var tiles = lib.tile;
 var generateSafePositions = lib.generateSafePositions;
 var pathLib = require('./generatePath.js');
-var dice = require('./dice.js').dice;
-var player = require('./player.js').player;
-var Coin = require('./coin.js').coin;
+var dice = require('./dice.js');
+var player = require('./player.js');
+var Coin = require('./coin.js');
 var ld  =  require('lodash');
 
 var Game = function(specialValues,size,diceValues){
@@ -138,4 +138,4 @@ var createCoins =  function(id,numberOfCoins,colour){
 	return coins;
 };
 
-exports.game = Game;
+module.exports = Game;

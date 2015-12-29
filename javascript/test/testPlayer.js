@@ -1,7 +1,7 @@
-var Game = require('../sourceCode/game.js').game;
-var Player = require('../sourceCode/player.js').player;
-var Dice = require('../sourceCode/dice.js').dice;
-var Coin = require('../sourceCode/coin.js').coin;
+var Game = require('../sourceCode/game.js');
+var Player = require('../sourceCode/player.js');
+var Dice = require('../sourceCode/dice.js');
+var Coin = require('../sourceCode/coin.js');
 var assert = require('assert');
 
 describe('Player',function(){

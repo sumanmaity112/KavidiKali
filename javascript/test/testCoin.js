@@ -1,4 +1,4 @@
-var Coin = require('../sourceCode/coin.js').coin;
+var Coin = require('../sourceCode/coin.js');
 var assert = require('assert');
 
 describe("Coin",function(){

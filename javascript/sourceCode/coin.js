@@ -28,4 +28,4 @@ Coin.prototype = {
 	}
 };
 
-exports.coin=Coin;
+module.exports = Coin;

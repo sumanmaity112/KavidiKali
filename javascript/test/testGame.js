@@ -1,6 +1,6 @@
-var Game = require('../sourceCode/game.js').game;
-var player = require('../sourceCode/player.js').player;
-var Dice = require('../sourceCode/dice.js').dice;
+var Game = require('../sourceCode/game.js');
+var player = require('../sourceCode/player.js');
+var Dice = require('../sourceCode/dice.js');
 
 var assert = require('assert');
 
