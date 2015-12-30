@@ -85,22 +85,6 @@ var replaceRespectiveValue = function(originalData,replaceFrom,replaceTo){
 	return originalData.replace(replaceFrom,replaceTo);
 };
 
-var createWaitingPage = function(req, res, next){
-	var filePath = './HTML' + req.url;
-	fs.readFile(filePath, function(err, data){
-		if(data){
-			res.statusCode = 200;
-			res.writeHead(200,{'content-type' : headers[path.extname(filePath)]});
-			var userId = querystring.parse(req.headers.cookie).userId;
-			var html = replaceRespectiveValue(data.toString(),'__userId__',userId);
-			html = replaceRespectiveValue(html.toString(),'__numberOfPlayer__',application.enquiry({question:'players'},req.game).length);
-			res.end(html);
-		}
-		else
-			next();
-	});
-};
-
 var doInstruction = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(13));
 	var player = querystring.parse(req.headers.cookie).userId;
@@ -144,11 +128,7 @@ var createGameOverPage = function(req, res, next){
 	var html = '<h3>Sorry Game Over  __userId__ won the game</h3>';
 	html = replaceRespectiveValue(html,'__userId__',getWinner(req.game));
 	res.end(html);
-}
-
-app.get('^/waitingPage.html$', function(req, res, next){
-	createWaitingPage(req, res, next);
-});
+};
 
 app.get('^/main.html$',function(req, res, next){
 	createInformation(req, res, next);

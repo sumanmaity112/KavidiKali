@@ -4,21 +4,25 @@
 	<title>Waiting For Players</title>
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
-		timer = setInterval(function(){
-			$.get('update?toUpdate=waitingPage',function(data,status){
-				if(data)
-					document.getElementById('noOfPlayers').innerHTML = data;
-				else{
-					clearInterval(timer);
-					$(location).attr('href','/main.html');
-				}
-			})
-		},1000);
+		window.onload = function(){
+			var name = document.cookie.slice(7);
+			document.querySelector('#userId').innerHTML+=name;
+			timer = setInterval(function(){
+				$.get('update?toUpdate=waitingPage',function(data,status){
+					if(data)
+						document.getElementById('noOfPlayers').innerHTML = data;
+					else{
+						clearInterval(timer);
+						$(location).attr('href','/main.html');
+					}
+				})
+			},1000);
+		};
 	</script>
 </head>
 <body>
 	<div>
-		<h2>You are Successfully logged in   __userId__</h2>
+		<h2 id="userId">You are Successfully logged in  </h2>
 		<h3>Number of players joined...  <p id="noOfPlayers">__numberOfPlayer__</p></h3>
 	</div>
 </body>
