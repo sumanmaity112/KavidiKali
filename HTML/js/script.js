@@ -18,11 +18,11 @@ function makeGrid(){
 };
 
 var myName = function(){
-			$.get('enquiry?question=myNameAndColor',function(data, status){
-				if(data){
-					document.querySelector('#userId').innerHTML=data;
-				}
-			});
+	$.get('enquiry?question=myNameAndColor',function(data, status){
+		if(data){
+			document.querySelector('#userId').innerHTML=data;
+		}
+	});
 };
 
 var rollDice = function(){
@@ -122,7 +122,7 @@ var restore = function(){
 			});
 		}
 	});
-}
+};
 
 window.onload = function(){
 	document.getElementById("board").innerHTML = makeGrid();

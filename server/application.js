@@ -36,12 +36,3 @@ exports.findWinner=function(gameMaster){
 	winner && resetGame(gameMaster);
 	return winner;
 };
-
-var resetGame = function(){
-	var succefullySendRes = 0;
-	return function(gameMaster){
-		succefullySendRes++;
-		if(succefullySendRes==4)
-			gameMaster.reset();
-	};
-}();
