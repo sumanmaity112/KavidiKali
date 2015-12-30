@@ -41,7 +41,7 @@ describe("get handlers",function(){
 		});
 	});
 	describe("wrong url",function(){
-		it("response with status code 404 when file is not present",function(done){
+		it("response with status code 405 when file is not present",function(done){
 			request(controller).get('/pikachu')
 				.expect(404)
 				.expect(/Cannot GET \/pikachu/,done);
@@ -77,12 +77,12 @@ describe("get handlers",function(){
 						.expect(200)
 						.expect('rony',done);
 				});
-				it("gives the status code 404 when it get request from unregistered player",function(done){
+				it("gives the status code 405 when it get request from unregistered player",function(done){
 					request(controller)
 						.get('/enquiry?question=currentPlayer')
 						.set('cookie',['userId=roy'])
-						.expect(404)
-						.expect(/Cannot GET \/enquiry\?question=currentPlayer/,done);
+						.expect(405)
+						.expect('Method is not allowed',done);
 				});
 			});
 		});
@@ -135,8 +135,8 @@ describe("get handlers",function(){
 			controller = requestHandler(game);
 			request(controller)
 				.get('/update?toUpdate=diceValues')
-				.expect(/Cannot GET \/update\?toUpdate=diceValues/)
-				.expect(404,done)
+				.expect('Method is not allowed')
+				.expect(405,done)
 		});
 		it("updates the number of player when it gets request from valid player",function(done){
 			game={};
@@ -149,15 +149,15 @@ describe("get handlers",function(){
 				.expect(200,done)
 
 		});
-		it("gives 404 when it gets request from an invalid player",function(done){
+		it("gives 405 when it gets request from an invalid player",function(done){
 			game={};
 			game.players={jacky:{},joy:{},johnny:{}};
 			controller = requestHandler(game);
 			request(controller)
 				.get('/update?toUpdate=waitingPage')
 				.set('cookie',['userId=jack'])
-				.expect(/Cannot GET \/update\?toUpdate=waitingPage/)
-				.expect(404,done)
+				.expect('Method is not allowed')
+				.expect(405,done)
 		});
 		it("gives current state of the game when it gets request from valid player",function(done){
 			game={};
@@ -173,7 +173,7 @@ describe("get handlers",function(){
 				.expect(200,done)
 
 		});
-		it("gives 404 when it gets update board request from valid player",function(done){
+		it("gives 405 when it gets update board request from valid player",function(done){
 			game={};
 			game.players={jacky:{},joy:{},johnny:{},rocky:{}};
 			game.stateOfGame = function(){
@@ -183,8 +183,8 @@ describe("get handlers",function(){
 			request(controller)
 				.get('/update?toUpdate=board')
 				.set('cookie',['userId=jack'])
-				.expect(/Cannot GET \/update\?toUpdate=board/)
-				.expect(404,done)
+				.expect('Method is not allowed')
+				.expect(405,done)
 
 		});
 	});
@@ -261,9 +261,8 @@ describe("POST handlers",function(){
 			request(controller)
 				.get('/instruction?action=rollDice')
 				.set('cookie',['userId=piku'])
-				// .expect('Method is not allowed')
-				.expect('Cannot GET /instruction?action=rollDice\n')
-				.expect(404,done);
+				.expect('Method is not allowed')
+				.expect(405,done);
 		});
 	});
 });

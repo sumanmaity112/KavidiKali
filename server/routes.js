@@ -19,11 +19,11 @@ var headers = {
 	".css"	: "text/css"
 };
 
-// var method_not_allowed = function(req, res){
-// 	res.statusCode = 405;
-// 	console.log(res.statusCode);
-// 	res.end('Method is not allowed');
-// };
+var method_not_allowed = function(req, res){
+	res.statusCode = 405;
+	console.log(res.statusCode);
+	res.end('Method is not allowed');
+};
 
 // var fileNotFound = function(req, res){
 // 	res.statusCode = 404;
@@ -46,11 +46,10 @@ var doRedirect = function(req, res, next){
 };
 
 var createPlayer = function(userId,req,res){
-	if(!application.enquiry({question:'isValidPlayer',player:userId},req.game))
-		application.register(userId,req.game);
-		res.cookie('userId', userId);
-		res.redirect('/waitingPage.html');
-		res.end();
+	application.register(userId,req.game);
+	res.cookie('userId', userId);
+	res.redirect('/waitingPage.html');
+	res.end();
 };
 
 var isPlayerRegistered = function(req, res, next){
@@ -66,40 +65,33 @@ var isPlayerRegistered = function(req, res, next){
 var doInstruction = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(13));
 	var player = req.cookies.userId;
-	if(application.enquiry({question:'isValidPlayer',player:player},req.game)){
-		obj.player = player;
-		var result = application.handleInstruction(obj,req.game);
-		res.end(result)
-	}
-	else
-		next();
+	obj.player = player;
+	var result = application.handleInstruction(obj,req.game);
+	res.end(result);
 };
 
 var handleUpdate = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(8));
 	var player = req.cookies.userId;
-	if(application.enquiry({question:'isValidPlayer',player:player},req.game)){
-		obj.player = player;
-		var result = application.handleUpdates(obj,req.game);
-		res.end(result);
-	}
-	else
-		next();
+	obj.player = player;
+	var result = application.handleUpdates(obj,req.game);
+	res.end(result);
 };
 
 var handleEnquiry = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(9));
 	var player = req.cookies.userId;
-	if(application.enquiry({question:'isValidPlayer',player:player},req.game)){
-		obj.player = player;
-		var response = application.enquiry(obj,req.game);
-		if(!response)
-			next();
-		else	
-			res.end(response);
-	}
-	else
+	obj.player = player;
+	var response = application.enquiry(obj,req.game);
+	if(!response)
 		next();
+	else	
+		res.end(response);
+};
+
+var isValidPlayer = function(req, res, next){
+	var player = req.cookies.userId;
+	return application.enquiry({question:'isValidPlayer',player:player},req.game) && next() || method_not_allowed(req, res, next)
 };
 
 app.use(cookieParser());
@@ -108,11 +100,13 @@ app.get('^/main.html$', isPlayerRegistered);
 
 app.use(express.static('./HTML'));
 
-app.get(/^\/update/,handleUpdate);
+// app.use(/^\/update/, isValidPlayer);
 
-app.get(/^\/enquiry/, handleEnquiry);
+app.get(/^\/update/, isValidPlayer, handleUpdate);
 
-app.get(/^\/instruction/,function(req, res, next){
+app.get(/^\/enquiry/, isValidPlayer, handleEnquiry);
+
+app.get(/^\/instruction/, isValidPlayer, function(req, res, next){
 	doInstruction(req, res, next);
 });
 
