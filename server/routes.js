@@ -5,6 +5,7 @@ var lodash = require('lodash');
 var querystring = require('querystring');
 var application = require('./application.js');
 var operations = require('./operations.js');
+var cookieParser = require('cookie-parser');
 var main = application.main;
 var updates = operations.updates;
 var enquiries = operations.enquiries;
@@ -38,7 +39,7 @@ var doRedirect = function(req, res, next){
 	req.on('end',function(){
 		var userId = querystring.parse(data)['name'];
 		if(application.enquiry({question:'players'},req.game).length <= 3)
-			createPlayer(userId,req,res);
+			createPlayer(userId, req, res);
 		else 
 			res.end('Please wait, a game is already started');
 	});
@@ -47,38 +48,36 @@ var doRedirect = function(req, res, next){
 var createPlayer = function(userId,req,res){
 	if(!application.enquiry({question:'isValidPlayer',player:userId},req.game))
 		application.register(userId,req.game);
-	res.writeHead('302',{'Location':'/waitingPage.html',
-		'content-type':'text/html',
-		'Set-Cookie':'userId='+userId,
-
-	});
-	res.end();
+		res.cookie('userId', userId);
+		res.redirect('/waitingPage.html');
+		res.end();
 };
 
-var createInformation = function(req, res, next){
-
-	var filePath = './HTML' + req.url;
-	var userId = querystring.parse(req.headers.cookie).userId;
-	if(!userId || !application.enquiry({question:'isValidPlayer',player:userId},req.game)){
-		res.writeHead('302',{'Location':'/index.html',
-			'content-type':'text/html'
-		});
+var isPlayerRegistered = function(req, res, next){
+	var player = req.cookies.userId;
+	if(!player || !application.enquiry({question:'isValidPlayer',player:player},req.game)){
+		res.redirect('/index.html'); 
 		res.end();
 	}
-	else{
-		var color = application.findColor(userId,req.game);
-		fs.readFile(filePath, function(err, data){
-			if(data){
-				var replaceWith = userId + '\nYour coin color : '+color;
-				var html = replaceRespectiveValue(data.toString(),'__userID__',replaceWith);
-				res.responseCode = 200;
-				res.end(html);
-				console.log(res.responseCode);
-			}
-			else
-				next();
-		});	
-	}
+	else
+		next();
+}
+
+var serveMain = function(req, res, next){
+	var filePath = './HTML' + req.url;
+	var userId = req.cookies.userId;
+	var color = application.findColor(userId, req.game);
+	fs.readFile(filePath, function(err, data){
+		if(data){
+			var replaceWith = userId + '\nYour coin color : '+color;
+			var html = replaceRespectiveValue(data.toString(),'__userID__',replaceWith);
+			res.responseCode = 200;
+			res.end(html);
+			console.log(res.responseCode);
+		}
+		else
+			next();
+	});	
 };
 
 var replaceRespectiveValue = function(originalData,replaceFrom,replaceTo){
@@ -87,7 +86,7 @@ var replaceRespectiveValue = function(originalData,replaceFrom,replaceTo){
 
 var doInstruction = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(13));
-	var player = querystring.parse(req.headers.cookie).userId;
+	var player = req.cookies.userId;
 	if(application.enquiry({question:'isValidPlayer',player:player},req.game)){
 		obj.player = player;
 		var result = application.handleInstruction(obj,req.game);
@@ -99,7 +98,7 @@ var doInstruction = function(req, res, next){
 
 var handleUpdate = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(8));
-	var player = querystring.parse(req.headers.cookie).userId;
+	var player = req.cookies.userId;
 	if(application.enquiry({question:'isValidPlayer',player:player},req.game)){
 		obj.player = player;
 		var result = application.handleUpdates(obj,req.game);
@@ -111,7 +110,7 @@ var handleUpdate = function(req, res, next){
 
 var handleEnquiry = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(9));
-	var player = querystring.parse(req.headers.cookie).userId;
+	var player = req.cookies.userId;
 	if(application.enquiry({question:'isValidPlayer',player:player},req.game)){
 		obj.player = player;
 		var response = application.enquiry(obj,req.game);
@@ -129,10 +128,9 @@ var createGameOverPage = function(req, res, next){
 	html = replaceRespectiveValue(html,'__userId__',getWinner(req.game));
 	res.end(html);
 };
+app.use(cookieParser());
 
-app.get('^/main.html$',function(req, res, next){
-	createInformation(req, res, next);
-});
+app.get('^/main.html$', isPlayerRegistered, serveMain);
 
 app.use(express.static('./HTML'));
 

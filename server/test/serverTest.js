@@ -189,23 +189,29 @@ describe("POST handlers",function(){
 	describe("index page",function(){
 		it("redirects player to the waiting page after login from url /",function(done){
 			game={players:{}};
-			game.createPlayer=function(){};
+			game.createPlayer=function(){
+				game.players.rony = {coinColor:'red'};
+			};
 
 			controller = requestHandler(game);
 			request(controller)
 				.post('/login')
 				.send("name=rony")
-				.expect('set-cookie','userId=rony')
+				.expect('set-cookie','userId=rony; Path=/')
 				.expect(302)
 				.expect('Location','/waitingPage.html',done)
 		});
 		it("redirects player to the waiting page after login from url /indexPage.html",function(done){
 			game={players:{}};
-			game.createPlayer=function(){};
+			game.createPlayer=function(){
+				game.players.rony = {coinColor:'red'};
+			};
 			controller = requestHandler(game);
 
 			request(controller)
 				.post('/login')
+				.send("name=rony")
+				.expect('set-cookie','userId=rony; Path=/')
 				.expect(302)
 				.expect('Location','/waitingPage.html',done)
 		});
