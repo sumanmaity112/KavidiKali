@@ -115,10 +115,10 @@ var tileClick = function(){
 var restore = function(){
 	$.get('enquiry?question=isGameOver',function(data){
 		if(data=='true'){
-			$.get('/gameOver',function(data){
+			$.get('enquiry?question=whoIsTheWinner',function(data){
 				clearInterval(refreshWindow);
 				clearInterval(updateValues);
-				document.querySelector("#playerTurn").innerHTML = data;
+				document.querySelector("#playerTurn").innerHTML = '<h3>Sorry Game Over  '+data+' won the game</h3>';
 			});
 		}
 	});

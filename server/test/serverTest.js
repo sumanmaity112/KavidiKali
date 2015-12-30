@@ -87,15 +87,20 @@ describe("get handlers",function(){
 			});
 		});
 	});
-	describe("createGameOverPage",function(){
+	describe("GameOver",function(){
 		it("informs player that game is over",function(done){
-			game={};
-			game.winner = 'rocky';
+			game={
+				players:{rocky:{},
+						 rony:{}
+						},
+				winner:'rocky'
+			};
 			controller = requestHandler(game);
 
 			request(controller)
-				.get('/gameOver')
-				.expect('<h3>Sorry Game Over  rocky won the game</h3>')
+				.get('/enquiry?question=whoIsTheWinner')
+				.set('cookie',['userId=rony'])
+				.expect('rocky')
 				.expect(200,done);
 		});
 	});

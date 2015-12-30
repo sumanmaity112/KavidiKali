@@ -85,5 +85,6 @@ exports.enquiries = [
 	{enquiry:'movesWhere', action : movesTo},
 	{enquiry:'isGameOver',action: checkStatus},
 	{enquiry:'whatIsMyName', action: function(gameMaster, obj){ return obj.player}},
-	{enquiry:'myNameAndColor', action: myNameAndColor}
+	{enquiry:'myNameAndColor', action: myNameAndColor},
+	{enquiry:'whoIsTheWinner', action: function(gameMaster){ return gameMaster.winner}}
 ];

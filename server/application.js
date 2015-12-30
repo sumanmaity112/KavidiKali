@@ -33,7 +33,7 @@ exports.findColor=function(userId,gameMaster){
 
 exports.findWinner=function(gameMaster){
 	var winner = gameMaster.winner;
-	resetGame(gameMaster);
+	winner && resetGame(gameMaster);
 	return winner;
 };
 

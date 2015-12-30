@@ -10,7 +10,7 @@ var main = application.main;
 var updates = operations.updates;
 var enquiries = operations.enquiries;
 var instructions = operations.instructions;
-var getWinner = application.findWinner;
+// var getWinner = application.findWinner;
 
 var app=express();
 var headers = {
@@ -61,10 +61,6 @@ var isPlayerRegistered = function(req, res, next){
 	}
 	else
 		next();
-}
-
-var replaceRespectiveValue = function(originalData,replaceFrom,replaceTo){
-	return originalData.replace(replaceFrom,replaceTo);
 };
 
 var doInstruction = function(req, res, next){
@@ -106,12 +102,6 @@ var handleEnquiry = function(req, res, next){
 		next();
 };
 
-var createGameOverPage = function(req, res, next){
-	var html = '<h3>Sorry Game Over  __userId__ won the game</h3>';
-	html = replaceRespectiveValue(html,'__userId__',getWinner(req.game));
-	res.end(html);
-};
-
 app.use(cookieParser());
 
 app.get('^/main.html$', isPlayerRegistered);
@@ -124,10 +114,6 @@ app.get(/^\/enquiry/, handleEnquiry);
 
 app.get(/^\/instruction/,function(req, res, next){
 	doInstruction(req, res, next);
-});
-
-app.get(/^\/gameOver$/,function(req, res, next){
-	createGameOverPage(req, res, next);
 });
 
 app.post('^/login$',function(req, res, next){
