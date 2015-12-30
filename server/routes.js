@@ -18,35 +18,17 @@ var headers = {
 	".css"	: "text/css"
 };
 
-var serveIndex = function(req, res, next){
-	req.url = '/index.html';
-	next();
-};
+// var method_not_allowed = function(req, res){
+// 	res.statusCode = 405;
+// 	console.log(res.statusCode);
+// 	res.end('Method is not allowed');
+// };
 
-var method_not_allowed = function(req, res){
-	res.statusCode = 405;
-	console.log(res.statusCode);
-	res.end('Method is not allowed');
-};
-
-var serveStaticFile = function(req, res, next){
-	var filePath = './HTML' + req.url;
-	fs.readFile(filePath, function(err, data){
-		if(data){
-			res.writeHead(200,{'content-type' : headers[path.extname(filePath)]});
-			console.log(res.statusCode);
-			res.end(data);
-		}
-		else
-			next();
-	});
-};
-
-var fileNotFound = function(req, res){
-	res.statusCode = 404;
-	res.end('Not Found');
-	console.log(res.statusCode);
-};
+// var fileNotFound = function(req, res){
+// 	res.statusCode = 404;
+// 	res.end('Not Found');
+// 	console.log(res.statusCode);
+// };
 
 var doRedirect = function(req, res, next){
 	var data = '';
@@ -128,7 +110,7 @@ var doInstruction = function(req, res, next){
 		res.end(result)
 	}
 	else
-		method_not_allowed(req, res);
+		next();
 };
 
 var handleUpdate = function(req, res, next){
@@ -143,7 +125,7 @@ var handleUpdate = function(req, res, next){
 		next();
 };
 
-var handleEnquiry = function(req,res,next){
+var handleEnquiry = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(9));
 	var player = querystring.parse(req.headers.cookie).userId;
 	if(application.enquiry({question:'isValidPlayer',player:player},req.game)){
@@ -158,44 +140,36 @@ var handleEnquiry = function(req,res,next){
 		next();
 };
 
-var createGameOverPage = function(req,res,next){
+var createGameOverPage = function(req, res, next){
 	var html = '<h3>Sorry Game Over  __userId__ won the game</h3>';
 	html = replaceRespectiveValue(html,'__userId__',getWinner(req.game));
 	res.end(html);
 }
 
-app.get('^/waitingPage.html$',function(req,res,next){
-	createWaitingPage(req,res,next);
+app.get('^/waitingPage.html$', function(req, res, next){
+	createWaitingPage(req, res, next);
 });
 
-app.get('^/main.html$',function(req,res,next){
-	createInformation(req,res,next);
-});
-
-app.get(/^\/$/,function(req,res,next){
-	serveIndex(req,res,next);
+app.get('^/main.html$',function(req, res, next){
+	createInformation(req, res, next);
 });
 
 app.use(express.static('./HTML'));
 
-app.get(/^\/update/,function(req,res,next){
-	handleUpdate(req,res,next);
+app.get(/^\/update/,handleUpdate);
+
+app.get(/^\/enquiry/, handleEnquiry);
+
+app.get(/^\/instruction/,function(req, res, next){
+	doInstruction(req, res, next);
 });
 
-app.get(/^\/enquiry/,function(req,res,next){
-	handleEnquiry(req,res,next);
+app.get(/^\/gameOver$/,function(req, res, next){
+	createGameOverPage(req, res, next);
 });
 
-app.get(/^\/instruction/,function(req,res,next){
-	doInstruction(req,res,next);
-});
-
-app.get(/^\/gameOver$/,function(req,res,next){
-	createGameOverPage(req,res,next);
-});
-
-app.post('^/login$',function(req,res,next){
-	doRedirect(req,res,next);
+app.post('^/login$',function(req, res, next){
+	doRedirect(req, res, next);
 });
 
 module.exports = app;

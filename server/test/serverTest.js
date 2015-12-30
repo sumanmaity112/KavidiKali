@@ -250,8 +250,9 @@ describe("POST handlers",function(){
 			request(controller)
 				.get('/instruction?action=rollDice')
 				.set('cookie',['userId=piku'])
-				.expect('Method is not allowed')
-				.expect(405,done);
+				// .expect('Method is not allowed')
+				.expect('Cannot GET /instruction?action=rollDice\n')
+				.expect(404,done);
 		});
 	});
 });
