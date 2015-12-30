@@ -128,6 +128,7 @@ var createGameOverPage = function(req, res, next){
 	html = replaceRespectiveValue(html,'__userId__',getWinner(req.game));
 	res.end(html);
 };
+
 app.use(cookieParser());
 
 app.get('^/main.html$', isPlayerRegistered, serveMain);

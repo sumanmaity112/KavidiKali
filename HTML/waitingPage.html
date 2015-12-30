@@ -5,8 +5,11 @@
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
 		window.onload = function(){
-			var name = document.cookie.slice(7);
-			document.querySelector('#userId').innerHTML+=name;
+			$.get('enquiry?question=whatIsMyName',function(data, status){
+				if(data){
+					document.querySelector('#userId').innerHTML+=data;
+				}
+			});
 			timer = setInterval(function(){
 				$.get('update?toUpdate=waitingPage',function(data,status){
 					if(data)

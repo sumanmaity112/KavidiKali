@@ -78,5 +78,6 @@ exports.enquiries = [
 	{enquiry:'isAllPlayersJoined', action: function(gameMaster){return Object.keys(gameMaster.players).length==4}},
 	{enquiry:'doHaveMoves', action : function(gameMaster,obj){ return gameMaster.anyMoreMoves(obj.player).toString();}},
 	{enquiry:'movesWhere', action : movesTo},
-	{enquiry:'isGameOver',action: checkStatus}
+	{enquiry:'isGameOver',action: checkStatus},
+	{enquiry:'whatIsMyName', action: function(gameMaster, obj){ return obj.player}}
 ];
