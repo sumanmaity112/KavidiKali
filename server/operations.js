@@ -69,6 +69,11 @@ var checkStatus = function(gameMaster){
 	return status.toString();
 };
 
+var myNameAndColor = function(gameMaster, obj){
+	var color = gameMaster.players[obj.player].coinColor
+	return obj.player + '\nYour coin color : '+color;
+};
+
 exports.enquiries = [
 	{enquiry:'isValidPlayer', action : function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)}},
 	{enquiry:'currentPlayer', action : function(gameMaster){ return gameMaster.currentPlayer;}},
@@ -79,5 +84,6 @@ exports.enquiries = [
 	{enquiry:'doHaveMoves', action : function(gameMaster,obj){ return gameMaster.anyMoreMoves(obj.player).toString();}},
 	{enquiry:'movesWhere', action : movesTo},
 	{enquiry:'isGameOver',action: checkStatus},
-	{enquiry:'whatIsMyName', action: function(gameMaster, obj){ return obj.player}}
+	{enquiry:'whatIsMyName', action: function(gameMaster, obj){ return obj.player}},
+	{enquiry:'myNameAndColor', action: myNameAndColor}
 ];

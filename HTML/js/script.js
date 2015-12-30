@@ -3,6 +3,7 @@ var currentStateOfGame;
 var activeTiles, refreshWindow, updateValues;
 var turnTemplate = "Its __UserID__'s turn "
 
+
 function makeGrid(){
 	var table='<table class="grid">'
 	for(var rowCount=5;rowCount>=-1;rowCount--){
@@ -14,6 +15,14 @@ function makeGrid(){
 	};
 	table+='</table>';
 	return table;
+};
+
+var myName = function(){
+			$.get('enquiry?question=myNameAndColor',function(data, status){
+				if(data){
+					document.querySelector('#userId').innerHTML=data;
+				}
+			});
 };
 
 var rollDice = function(){
@@ -131,7 +140,8 @@ window.onload = function(){
 	yards.forEach(function(place,index){
 		document.getElementById(place).className = 'parking';
 		document.getElementById(place).id = colorSequence[index]+'_yard';
-	}); 
+	});
+	myName();
 	refreshWindow = setInterval(function(){
 		refreshBoard();
 		currentPlayer();

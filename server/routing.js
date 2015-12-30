@@ -4,7 +4,7 @@ var requestHandler = function(game){
 	return function(req, res){
 		console.log(req.method, req.url, req.headers.cookie);
 		req.game = game;
-		app(req,res);
+		app(req, res);
 	}
 };
 

@@ -63,23 +63,6 @@ var isPlayerRegistered = function(req, res, next){
 		next();
 }
 
-var serveMain = function(req, res, next){
-	var filePath = './HTML' + req.url;
-	var userId = req.cookies.userId;
-	var color = application.findColor(userId, req.game);
-	fs.readFile(filePath, function(err, data){
-		if(data){
-			var replaceWith = userId + '\nYour coin color : '+color;
-			var html = replaceRespectiveValue(data.toString(),'__userID__',replaceWith);
-			res.responseCode = 200;
-			res.end(html);
-			console.log(res.responseCode);
-		}
-		else
-			next();
-	});	
-};
-
 var replaceRespectiveValue = function(originalData,replaceFrom,replaceTo){
 	return originalData.replace(replaceFrom,replaceTo);
 };
@@ -131,7 +114,7 @@ var createGameOverPage = function(req, res, next){
 
 app.use(cookieParser());
 
-app.get('^/main.html$', isPlayerRegistered, serveMain);
+app.get('^/main.html$', isPlayerRegistered);
 
 app.use(express.static('./HTML'));
 
