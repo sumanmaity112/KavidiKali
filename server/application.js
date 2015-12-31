@@ -25,7 +25,3 @@ exports.register = function(name,gameMaster){
 	var obj = {question:'players'};
 	exports.enquiry(obj,gameMaster).length == 1 && gameMaster.players[name].chances++;
 };
-
-exports.findColor=function(userId,gameMaster){
-	return gameMaster.players[userId].coinColor;
-};

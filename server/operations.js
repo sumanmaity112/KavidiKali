@@ -54,14 +54,6 @@ var movesTo = function(gameMaster, obj){
 	return temp;
 };
 
-var moreChanceToRollDice = function(gameMaster, obj){
-	var currPlayer = gameMaster.currentPlayer;
-	var chances = gameMaster.players[currPlayer].chances;
-	if(currPlayer==obj.player && chances>0)
-		return 'true';
-	return 'false';
-};
-
 var checkStatus = function(gameMaster){
 	var status =  Object.keys(gameMaster.players).some(function(player){
 		return gameMaster.players[player].isWin;
@@ -87,10 +79,6 @@ exports.enquiries = {
 	'isValidPlayer'		: function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)},
 	'currentPlayer'		: function(gameMaster){ return gameMaster.currentPlayer;},
 	'players' 			: function(gameMaster){ return Object.keys(gameMaster.players);},
-	'isItMyChance' 		: function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true';},
-	'moreChanceToRollDice' : moreChanceToRollDice,
-	'isAllPlayersJoined': function(gameMaster){return Object.keys(gameMaster.players).length==4},
-	'doHaveMoves' 		: function(gameMaster,obj){ return gameMaster.anyMoreMoves(obj.player).toString();},
 	'movesWhere' 		: movesTo,
 	'isGameOver'		: checkStatus,
 	'whatIsMyName'		: function(gameMaster, obj){ return obj.player},
