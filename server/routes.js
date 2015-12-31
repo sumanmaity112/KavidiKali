@@ -59,31 +59,31 @@ var isPlayerRegistered = function(req, res, next){
 		next();
 };
 
-var doInstruction = function(req, res, next){
-	var obj = querystring.parse(req.url.slice(13));
+var createFunctionalObj = function(req){
+	var url = req.url;
+	var indexOfSlash = url.indexOf('?');
+	var obj = querystring.parse(url.slice(indexOfSlash+1));
 	var player = req.cookies.userId;
 	obj.player = player;
-	var result = application.handleInstruction(obj,req.game);
-	res.end(result);
+	return obj;
+};
+
+var doInstruction = function(req, res, next){
+	var obj = createFunctionalObj(req);
+	var acknowledge = application.handleInstruction(obj,req.game);
+	res.end(acknowledge);
 };
 
 var handleUpdate = function(req, res, next){
-	var obj = querystring.parse(req.url.slice(8));
-	var player = req.cookies.userId;
-	obj.player = player;
-	var result = application.handleUpdates(obj,req.game);
-	res.end(result);
+	var obj = createFunctionalObj(req);
+	var update = application.handleUpdates(obj,req.game);
+	res.end(update);
 };
 
 var handleEnquiry = function(req, res, next){
-	var obj = querystring.parse(req.url.slice(9));
-	var player = req.cookies.userId;
-	obj.player = player;
-	var response = enquiries(obj,req.game);
-	if(!response)
-		next();
-	else	
-		res.end(response);
+	var obj = createFunctionalObj(req);
+	var response = enquiries(obj,req.game);	
+	res.end(response);
 };
 
 var isValidPlayer = function(req, res, next){
