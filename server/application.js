@@ -12,13 +12,12 @@ exports.handleInstruction = function(obj,gameMaster){
 
 exports.handleUpdates = function(obj,gameMaster){
 	var updater = updates[obj.toUpdate];
-	var update = updater(gameMaster,obj);
-	return update;
+	return updater(gameMaster,obj);
 };
 
 exports.enquiry = function(obj,gameMaster){
-	var enquiry = lodash.findWhere(enquiries,{enquiry:obj.question});
-	return enquiry && enquiry.action(gameMaster,obj);
+	var enquiry = enquiries[obj.question];
+	return enquiry && enquiry(gameMaster,obj);
 };
 
 exports.register = function(name,gameMaster){
@@ -29,10 +28,4 @@ exports.register = function(name,gameMaster){
 
 exports.findColor=function(userId,gameMaster){
 	return gameMaster.players[userId].coinColor;
-};
-
-exports.findWinner=function(gameMaster){
-	var winner = gameMaster.winner;
-	winner && resetGame(gameMaster);
-	return winner;
 };

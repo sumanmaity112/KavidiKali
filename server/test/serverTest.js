@@ -107,14 +107,12 @@ describe("get handlers",function(){
 	describe("/update",function(){
 		it("updates dice values when it gets request from valid player",function(done){
 			game={};
-			var rocky = {rollDice:function(dice){return 5;},chances:0,
-						 diceValues:[5]};
+			var rocky = {diceValues:[5]};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
 			game.setChances=function(){};
 			game.nextPlayer=function(){};
 			game.currentPlayer = 'rocky';
 			game.dice = {};
-			game.dice.roll = sinon.stub().returns(5);
 			controller = requestHandler(game);
 			request(controller)
 				.get('/update?toUpdate=diceValues')

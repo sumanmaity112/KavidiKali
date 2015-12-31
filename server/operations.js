@@ -83,17 +83,17 @@ var resetGame = function(){
 	};
 }();
 
-exports.enquiries = [
-	{enquiry:'isValidPlayer', action : function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)}},
-	{enquiry:'currentPlayer', action : function(gameMaster){ return gameMaster.currentPlayer;}},
-	{enquiry:'players', action : function(gameMaster){ return Object.keys(gameMaster.players);}},
-	{enquiry:'isItMyChance', action : function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true';}},
-	{enquiry:'moreChanceToRollDice', action : moreChanceToRollDice},
-	{enquiry:'isAllPlayersJoined', action: function(gameMaster){return Object.keys(gameMaster.players).length==4}},
-	{enquiry:'doHaveMoves', action : function(gameMaster,obj){ return gameMaster.anyMoreMoves(obj.player).toString();}},
-	{enquiry:'movesWhere', action : movesTo},
-	{enquiry:'isGameOver',action: checkStatus},
-	{enquiry:'whatIsMyName', action: function(gameMaster, obj){ return obj.player}},
-	{enquiry:'myNameAndColor', action: myNameAndColor},
-	{enquiry:'whoIsTheWinner', action: function(gameMaster){ gameMaster.winner && resetGame(gameMaster); return gameMaster.winner}}
-];
+exports.enquiries = {
+	'isValidPlayer'		: function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)},
+	'currentPlayer'		: function(gameMaster){ return gameMaster.currentPlayer;},
+	'players' 			: function(gameMaster){ return Object.keys(gameMaster.players);},
+	'isItMyChance' 		: function(gameMaster,obj){return gameMaster.currentPlayer == obj.player && 'true';},
+	'moreChanceToRollDice' : moreChanceToRollDice,
+	'isAllPlayersJoined': function(gameMaster){return Object.keys(gameMaster.players).length==4},
+	'doHaveMoves' 		: function(gameMaster,obj){ return gameMaster.anyMoreMoves(obj.player).toString();},
+	'movesWhere' 		: movesTo,
+	'isGameOver'		: checkStatus,
+	'whatIsMyName'		: function(gameMaster, obj){ return obj.player},
+	'myNameAndColor'	: myNameAndColor,
+	'whoIsTheWinner'	: function(gameMaster){ gameMaster.winner && resetGame(gameMaster); return gameMaster.winner}
+};

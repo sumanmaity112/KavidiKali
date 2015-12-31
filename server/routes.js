@@ -6,11 +6,8 @@ var querystring = require('querystring');
 var application = require('./application.js');
 var operations = require('./operations.js');
 var cookieParser = require('cookie-parser');
-var main = application.main;
-var updates = operations.updates;
-var enquiries = operations.enquiries;
-var instructions = operations.instructions;
-// var getWinner = application.findWinner;
+
+var enquiries = application.enquiry;
 
 var app=express();
 var headers = {
@@ -38,7 +35,7 @@ var doRedirect = function(req, res, next){
 	});
 	req.on('end',function(){
 		var userId = querystring.parse(data)['name'];
-		if(application.enquiry({question:'players'},req.game).length <= 3)
+		if(enquiries({question:'players'},req.game).length <= 3)
 			createPlayer(userId, req, res);
 		else 
 			res.end('Please wait, a game is already started');
@@ -54,7 +51,7 @@ var createPlayer = function(userId,req,res){
 
 var isPlayerRegistered = function(req, res, next){
 	var player = req.cookies.userId;
-	if(!player || !application.enquiry({question:'isValidPlayer',player:player},req.game)){
+	if(!player || !enquiries({question:'isValidPlayer',player:player},req.game)){
 		res.redirect('/index.html'); 
 		res.end();
 	}
@@ -82,7 +79,7 @@ var handleEnquiry = function(req, res, next){
 	var obj = querystring.parse(req.url.slice(9));
 	var player = req.cookies.userId;
 	obj.player = player;
-	var response = application.enquiry(obj,req.game);
+	var response = enquiries(obj,req.game);
 	if(!response)
 		next();
 	else	
@@ -91,7 +88,7 @@ var handleEnquiry = function(req, res, next){
 
 var isValidPlayer = function(req, res, next){
 	var player = req.cookies.userId;
-	return application.enquiry({question:'isValidPlayer',player:player},req.game) && next() || method_not_allowed(req, res, next)
+	return enquiries({question:'isValidPlayer',player:player},req.game) && next() || method_not_allowed(req, res)
 };
 
 app.use(cookieParser());
@@ -99,8 +96,6 @@ app.use(cookieParser());
 app.get('^/main.html$', isPlayerRegistered);
 
 app.use(express.static('./HTML'));
-
-// app.use(/^\/update/, isValidPlayer);
 
 app.get(/^\/update/, isValidPlayer, handleUpdate);
 
