@@ -1,7 +1,5 @@
 var Game = require('../sourceCode/game.js');
-var player = require('../sourceCode/player.js');
-var Dice = require('../sourceCode/dice.js');
-
+var sinon = require('sinon');
 var assert = require('assert');
 
 var findPlayersCoinDetails = function(coins){
@@ -27,14 +25,15 @@ describe('Game',function(){
 			assert.ok(!game.analyzeDiceValue(4));
 		});
 	});
+
 	describe('createPlayer',function(){
 		it('creates a player with given playerId',function(){
-			game.createPlayer('red');
-			assert.ok(Object.keys(game.players).length==1)
-			assert.ok(game.players['red'] instanceof player);
-			game.createPlayer('blue');
+			game.createPlayer('Ash');
+			assert.ok(Object.keys(game.players).length==1);
+			assert.equal(0,Object.keys(game.players).indexOf('Ash'))
+			game.createPlayer('Dicaprio');
 			assert.ok(Object.keys(game.players).length==2);
-			assert.ok(game.players['blue'] instanceof player);
+			assert.equal(1,Object.keys(game.players).indexOf('Dicaprio'))
 		});
 		it("creates a player with respective path",function(){
 			game.createPlayer('suman');
@@ -115,23 +114,25 @@ describe('Game',function(){
 				};
 			assert.deepEqual(coins,findPlayersCoinDetails(game.players.supriya.coins));
 		});
-		
 	});
+		
 	describe('setChances',function(){
 		it('analyses the given dice value and then gives chance to the given player if dice value is one of special value',function(){
+			var dice = {roll:function(){sinon.stub().returns(6)}};
 			game.createPlayer('red');
 			var player = game.players['red'];
 			player.chances = 1;
-			player.rollDice(new Dice([1,2,3,4,5,6]));
+			player.rollDice(dice);
 			assert.equal(player.chances,0);
 			game.setChances(6,'red');
 			assert.equal(player.chances,1);
 		});
 		it('analyses the given dice value and then do nothing if dice value is not one of special value',function(){
+			var dice = {roll:function(){sinon.stub().returns(6)}};
 			game.createPlayer('red');
 			var player = game.players['red'];
 			player.chances = 1;
-			player.rollDice(new Dice([]));
+			player.rollDice(dice);
 			assert.equal(player.chances,0);
 			game.setChances(4,'red');
 			assert.equal(player.chances,0);
@@ -197,7 +198,7 @@ describe('Game',function(){
 	});
 	describe('nextPlayer',function(){
 		it('gives the next player who have chance to play',function(){
-			var dice = new Dice([1,2,3,4,5]);
+			var dice = {roll:function(){sinon.stub().returns(6)}};
 			game.createPlayer('red');
 			game.createPlayer('yellow');
 			game.players['red'].chances++;
@@ -209,7 +210,7 @@ describe('Game',function(){
 			assert.equal(currPlayer,'yellow');
 		});
 		it('gives the next player a chance to roll dice',function(){
-			var dice = new Dice([1,2,3,4,5]);
+			var dice = {roll:function(){sinon.stub().returns(6)}};
 			game.createPlayer('red');
 			game.createPlayer('yellow');
 			game.createPlayer('blue');
@@ -245,7 +246,6 @@ describe('Game',function(){
 			var diceValues = [1,2,3,4,5];
 			assert.deepEqual(game.getAllValidMovesOfCoin(coin,diceValues,player.path),undefined);	
 		});
-
 	});
 	describe('anyMoreMoves',function(){
 		it('gives false if the player has no coins on board and hasn\'t got "6"',function(){
@@ -269,7 +269,6 @@ describe('Game',function(){
 			suman.coins.suman3.move("2,2");
 			assert.ok(!suman.isWin);
 			suman.coins.suman4.move("2,2");
-			console.log('**********',suman.isWin,'**********');
 			assert.ok(suman.isWin);
 			assert.ok(game.players,{});
 		});
