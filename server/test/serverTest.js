@@ -43,16 +43,16 @@ describe("get handlers",function(){
 	describe("wrong url",function(){
 		it("response with status code 405 when file is not present",function(done){
 			request(controller).get('/pikachu')
-				.expect(404)
-				.expect(/Cannot GET \/pikachu/,done);
+				.expect(405)
+				.expect("Method is not allowed",done);
 		});
 	});
 	describe("unallowed method",function(){
 		it("gives method not allowed when the method is other than GET or POST",function(done){
 			request(controller)
 				.put('/anything')
-				.expect(404)
-				.expect(/Cannot PUT \/anything/,done);
+				.expect(405)
+				.expect("Method is not allowed",done);
 		});
 	});
 	describe("main.html",function(){

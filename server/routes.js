@@ -6,13 +6,10 @@ var querystring = require('querystring');
 var application = require('./application.js');
 var operations = require('./operations.js');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
 
 var enquiries = application.enquiry;
 
 var app=express();
-var body=bodyParser.urlencoded({extended:true});
-
 var headers = {
 	".html" : "text/html",
 	".svg"	: "image/svg+xml",
@@ -32,11 +29,17 @@ var method_not_allowed = function(req, res){
 // };
 
 var doRedirect = function(req, res, next){
-	var userId = req.body.name;
-	if(enquiries({question:'players'},req.game).length <= 3)
-		createPlayer(userId, req, res);
-	else 
-		res.end('Please wait, a game is already started');
+	var data = '';
+	req.on('data',function(chunk){
+		data+=chunk;
+	});
+	req.on('end',function(){
+		var userId = querystring.parse(data)['name'];
+		if(enquiries({question:'players'},req.game).length <= 3)
+			createPlayer(userId, req, res);
+		else 
+			res.end('Please wait, a game is already started');
+	});
 };
 
 var createPlayer = function(userId,req,res){
@@ -88,23 +91,24 @@ var isValidPlayer = function(req, res, next){
 	if(enquiries({question:'isValidPlayer',player:player},req.game))
 		next();
 	else
-	 	method_not_allowed(req, res);
+		method_not_allowed(req, res);
 };
 
 app.use(cookieParser());
-
-app.use(body);
 
 app.get('^/main.html$', isPlayerRegistered);
 
 app.use(express.static('./HTML'));
 
-app.get(/^\/update/, isValidPlayer, handleUpdate);
+app.post('^/login$',doRedirect);
 
-app.get(/^\/enquiry/, isValidPlayer, handleEnquiry);
+app.use(isValidPlayer);
 
-app.get(/^\/instruction/, isValidPlayer, doInstruction);
+app.get(/^\/update/, handleUpdate);
 
-app.post('^/login$',doRedirect)
+app.get(/^\/enquiry/, handleEnquiry);
+
+app.get(/^\/instruction/, doInstruction);
+
 
 module.exports = app;
