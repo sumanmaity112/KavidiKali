@@ -171,7 +171,7 @@ describe("get handlers",function(){
 				.expect(200,done)
 
 		});
-		it("gives 405 when it gets update board request from valid player",function(done){
+		it("gives 405 when it gets update board request from invalid player",function(done){
 			game={};
 			game.players={jacky:{},joy:{},johnny:{},rocky:{}};
 			game.stateOfGame = function(){

@@ -85,7 +85,10 @@ var handleEnquiry = function(req, res, next){
 
 var isValidPlayer = function(req, res, next){
 	var player = req.cookies.userId;
-	return enquiries({question:'isValidPlayer',player:player},req.game) && next() || method_not_allowed(req, res)
+	if(enquiries({question:'isValidPlayer',player:player},req.game))
+		next();
+	else
+	 	method_not_allowed(req, res);
 };
 
 app.use(cookieParser());
