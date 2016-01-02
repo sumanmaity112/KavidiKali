@@ -200,7 +200,7 @@ describe("POST handlers",function(){
 			request(controller)
 				.post('/login')
 				.send("name=rony")
-				.expect('set-cookie','userId=rony; Path=/')
+				.expect('set-cookie','userId=rony; Path=/,gameId=undefined; Path=/')
 				.expect(302)
 				.expect('Location','/waitingPage.html',done)
 		});
@@ -214,7 +214,7 @@ describe("POST handlers",function(){
 			request(controller)
 				.post('/login')
 				.send("name=rony")
-				.expect('set-cookie','userId=rony; Path=/')
+				.expect('set-cookie','userId=rony; Path=/,gameId=undefined; Path=/')
 				.expect(302)
 				.expect('Location','/waitingPage.html',done)
 		});

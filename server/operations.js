@@ -68,8 +68,10 @@ var myNameAndColor = function(gameMaster, obj){
 
 var resetGame = function(){
 	var succefullySendRes = 0;
-	return function(gameMaster){
+	return function(gameMaster,res){
 		succefullySendRes++;
+		res.clearCookie('userId');
+		res.clearCookie('gameId');
 		if(succefullySendRes==4)
 			gameMaster.reset();
 	};
@@ -83,5 +85,5 @@ exports.enquiries = {
 	'isGameOver'		: checkStatus,
 	'whatIsMyName'		: function(gameMaster, obj){ return obj.player},
 	'myNameAndColor'	: myNameAndColor,
-	'whoIsTheWinner'	: function(gameMaster){ gameMaster.winner && resetGame(gameMaster); return gameMaster.winner}
+	'whoIsTheWinner'	: function(gameMaster,obj,res){ gameMaster.winner && resetGame(gameMaster,res); return gameMaster.winner}
 };

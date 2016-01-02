@@ -1,32 +1,19 @@
 var express = require('express');
-var fs = require('fs');
-var path = require('path');
 var lodash = require('lodash');
 var querystring = require('querystring');
 var application = require('./application.js');
 var operations = require('./operations.js');
 var cookieParser = require('cookie-parser');
-
+var loadGame= require('./games.js')
 var enquiries = application.enquiry;
 
 var app=express();
-var headers = {
-	".html" : "text/html",
-	".svg"	: "image/svg+xml",
-	".css"	: "text/css"
-};
 
 var method_not_allowed = function(req, res){
 	res.statusCode = 405;
 	console.log(res.statusCode);
 	res.end('Method is not allowed');
 };
-
-// var fileNotFound = function(req, res){
-// 	res.statusCode = 404;
-// 	res.end('Not Found');
-// 	console.log(res.statusCode);
-// };
 
 var doRedirect = function(req, res, next){
 	var data = '';
@@ -45,6 +32,7 @@ var doRedirect = function(req, res, next){
 var createPlayer = function(userId,req,res){
 	application.register(userId,req.game);
 	res.cookie('userId', userId);
+	res.cookie('gameId',req.tempGameId);
 	res.redirect('/waitingPage.html');
 	res.end();
 };
@@ -82,7 +70,7 @@ var handleUpdate = function(req, res, next){
 
 var handleEnquiry = function(req, res, next){
 	var obj = createFunctionalObj(req);
-	var response = enquiries(obj,req.game);	
+	var response = enquiries(obj,req.game,res);
 	res.end(response);
 };
 
@@ -95,6 +83,8 @@ var isValidPlayer = function(req, res, next){
 };
 
 app.use(cookieParser());
+
+app.use(loadGame);
 
 app.get('^/main.html$', isPlayerRegistered);
 
