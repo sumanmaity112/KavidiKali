@@ -1,5 +1,5 @@
 var tile = require('../sourceCode/tile.js').tile;
-// var Coin = require('../sourceCode/coin.js');
+var Coin = require('../sourceCode/coin.js');
 var game =  require('../sourceCode/game.js');
 var assert = require('assert');
 var ld=require("lodash");
@@ -38,56 +38,65 @@ describe("Unsafe Tile",function(){
 		unsafeTile.place(coin);
 		assert.ok(unsafeTile.contains(coin));
 	});
-	//describe("Capture",function(){
-		// var defaultGame;
-		// beforeEach(function(){
-		// 	defaultGame = new game([6],5,[1,2,3,4,5,6])
-		// });
-		// it("resets the killed coin",function(){
-		// 	defaultGame.createPlayer("sooraj");
-		// 	var sooraj = defaultGame.players.sooraj;
-		// 	defaultGame.createPlayer("suman");
-		// 	var suman = defaultGame.players.suman;
-		// 	var tilesId = '2,1';
-		// 	var sumanPath = suman.path.map(function(tile){return tile.id});
-		// 	var path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1'];
-		// 	assert.deepEqual(sumanPath,path);
+	describe("Capture",function(){
+	// 	var defaultGame;
+	// 	beforeEach(function(){
+	// 		defaultGame = new game([6],5,[1,2,3,4,5,6])
+	// 	});
+	// 	it("resets the killed coin",function(){
+	// 		defaultGame.createPlayer("sooraj");
+	// 		var sooraj = defaultGame.players.sooraj;
+	// 		defaultGame.createPlayer("suman");
+	// 		var suman = defaultGame.players.suman;
+	// 		var tilesId = '2,1';
+	// 		var sumanPath = suman.path.map(function(tile){return tile.id});
+	// 		var path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1'];
+	// 		assert.deepEqual(sumanPath,path);
 
-			// defaultGame.tiles[tilesId].coin=sooraj.coins.sooraj1;
-			// sooraj.coins.sooraj1.currentPosition = tilesId;
-			// suman.coins.suman1.currentPosition = tilesId;
-			// defaultGame.tiles[tilesId].capture(suman.coins.suman1,defaultGame);
-			// assert.equal(sooraj.coins.sooraj1.currentPosition,-1);
-			// assert.equal(suman.chances,1);
-			// assert.ok(suman.matured);
-			// sumanPathAfterKilling = suman.path.map(function(tile){return tile.id});
-			// path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1',
-			// 	'3,1','2,1','1,1','1,2','1,3','2,3','3,3','3,2','2,2'];
-			// assert.deepEqual(sumanPathAfterKilling,path);
+	// 		defaultGame.tiles[tilesId].coin=sooraj.coins.sooraj1;
+	// 		sooraj.coins.sooraj1.currentPosition = tilesId;
+	// 		suman.coins.suman1.currentPosition = tilesId;
+	// 		defaultGame.tiles[tilesId].capture(suman.coins.suman1,defaultGame);
+	// 		assert.equal(sooraj.coins.sooraj1.currentPosition,-1);
+	// 		assert.equal(suman.chances,1);
+	// 		assert.ok(suman.matured);
+	// 		sumanPathAfterKilling = suman.path.map(function(tile){return tile.id});
+	// 		path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1',
+	// 			'3,1','2,1','1,1','1,2','1,3','2,3','3,3','3,2','2,2'];
+	// 		assert.deepEqual(sumanPathAfterKilling,path);
 			
-			// tilesId = '2,3';
-			// defaultGame.tiles[tilesId].place(sooraj.coins.sooraj2);
-			// defaultGame.tiles[tilesId].place(suman.coins.suman2);
-			// defaultGame.tiles[tilesId].capture(suman.coins.suman1,defaultGame);
-			// assert.equal(sooraj.coins.sooraj2.currentPosition,-1);
-			// assert.ok(suman.matured);
-			// sumanPathAfterKilling = suman.path.map(function(tile){return tile.id});
-			// path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1',
-			// 	'3,1','2,1','1,1','1,2','1,3','2,3','3,3','3,2','2,2'];
-			// assert.deepEqual(sumanPathAfterKilling,path);
-		//});
-		// it("does not do anything for similar coin",function(){
-		// 	defaultGame.createPlayer("suman");
-		// 	var suman = defaultGame.players.suman;
-		// 	var tilesId = '2,1';
-		// 	defaultGame.tiles[tilesId].coin=suman.coins.suman1;
-		// 	suman.coins.suman1.currentPosition = tilesId;
-		// 	suman.coins.suman2.currentPosition = tilesId;
-		// 	defaultGame.tiles[tilesId].capture(suman.coins.suman1,defaultGame);
-		// 	assert.equal(suman.coins.suman2.currentPosition,tilesId);
-		// 	assert.equal(suman.chances,0)
-		// });
-	// });
+	// 		tilesId = '2,3';
+	// 		defaultGame.tiles[tilesId].place(sooraj.coins.sooraj2);
+	// 		defaultGame.tiles[tilesId].place(suman.coins.suman2);
+	// 		defaultGame.tiles[tilesId].capture(suman.coins.suman1,defaultGame);
+	// 		assert.equal(sooraj.coins.sooraj2.currentPosition,-1);
+	// 		assert.ok(suman.matured);
+	// 		sumanPathAfterKilling = suman.path.map(function(tile){return tile.id});
+	// 		path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1',
+	// 			'3,1','2,1','1,1','1,2','1,3','2,3','3,3','3,2','2,2'];
+	// 		assert.deepEqual(sumanPathAfterKilling,path);
+	// 	});
+		it("does not do anything for similar coin",function(){
+			defaultGame = {};
+			defaultGame.tiles={'2,1':new tile.UnsafeTile('2,1')}
+			defaultGame.players={suman:{
+				id:'suman',
+				coins:{
+					suman1:{id:'suman1',equals:function(){return true}},
+					suman2:{id:'suman2'}
+				},
+				chances:0
+			}}
+			var suman = defaultGame.players.suman;
+			var tilesId = '2,1';
+			defaultGame.tiles[tilesId].coin=suman.coins.suman1;
+			suman.coins.suman1.currentPosition = tilesId;
+			suman.coins.suman2.currentPosition = tilesId;
+			defaultGame.tiles[tilesId].capture(suman.coins.suman1,defaultGame);
+			assert.equal(suman.coins.suman2.currentPosition,tilesId);
+			assert.equal(suman.chances,0)
+		});
+	});
 });
 
 describe("Generate Tiles",function(){

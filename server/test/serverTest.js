@@ -1,10 +1,10 @@
 var request = require('superTest');
+var assert = require('assert');
 var requestHandler = require('../routing.js');
 var Game = require('../../javascript/sourceCode/game.js').game;
 var sinon = require('sinon');
 var game={};
 var controller = requestHandler(game);
-
 describe("get handlers",function(){
 	describe("/",function(){
 		it("serves index file if '/' is given",function(done){
@@ -219,16 +219,31 @@ describe("POST handlers",function(){
 				.expect(302)
 				.expect('Location','/waitingPage.html',done)
 		});
-		it("gives a waiting message when more than 4th player want to join the game",function(done){
-			game={};
-			game.players={rocky:{},jacky:{},joy:{},johnny:{}};
-			game.createPlayer=function(){};
-			controller = requestHandler(game);
+		it('create a new game when a new player want to join game after 4th player',function(done){
+			var cookie;
+			controller = requestHandler();
 			request(controller)
 				.post('/login').send('name=john')
-				.expect(200)
-				.expect("Please wait, a game is already started",done);
-		});
+				.end(function(req,res){
+					request(controller)
+					.post('/login').send('name=rony')
+					.end(function(req,res){
+						request(controller).post('/login')
+							.send('name=rocky').end(function(req,res){
+								request(controller).post('/login')
+									.send('name=jacky').end(function(req,res){
+										cookie = res.header['set-cookie'][1];
+									})
+							})
+					})
+			})
+			request(controller).post('/login')
+				.send('name=jamboo')
+				.end(function(req,res){
+					assert.notEqual(cookie,res.header['set-cookie'][1]);
+					done();
+				});
+		})
 	});
 	describe("doInstruction",function(){
 		it("performs action roll dice get from registered player",function(done){
