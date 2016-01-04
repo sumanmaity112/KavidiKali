@@ -66,17 +66,6 @@ var myNameAndColor = function(gameMaster, obj){
 	return obj.player + '\nYour coin color : '+color;
 };
 
-var resetGame = function(){
-	var succefullySendRes = 0;
-	return function(gameMaster,res){
-		succefullySendRes++;
-		res.clearCookie('userId');
-		res.clearCookie('gameId');
-		if(succefullySendRes==4)
-			gameMaster.reset();
-	};
-}();
-
 exports.enquiries = {
 	'isValidPlayer'		: function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)},
 	'currentPlayer'		: function(gameMaster){ return gameMaster.currentPlayer;},
@@ -85,5 +74,5 @@ exports.enquiries = {
 	'isGameOver'		: checkStatus,
 	'whatIsMyName'		: function(gameMaster, obj){ return obj.player},
 	'myNameAndColor'	: myNameAndColor,
-	'whoIsTheWinner'	: function(gameMaster,obj,res){ gameMaster.winner && resetGame(gameMaster,res); return gameMaster.winner}
+	'whoIsTheWinner'	: function(gameMaster,obj,req,res){ gameMaster.winner && gameMaster.resetGame(req,res); return gameMaster.winner}
 };

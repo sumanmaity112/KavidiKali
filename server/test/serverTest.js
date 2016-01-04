@@ -95,6 +95,7 @@ describe("get handlers",function(){
 						},
 				winner:'rocky'
 			};
+			game.resetGame = function(){}
 			controller = requestHandler(game);
 
 			request(controller)

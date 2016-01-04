@@ -5,6 +5,7 @@ var pathLib = require('./generatePath.js');
 var dice = require('./dice.js');
 var player = require('./player.js');
 var Coin = require('./coin.js');
+var removeGame = require('../../server/games.js').removeGame;
 var ld  =  require('lodash');
 
 var Game = function(specialValues,size,diceValues){
@@ -15,6 +16,16 @@ var Game = function(specialValues,size,diceValues){
 	this.dice = new dice(diceValues);
 	this.counter = 0;
 	this.winner=undefined;
+	this.resetGame = function(){
+		var succefullySendRes = 0;
+		return function(req,res){
+			succefullySendRes++;
+			res.clearCookie('userId');
+			res.clearCookie('gameId');
+			if(succefullySendRes==4)
+				this.reset();
+		};
+	}();
 };
 
 Game.prototype = {

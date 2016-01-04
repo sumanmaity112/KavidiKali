@@ -4,7 +4,8 @@ var querystring = require('querystring');
 var application = require('./application.js');
 var operations = require('./operations.js');
 var cookieParser = require('cookie-parser');
-var loadGame= require('./games.js')
+var bodyParser = require('body-parser')
+var loadGame= require('./games.js').loadGame;
 var enquiries = application.enquiry;
 
 var app=express();
@@ -16,17 +17,10 @@ var method_not_allowed = function(req, res){
 };
 
 var doRedirect = function(req, res, next){
-	var data = '';
-	req.on('data',function(chunk){
-		data+=chunk;
-	});
-	req.on('end',function(){
-		var userId = querystring.parse(data)['name'];
-		if(enquiries({question:'players'},req.game).length <= 3)
-			createPlayer(userId, req, res);
-		else 
-			res.end('Please wait, a game is already started');
-	});
+	if(enquiries({question:'players'},req.game).length <= 3)
+		createPlayer(req.body.name, req, res);
+	else 
+		res.end('Please wait, a game is already started');
 };
 
 var createPlayer = function(userId,req,res){
@@ -70,7 +64,7 @@ var handleUpdate = function(req, res, next){
 
 var handleEnquiry = function(req, res, next){
 	var obj = createFunctionalObj(req);
-	var response = enquiries(obj,req.game,res);
+	var response = enquiries(obj,req.game,req,res);
 	res.end(response);
 };
 
@@ -83,6 +77,8 @@ var isValidPlayer = function(req, res, next){
 };
 
 app.use(cookieParser());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(loadGame);
 

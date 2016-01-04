@@ -6,3 +6,4 @@ javascript/sourceCode/jquery-2.1.4.min.js
 *.JSON
 npm-debug.log
 TODO
+**/coverage

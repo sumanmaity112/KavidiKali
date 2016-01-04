@@ -15,7 +15,7 @@ exports.handleUpdates = function(obj,gameMaster){
 	return updater(gameMaster,obj);
 };
 
-exports.enquiry = function(obj,gameMaster,res){
+exports.enquiry = function(obj,gameMaster,req,res){
 	var enquiry = enquiries[obj.question];
 	return enquiry && enquiry(gameMaster,obj,res);
 };

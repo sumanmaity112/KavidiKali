@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive ./javascript && mocha --recursive ./server/test",
+    "test": "istanbul cover _mocha ./server/* ./javascript/*",
     "min": "mocha -R min --recursive ./javascript",
     "watch": "mocha -R min --watch --recursive ./javascript",
     "start": "node ./server/server.js",
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/sumanmaity112/KavidiKali#readme",
   "devDependencies": {
+    "istanbul": "^0.4.1",
     "mocha": "^2.3.4",
     "sinon": "^1.17.2",
     "supertest": "^1.1.0"
