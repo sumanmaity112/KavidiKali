@@ -1,10 +1,13 @@
 var request = require('superTest');
 var assert = require('assert');
 var requestHandler = require('../routing.js');
-var Game = require('../../javascript/sourceCode/game.js').game;
+var Game = require('../../javascript/sourceCode/game.js');
 var sinon = require('sinon');
-var game={};
-var controller = requestHandler(game);
+var game={players:{}};
+var games={};
+games={};
+games['123546789']=game;
+var controller = requestHandler(games);
 describe("get handlers",function(){
 	describe("/",function(){
 		it("serves index file if '/' is given",function(done){
@@ -24,7 +27,9 @@ describe("get handlers",function(){
 	describe("/waitingPage.html",function(){
 		it("serves waitingPage.html file when requested",function(done){
 			game={players:{}};
-			controller = requestHandler(game);
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
 
 			request(controller)
 				.get('/waitingPage.html')
@@ -64,16 +69,18 @@ describe("get handlers",function(){
 		describe("enquiry ",function(){
 			describe("currentPlayer",function(){
 				beforeEach(function(){
-					game={};
+					game={players:{}};
 					game.players={rocky:{},jacky:{},joy:{},rony:{}};
 					game.currentPlayer = 'rony'
-					controller = requestHandler(game);
+					games={};
+					games['123546789']=game;
+					controller = requestHandler(games);
 				});
 
 				it("gives the name of current player when it get request from registered player",function(done){
 					request(controller)
 						.get('/enquiry?question=currentPlayer')
-						.set('cookie',['userId=rony'])
+						.set('cookie',['userId=rony;gameId=123546789'])
 						.expect(200)
 						.expect('rony',done);
 				});
@@ -96,7 +103,9 @@ describe("get handlers",function(){
 				winner:'rocky'
 			};
 			game.resetGame = function(){}
-			controller = requestHandler(game);
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
 
 			request(controller)
 				.get('/enquiry?question=whoIsTheWinner')
@@ -107,22 +116,24 @@ describe("get handlers",function(){
 	});
 	describe("/update",function(){
 		it("updates dice values when it gets request from valid player",function(done){
-			game={};
+			game={players:{}};
 			var rocky = {diceValues:[5]};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
 			game.setChances=function(){};
 			game.nextPlayer=function(){};
 			game.currentPlayer = 'rocky';
 			game.dice = {};
-			controller = requestHandler(game);
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
 			request(controller)
 				.get('/update?toUpdate=diceValues')
-				.set('cookie',['userId=rocky'])
+				.set('cookie',['userId=rocky;gameId=123546789'])
 				.expect('diceValues=5')
 				.expect(200,done)
 		});
 		it("doesn't updates dice values when it gets request from invalid player",function(done){
-			game={};
+			game={players:{}};
 			var rocky = {rollDice:function(dice){return 5;},chances:0,
 						 diceValues:[5]};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
@@ -131,57 +142,68 @@ describe("get handlers",function(){
 			game.currentPlayer = 'rocky';
 			game.dice = {};
 			game.dice.roll = sinon.stub().returns(5);
-			controller = requestHandler(game);
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
 			request(controller)
 				.get('/update?toUpdate=diceValues')
+				.set('cookie',['userId=rocy;gameId=123546789'])
 				.expect('Method is not allowed')
 				.expect(405,done)
 		});
 		it("updates the number of player when it gets request from valid player",function(done){
-			game={};
+			game={players:{}};
 			game.players={jacky:{},joy:{},johnny:{}};
-			controller = requestHandler(game);
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
 			request(controller)
 				.get('/update?toUpdate=waitingPage')
-				.set('cookie',['userId=jacky'])
+				.set('cookie',['userId=jacky;gameId=123546789'])
 				.expect('3')
 				.expect(200,done)
 
 		});
 		it("gives 405 when it gets request from an invalid player",function(done){
-			game={};
+			game={players:{}};
 			game.players={jacky:{},joy:{},johnny:{}};
-			controller = requestHandler(game);
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
 			request(controller)
 				.get('/update?toUpdate=waitingPage')
-				.set('cookie',['userId=jack'])
+				.set('cookie',['userId=jack;gameId=123546789'])
 				.expect('Method is not allowed')
 				.expect(405,done)
 		});
 		it("gives current state of the game when it gets request from valid player",function(done){
-			game={};
+			game={players:{}};
 			game.players={jacky:{},joy:{},johnny:{},rocky:{}};
 			game.stateOfGame = function(){
 				return {id:'jacky',coins:{jacky1:{currentPosition:'2,0'}}}
 			}
-			controller = requestHandler(game);
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
 			request(controller)
 				.get('/update?toUpdate=board')
-				.set('cookie',['userId=jacky'])
+				.set('cookie',['userId=jacky;gameId=123546789'])
 				.expect('{"id":"jacky","coins":{"jacky1":{"currentPosition":"2,0"}}}')
 				.expect(200,done)
 
 		});
 		it("gives 405 when it gets update board request from invalid player",function(done){
-			game={};
+			game={players:{}};
 			game.players={jacky:{},joy:{},johnny:{},rocky:{}};
 			game.stateOfGame = function(){
 				return {id:'jacky',coins:{jacky1:{currentPosition:'2,0'}}}
 			}
-			controller = requestHandler(game);
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
 			request(controller)
 				.get('/update?toUpdate=board')
-				.set('cookie',['userId=jack'])
+				.set('cookie',['userId=jack;gameId=123546789'])
 				.expect('Method is not allowed')
 				.expect(405,done)
 
@@ -197,11 +219,13 @@ describe("POST handlers",function(){
 				game.players.rony = {coinColor:'red'};
 			};
 
-			controller = requestHandler(game);
+			games={};
+			games['123846789']=game;
+			controller = requestHandler(games);
 			request(controller)
 				.post('/login')
 				.send("name=rony")
-				.expect('set-cookie','userId=rony; Path=/,gameId=undefined; Path=/')
+				.expect('set-cookie','userId=rony; Path=/,gameId=123846789; Path=/')
 				.expect(302)
 				.expect('Location','/waitingPage.html',done)
 		});
@@ -210,44 +234,54 @@ describe("POST handlers",function(){
 			game.createPlayer=function(){
 				game.players.rony = {coinColor:'red'};
 			};
-			controller = requestHandler(game);
+			games={};
+			games['123846789']=game;
+			controller = requestHandler(games);
 
 			request(controller)
 				.post('/login')
 				.send("name=rony")
-				.expect('set-cookie','userId=rony; Path=/,gameId=undefined; Path=/')
+				.expect('set-cookie','userId=rony; Path=/,gameId=123846789; Path=/')
 				.expect(302)
 				.expect('Location','/waitingPage.html',done)
 		});
-		it('create a new game when a new player want to join game after 4th player',function(done){
-			var cookie;
-			controller = requestHandler();
+		it("doesn't create a new game when a new player want to join game till 4th player",function(done){
+			var games={};
+			var game={
+				players:{rock:{},jack:{},johnny:{}},
+				createPlayer:function(){}
+			}
+			var games={'123546789':game};
+			controller = requestHandler(games);
 			request(controller)
-				.post('/login').send('name=john')
+				.post('/login')
+				.send('name=rose')
+				.expect('set-cookie',['userId=rose; Path=/'])
 				.end(function(req,res){
-					request(controller)
-					.post('/login').send('name=rony')
-					.end(function(req,res){
-						request(controller).post('/login')
-							.send('name=rocky').end(function(req,res){
-								request(controller).post('/login')
-									.send('name=jacky').end(function(req,res){
-										cookie = res.header['set-cookie'][1];
-									})
-							})
-					})
-			})
-			request(controller).post('/login')
-				.send('name=jamboo')
-				.end(function(req,res){
-					assert.notEqual(cookie,res.header['set-cookie'][1]);
+					var expectCookie = 'gameId=123546789; Path=/'
+					assert.equal(expectCookie,res.header['set-cookie'][1]);
 					done();
-				});
+				})
+		})
+		it('create a new game when a new player want to join game after 4th player',function(done){
+			var games={};
+			var game={
+				players:{rock:{},jack:{},johnny:{},rony:{}}
+			}
+			var games={'123546789':game};
+			controller = requestHandler(games);
+			request(controller)
+				.post('/login')
+				.send('name=rose')
+				.end(function(req,res){
+					assert.notEqual('123546789',res.header['set-cookie'][1]);
+					done();
+				})
 		})
 	});
 	describe("doInstruction",function(){
 		it("performs action roll dice get from registered player",function(done){
-			game={};
+			game={players:{}};
 			var rocky = {rollDice:function(dice){return 5;},chances:1};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
 			game.setChances=function(){};
@@ -255,15 +289,17 @@ describe("POST handlers",function(){
 			game.currentPlayer = 'rocky';
 			game.dice = {};
 			game.dice.roll = sinon.stub().returns(5);
-			controller = requestHandler(game);
+			games={};
+			games['123sahbj']=game;
+			controller = requestHandler(games);
 			request(controller)
 				.get('/instruction?action=rollDice')
-				.set('cookie',['userId=rocky'])
+				.set('cookie',['userId=rocky;gameId=123sahbj'])
 				.expect('diceValue5')
 				.expect(200,done);
 		});
 		it("doesn't performs action roll dice get from unregistered player",function(done){
-			game={};
+			game={players:{}};
 			var rocky = {rollDice:function(dice){return 5;},chances:1};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
 			game.setChances=function(){};
@@ -271,10 +307,12 @@ describe("POST handlers",function(){
 			game.currentPlayer = 'rocky';
 			game.dice = {};
 			game.dice.roll = sinon.stub().returns(5);
-			controller = requestHandler(game);
+			games={};
+			games['1235JUk']=game;
+			controller = requestHandler(games);
 			request(controller)
 				.get('/instruction?action=rollDice')
-				.set('cookie',['userId=piku'])
+				.set('cookie',['userId=piku;gameId=1235JUk'])
 				.expect('Method is not allowed')
 				.expect(405,done);
 		});

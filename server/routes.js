@@ -16,7 +16,7 @@ var method_not_allowed = function(req, res){
 	res.end('Method is not allowed');
 };
 
-var doRedirect = function(req, res, next){
+var login = function(req, res, next){
 	if(enquiries({question:'players'},req.game).length <= 3)
 		createPlayer(req.body.name, req, res);
 	else 
@@ -86,7 +86,7 @@ app.get('^/main.html$', isPlayerRegistered);
 
 app.use(express.static('./HTML'));
 
-app.post('^/login$',doRedirect);
+app.post('^/login$',login);
 
 app.use(isValidPlayer);
 

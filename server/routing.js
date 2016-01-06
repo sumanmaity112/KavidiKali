@@ -1,9 +1,9 @@
 var app = require('./routes.js');
 
-var requestHandler = function(game){
+var requestHandler = function(games){
 	return function(req, res){
 		console.log(req.method, req.url, req.headers.cookie);
-		req.game = game;
+		req.games = games;
 		app(req, res);
 	}
 };

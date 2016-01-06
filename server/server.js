@@ -1,7 +1,8 @@
 var http = require('http');
 var requestHandler =  require('./routing.js');
 const PORT=8080;
-var controller = requestHandler();
+var games={};
+var controller = requestHandler(games);
 
 var server = http.createServer(controller);
 server.listen(PORT,function(){
