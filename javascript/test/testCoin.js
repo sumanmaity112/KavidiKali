@@ -22,4 +22,12 @@ describe("Coin",function(){
 		var c2=new Coin("p2","red");		
 		assert.ok(!c1.equals(c2));
 	});
+	describe("kill",function(){
+		it("gives instruction to move a coin to -1",function(){
+			var c1 = new Coin("p1","blue");
+			c1.currentPosition = '2,1';
+			c1.kill();
+			assert.equal(c1.currentPosition,-1);
+		});
+	});
 });
