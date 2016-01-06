@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover _mocha ./server/* ./javascript/*",
+    "test": "mocha server/test/ javascript/test/",
+    "coverage": "istanbul cover _mocha server/test/ javascript/test/",
     "min": "mocha -R min --recursive ./javascript",
     "watch": "mocha -R min --watch --recursive ./javascript",
     "start": "node ./server/server.js",

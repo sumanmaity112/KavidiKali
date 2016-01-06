@@ -57,5 +57,96 @@ describe('Player',function(){
 			player.moveCoin('Jani1','4,2');
 			assert.deepEqual(coin.currentPosition,player.path[0].id);
 		});
+		it('does nothing if given an invalid coin',function(){
+			var coins = {Jani1:{id:'Jani1',currentPosition:'2,0',move:function(movesTo){coin.currentPosition=movesTo}}}
+			var player = new Player('Jani',path,coins)
+			var stateofPlayer = JSON.stringify(player);
+			player.moveCoin('hahaha','4,2');
+
+			assert.deepEqual(stateofPlayer, JSON.stringify(player));
+		});
+		it('does nothing if given the starting location but has\'t got 6 on dice',function(){
+			var coins = {Jani1:{id:'Jani1',currentPosition:-1,move:function(movesTo){coin.currentPosition=movesTo}}}
+			var dice = {roll:sinon.stub().returns(1)};
+			var stateOfCoins = JSON.stringify(coins);
+			var player = new Player('Jani',path,coins);
+			player.rollDice(dice);
+			player.moveCoin('Jani1','2,0');
+			assert.deepEqual(stateOfCoins,JSON.stringify(player.coins));
+		});
+		it('does nothing if given coin is off-Board and any other position than starting position',function(){
+			var path = [{id:'2,0',place:place,removeCoin:removeCoin},
+						{id:'3,0',place:place,removeCoin:removeCoin},
+						{id:'4,0',place:place,removeCoin:removeCoin}];
+
+			var coins = {Jani1:{id:'Jani1',currentPosition:-1,move:function(movesTo){coin.currentPosition=movesTo}}}
+			var dice = {roll:sinon.stub().returns(6)};
+			var stateOfCoins = JSON.stringify(coins);
+			var player = new Player('Jani',path,coins);
+			player.rollDice(dice);
+			player.moveCoin('Jani1','4,0');
+			console.log(player.diceValues)
+			assert.deepEqual(stateOfCoins,JSON.stringify(player.coins));
+		});
+	});
+	describe("WhenCoinKills",function(){
+		it("extends the path of the player with given extenedPath",function(){
+			var path = [{id:'2,0'},
+					{id:'3,0'},
+					{id:'4,0'}];
+			var extenedPath = [];
+			var coins = {Jani1:{id:'Jani1'}};
+			var player = new Player('Jani',path,coins,extenedPath);
+			player.whenCoinKills();
+			assert.ok(player.matured);
+		});
+		it("extends the path of the player with given extenedPath if the path is of length 16",function(){
+			var path = [{id:'2,0'},
+					{id:'3,0'},
+					{id:'4,0'},,,,,,,,,,,,,,];
+			var extenedPath = [{id:'5,0'}];
+			var coins = {Jani1:{id:'Jani1'}};
+			var player = new Player('Jani',path,coins,extenedPath);
+			player.whenCoinKills();
+			assert.deepEqual(player.path,path.concat(extenedPath));
+		});
+	});
+	describe("get coinColor",function(){
+		it("is the color of coins player has",function(){
+			var path = [];
+			var extenedPath = [];
+			var coins = {Jani1:{id:'Jani1',colour:'red'}};
+			var player = new Player('Jani',path,coins,extenedPath);
+			assert.ok(player.coinColor=='red');
+		});
+	});
+	describe("isWin",function(){
+		it("gives message that game over when one player wins",function(){
+			var place = function(coin){coin.move()};
+		 	var listener = {
+		 		gameOver : false,
+		 		whenGameOver :function(){this.gameOver = true}
+		 	};
+		 	var removeCoin = function(){};
+			var	path = [{id:'2,0',place:place,removeCoin:removeCoin},
+						{id:'4,2',place:place}];
+			var extenedPath = []; 
+			var coins = {Jani1:{id:'Jani1',currentPosition:'2,0',
+								reachedDestination:false,
+								move:function(){this.reachedDestination=true;
+								}
+							}
+						};
+			var dice = {
+				roll:function(){return 1}
+			};
+
+			var player = new Player('Jani',path,coins,extenedPath);
+			player.addListener(listener);
+			player.rollDice(dice);
+			player.moveCoin('Jani1','4,2');
+
+			assert.ok(listener.gameOver);
+		});
 	});
 }); 
