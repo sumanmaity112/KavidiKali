@@ -162,6 +162,22 @@ describe("get handlers",function(){
 						.expect(200,done);
 				});
 			});
+			describe("whatIsMyName",function(){
+				it("gives the name of the requester",function(done){
+					game={
+						players:{rocky:{}}
+					};
+					games={};
+					games['123546789']=game;
+					controller = requestHandler(games);
+
+					request(controller)
+						.get('/enquiry?question=whatIsMyName')
+						.set('cookie',['userId=rocky;gameId=123546789'])
+						.expect('rocky')
+						.expect(200,done);
+				});
+			});
 		});
 	});
 	describe("whoIsTheWinner",function(){
