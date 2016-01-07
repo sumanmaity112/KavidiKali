@@ -164,6 +164,19 @@ describe("get handlers",function(){
 				.expect(200,done)
 
 		});
+		it("gives out falsey value but statusCode 200 if all the players have joined the game",function(done){
+			game={players:{}};
+			game.players={jacky:{},joy:{},johnny:{},jisna:{}};
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+			request(controller)
+				.get('/update?toUpdate=waitingPage')
+				.set('cookie',['userId=jacky;gameId=123546789'])
+				.expect('')
+				.expect(200,done)
+
+		});
 		it("gives 405 when it gets request from an invalid player",function(done){
 			game={players:{}};
 			game.players={jacky:{},joy:{},johnny:{}};
