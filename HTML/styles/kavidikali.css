@@ -112,10 +112,20 @@ body{
 }
 
 #notification {
-    padding-left: 41px;
+    padding-left: 30%;
     padding-top: 28px;
     height: 369px;
     width: 349px;
+    border: 4px;
+    background-color: #fff;
+    font-size: 21px;
+    font-weight: bold;
+}
+
+#layout{
+    padding-left: 13%;
+    margin-left: 1%;
+    margin-right: -14%;
 }
 
 #name{

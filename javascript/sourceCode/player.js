@@ -11,10 +11,14 @@ var Player = function(id, path, coins,extendedPath){
 	this.path = path;
 	this.extendedPath = extendedPath;
 	this.emitter = new EventEmitter();
+	this.notification_text;
 
 };
 
 Player.prototype = {
+	get notification(){
+		return this.notification_text;
+	},
 	rollDice : function(dice){
 		var diceValue = dice.roll();
 		this.diceValues.push(diceValue);
@@ -24,6 +28,8 @@ Player.prototype = {
 	whenCoinKills:function(){
 		this.matured = true;
 		this.chances++;
+		this.notification_text = (this.id+"'s one coin kill opponents coin "+this.id+' get an extra chance to roll dice');
+		this.emitter.emit("new_notification");
 		if(this.path.length==16)
 			this.path = this.path.concat(this.extendedPath);
 	},
@@ -62,6 +68,7 @@ Player.prototype = {
 	},
 	addListener: function(listener){
 		this.emitter.addListener("Game_over",listener.whenGameOver.bind(listener));
+		this.emitter.addListener("new_notification",listener.getNotification.bind(listener));
 	},
 	get coinColor(){
 		return this.coins[this.id+'1'].colour;

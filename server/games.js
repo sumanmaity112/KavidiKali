@@ -17,7 +17,7 @@ var findNoOfJoinedPlayer = function(games){
 };
 var isValidCookie = function(req){
 	var cookieGameId = req.cookies.gameId;
-	return cookieGameId || lodash.has(req.games,cookieGameId);
+	return cookieGameId && lodash.has(req.games,cookieGameId);
 };
 var chooseGame = function(req){
 	var recentGameId = findRecentGameId(req.games);

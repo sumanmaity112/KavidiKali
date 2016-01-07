@@ -36,12 +36,17 @@ var updateWaitingPage = function(gameMaster,obj){
 		return false;
 	else
 		return (Object.keys(gameMaster.players).length).toString();
-}
+};
+
+var updateNotification = function(gameMaster){
+	return gameMaster.getNotification();
+};
 
 exports.updates = {
 	diceValues : getAllDiceValues,
 	board : refreshBoard,
-	waitingPage : updateWaitingPage
+	waitingPage : updateWaitingPage,
+	notification: updateNotification
 };
 
 //========================================================================================================

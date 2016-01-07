@@ -104,7 +104,9 @@ Game.prototype = {
 		var players = Object.keys(this.players);
 		if(!this.anyMoreMoves(this.currentPlayer) && !this.anyMoreChances(this.currentPlayer)){
 			var player = this.players[this.currentPlayer];
-			player.diceValues = [];
+			setTimeout(function(){
+				player.diceValues = [];
+			},2000);
 			this.counter = (this.counter+1)%players.length;
 			this.players[this.currentPlayer].chances++;
 		};
@@ -118,6 +120,11 @@ Game.prototype = {
  		this.players={};
 		this.counter=0;
 		this.winner=undefined;
+ 	},
+ 	getNotification : function(){
+ 		var note = this.players[this.currentPlayer].notification;
+ 		console.log(note);
+ 		return note;
  	}
 };
 

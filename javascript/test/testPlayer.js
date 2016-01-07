@@ -125,7 +125,8 @@ describe('Player',function(){
 			var place = function(coin){coin.move()};
 		 	var listener = {
 		 		gameOver : false,
-		 		whenGameOver :function(){this.gameOver = true}
+		 		whenGameOver :function(){this.gameOver = true},
+		 		getNotification : function(){}
 		 	};
 		 	var removeCoin = function(){};
 			var	path = [{id:'2,0',place:place,removeCoin:removeCoin},
@@ -145,7 +146,7 @@ describe('Player',function(){
 			player.addListener(listener);
 			player.rollDice(dice);
 			player.moveCoin('Jani1','4,2');
-
+			player.notification;
 			assert.ok(listener.gameOver);
 		});
 	});

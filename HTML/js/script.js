@@ -17,6 +17,16 @@ function makeGrid(){
 	return table;
 };
 
+var notification = function(){
+	$.get('update?toUpdate=notification',function(data){
+		if(data){
+			var html = $('#notification').html();
+			html = html.replace(html,data)
+			$('#notification').text(html);
+		}
+	});
+}
+
 var myName = function(){
 	$.get('enquiry?question=myNameAndColor',function(data, status){
 		if(data){
@@ -147,6 +157,7 @@ window.onload = function(){
 		currentPlayer();
 		restore();
 		updateDiceValues();
+		notification();	
 	},500); 
-	document.querySelector('#dice').onclick = rollDice;	
+	document.querySelector('#dice').onclick = rollDice;
 };
