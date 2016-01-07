@@ -316,8 +316,52 @@ describe("POST handlers",function(){
 				.expect('Method is not allowed')
 				.expect(405,done);
 		});
+		it("performs action moveCoin if instruction is got from right player and right coin with right position",function(done){
+			game={players:{}};
+			var rocky = {moveCoin:sinon.spy(),chances:1};
+			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
+			game.currentPlayer = 'rocky';
+			game.anyMoreMoves = sinon.stub().returns(true);
+
+			game.dice = {};
+			game.dice.roll = sinon.stub().returns(5);
+			games={};
+
+			games['1235JUk']=game;
+			var controller = requestHandler(games);
+			request(controller)
+				.get('/instruction?action=moveCoin&coin=rocky1&position=76')
+				.set('cookie',['userId=rocky;gameId=1235JUk'])
+				.expect(200,function(){
+					assert(rocky.moveCoin.called);
+					assert(rocky.moveCoin.withArgs('rocky1','76').called);
+					done();
+				});
+		});
+		it("performs action moveCoin if instruction is got from right player and right coin with right position and nextPlayer is called",function(done){
+			game={players:{}};
+			var rocky = {moveCoin:sinon.spy(),chances:1};
+			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
+			game.currentPlayer = 'rocky';
+			game.nextPlayer = sinon.spy();
+			game.anyMoreMoves = sinon.stub().returns(false);
+
+			game.dice = {};
+			game.dice.roll = sinon.stub().returns(5);
+			games={};
+
+			games['1235JUk']=game;
+			var controller = requestHandler(games);
+			request(controller)
+				.get('/instruction?action=moveCoin&coin=rocky1&position=76')
+				.set('cookie',['userId=rocky;gameId=1235JUk'])
+				.expect(200,function(){
+					assert.ok(rocky.moveCoin.called);
+					assert.ok(rocky.moveCoin.withArgs('rocky1','76').called);
+					assert.ok(game.nextPlayer.called);
+					done();
+				});
+		});
 	});
 });
-
-
 
