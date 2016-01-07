@@ -124,10 +124,48 @@ describe("get handlers",function(){
 						.expect('Method is not allowed',done);
 				});
 			});
+			describe("isGameOver",function(){
+				it("informs player that game is over",function(done){
+					game={
+						players:{rocky:{isWin:true},
+								 rony:{}
+								},
+						winner:'rocky'
+					};
+					game.resetGame = function(){}
+					games={};
+					games['123546789']=game;
+					controller = requestHandler(games);
+
+					request(controller)
+						.get('/enquiry?question=isGameOver')
+						.set('cookie',['userId=rony'])
+						.expect('true')
+						.expect(200,done);
+				});
+			});
+			describe("myNameAndColor",function(){
+				it("gives the name and coin colour of the requester",function(done){
+					game={
+						players:{rocky:{coinColor:'red'},
+								 rony:{}
+								},
+					};
+					games={};
+					games['123546789']=game;
+					controller = requestHandler(games);
+
+					request(controller)
+						.get('/enquiry?question=myNameAndColor')
+						.set('cookie',['userId=rocky;gameId=123546789'])
+						.expect('rocky\nYour coin color : red')
+						.expect(200,done);
+				});
+			});
 		});
 	});
-	describe("GameOver",function(){
-		it("informs player that game is over",function(done){
+	describe("whoIsTheWinner",function(){
+		it("gives back the name of winner in the game",function(done){
 			game={
 				players:{rocky:{},
 						 rony:{}
