@@ -31,7 +31,7 @@ describe("Coin",function(){
 		});
 	});
 	describe("killed",function(){
-		it("announces the listeners that it has got killed",function(){
+		it("announces the listeners that it killed another coin",function(){
 			var listener = {
 				killed:false,
 				whenCoinKills:function(){this.killed=true}
