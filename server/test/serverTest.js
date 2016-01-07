@@ -406,6 +406,26 @@ describe("POST handlers",function(){
 					done();
 				});
 		});
+		it("says wrong player if any player requests for instruction other than currentPlayer",function(done){
+			game={players:{}};
+			var rocky = {moveCoin:sinon.spy(),chances:1};
+			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
+			game.currentPlayer = 'rocky';
+			game.nextPlayer = sinon.spy();
+			game.anyMoreMoves = sinon.stub().returns(false);
+
+			game.dice = {};
+			game.dice.roll = sinon.stub().returns(5);
+			games={};
+
+			games['1235JUk']=game;
+			var controller = requestHandler(games);
+			request(controller)
+				.get('/instruction?action=moveCoin&coin=rocky1&position=76')
+				.set('cookie',['userId=jacky;gameId=1235JUk'])
+				.expect('Wrong Player')
+				.expect(200,done);
+		});
 	});
 });
 
