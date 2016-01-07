@@ -272,6 +272,22 @@ describe('Game',function(){
 			assert.ok(suman.isWin);
 			assert.ok(game.players,{});
 		});
+		it("sets the game.winner to the current player who won the game",function(){
+			game.createPlayer('sooraj');
+			game.whenGameOver();
+			assert.ok(game.winner=='sooraj');
+		});
+	});
+	describe("reset",function(){
+		it("removes all the players and makes a fresh list for players",function(){
+			game.createPlayer('sooraj');
+			game.createPlayer('suman');
+			game.createPlayer('supriya');
+			game.createPlayer('saran');
+			assert.ok(Object.keys(game.players).length == 4);
+			game.reset();
+			assert.ok(Object.keys(game.players).length == 0);
+		});
 	});
 });
 
