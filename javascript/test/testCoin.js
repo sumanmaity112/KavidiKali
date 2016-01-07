@@ -30,4 +30,18 @@ describe("Coin",function(){
 			assert.equal(c1.currentPosition,-1);
 		});
 	});
+	describe("killed",function(){
+		it("announces the listeners that it killed another coin",function(){
+			var listener = {
+				killed:false,
+				whenCoinKills:function(){this.killed=true}
+			};
+
+			var coin = new Coin("p1","blue");
+
+			coin.addListener(listener);
+			coin.killed();
+			assert.ok(listener.killed);
+		});
+	});
 });

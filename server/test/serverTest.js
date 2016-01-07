@@ -66,6 +66,38 @@ describe("get handlers",function(){
 				.expect(302)
 				.expect('Location','/index.html',done);
 		});
+		it("redirects to index page when joined player is less than 4 and the player is invalid one",function(done){
+			var game = {
+				players:{rocky:{},
+						 rony:{}
+						},
+			};
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+
+			request(controller).get('/main.html')
+				.set('cookie',['userId=rincy;gameId=123546789'])
+				.expect(302)
+				.expect('Location','/index.html',done);
+		});
+		it("serves main.html if all the players are joined and the requester is a valid player",function(done){
+			var game = {
+				players:{rocky:{},
+						 rony:{},
+						 rincy:{},
+						 rinto:{}
+						},
+			};
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+
+			request(controller).get('/main.html')
+				.set('cookie',['userId=rincy;gameId=123546789'])
+				.expect(200)
+				.expect(/KavidiKali Game/,done);
+		});
 		describe("enquiry ",function(){
 			describe("currentPlayer",function(){
 				beforeEach(function(){
@@ -92,10 +124,64 @@ describe("get handlers",function(){
 						.expect('Method is not allowed',done);
 				});
 			});
+			describe("isGameOver",function(){
+				it("informs player that game is over",function(done){
+					game={
+						players:{rocky:{isWin:true},
+								 rony:{}
+								},
+						winner:'rocky'
+					};
+					game.resetGame = function(){}
+					games={};
+					games['123546789']=game;
+					controller = requestHandler(games);
+
+					request(controller)
+						.get('/enquiry?question=isGameOver')
+						.set('cookie',['userId=rony'])
+						.expect('true')
+						.expect(200,done);
+				});
+			});
+			describe("myNameAndColor",function(){
+				it("gives the name and coin colour of the requester",function(done){
+					game={
+						players:{rocky:{coinColor:'red'},
+								 rony:{}
+								},
+					};
+					games={};
+					games['123546789']=game;
+					controller = requestHandler(games);
+
+					request(controller)
+						.get('/enquiry?question=myNameAndColor')
+						.set('cookie',['userId=rocky;gameId=123546789'])
+						.expect('rocky\nYour coin color : red')
+						.expect(200,done);
+				});
+			});
+			describe("whatIsMyName",function(){
+				it("gives the name of the requester",function(done){
+					game={
+						players:{rocky:{}}
+					};
+					games={};
+					games['123546789']=game;
+					controller = requestHandler(games);
+
+					request(controller)
+						.get('/enquiry?question=whatIsMyName')
+						.set('cookie',['userId=rocky;gameId=123546789'])
+						.expect('rocky')
+						.expect(200,done);
+				});
+			});
 		});
 	});
-	describe("GameOver",function(){
-		it("informs player that game is over",function(done){
+	describe("whoIsTheWinner",function(){
+		it("gives back the name of winner in the game",function(done){
 			game={
 				players:{rocky:{},
 						 rony:{}
@@ -164,6 +250,19 @@ describe("get handlers",function(){
 				.expect(200,done)
 
 		});
+		it("gives out falsey value but statusCode 200 if all the players have joined the game",function(done){
+			game={players:{}};
+			game.players={jacky:{},joy:{},johnny:{},jisna:{}};
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+			request(controller)
+				.get('/update?toUpdate=waitingPage')
+				.set('cookie',['userId=jacky;gameId=123546789'])
+				.expect('')
+				.expect(200,done)
+
+		});
 		it("gives 405 when it gets request from an invalid player",function(done){
 			game={players:{}};
 			game.players={jacky:{},joy:{},johnny:{}};
@@ -206,7 +305,6 @@ describe("get handlers",function(){
 				.set('cookie',['userId=jack;gameId=123546789'])
 				.expect('Method is not allowed')
 				.expect(405,done)
-
 		});
 	});
 });
@@ -316,8 +414,72 @@ describe("POST handlers",function(){
 				.expect('Method is not allowed')
 				.expect(405,done);
 		});
+		it("performs action moveCoin if instruction is got from right player and right coin with right position",function(done){
+			game={players:{}};
+			var rocky = {moveCoin:sinon.spy(),chances:1};
+			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
+			game.currentPlayer = 'rocky';
+			game.anyMoreMoves = sinon.stub().returns(true);
+
+			game.dice = {};
+			game.dice.roll = sinon.stub().returns(5);
+			games={};
+
+			games['1235JUk']=game;
+			var controller = requestHandler(games);
+			request(controller)
+				.get('/instruction?action=moveCoin&coin=rocky1&position=76')
+				.set('cookie',['userId=rocky;gameId=1235JUk'])
+				.expect(200,function(){
+					assert(rocky.moveCoin.called);
+					assert(rocky.moveCoin.withArgs('rocky1','76').called);
+					done();
+				});
+		});
+		it("performs action moveCoin if instruction is got from right player and right coin with right position and nextPlayer is called",function(done){
+			game={players:{}};
+			var rocky = {moveCoin:sinon.spy(),chances:1};
+			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
+			game.currentPlayer = 'rocky';
+			game.nextPlayer = sinon.spy();
+			game.anyMoreMoves = sinon.stub().returns(false);
+
+			game.dice = {};
+			game.dice.roll = sinon.stub().returns(5);
+			games={};
+
+			games['1235JUk']=game;
+			var controller = requestHandler(games);
+			request(controller)
+				.get('/instruction?action=moveCoin&coin=rocky1&position=76')
+				.set('cookie',['userId=rocky;gameId=1235JUk'])
+				.expect(200,function(){
+					assert.ok(rocky.moveCoin.called);
+					assert.ok(rocky.moveCoin.withArgs('rocky1','76').called);
+					assert.ok(game.nextPlayer.called);
+					done();
+				});
+		});
+		it("says wrong player if any player requests for instruction other than currentPlayer",function(done){
+			game={players:{}};
+			var rocky = {moveCoin:sinon.spy(),chances:1};
+			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
+			game.currentPlayer = 'rocky';
+			game.nextPlayer = sinon.spy();
+			game.anyMoreMoves = sinon.stub().returns(false);
+
+			game.dice = {};
+			game.dice.roll = sinon.stub().returns(5);
+			games={};
+
+			games['1235JUk']=game;
+			var controller = requestHandler(games);
+			request(controller)
+				.get('/instruction?action=moveCoin&coin=rocky1&position=76')
+				.set('cookie',['userId=jacky;gameId=1235JUk'])
+				.expect('Wrong Player')
+				.expect(200,done);
+		});
 	});
 });
-
-
 
