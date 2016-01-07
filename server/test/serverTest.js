@@ -66,6 +66,38 @@ describe("get handlers",function(){
 				.expect(302)
 				.expect('Location','/index.html',done);
 		});
+		it("redirects to index page when joined player is less than 4 and the player is invalid one",function(done){
+			var game = {
+				players:{rocky:{},
+						 rony:{}
+						},
+			};
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+
+			request(controller).get('/main.html')
+				.set('cookie',['userId=rincy;gameId=123546789'])
+				.expect(302)
+				.expect('Location','/index.html',done);
+		});
+		it("serves main.html if all the players are joined and the requester is a valid player",function(done){
+			var game = {
+				players:{rocky:{},
+						 rony:{},
+						 rincy:{},
+						 rinto:{}
+						},
+			};
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+
+			request(controller).get('/main.html')
+				.set('cookie',['userId=rincy;gameId=123546789'])
+				.expect(200)
+				.expect(/KavidiKali Game/,done);
+		});
 		describe("enquiry ",function(){
 			describe("currentPlayer",function(){
 				beforeEach(function(){
@@ -219,7 +251,6 @@ describe("get handlers",function(){
 				.set('cookie',['userId=jack;gameId=123546789'])
 				.expect('Method is not allowed')
 				.expect(405,done)
-
 		});
 	});
 });
