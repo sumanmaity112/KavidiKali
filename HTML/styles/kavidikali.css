@@ -111,21 +111,23 @@ body{
 	height: 100%;
 }
 
-#notification {
-    padding-left: 30%;
-    padding-top: 28px;
-    height: 369px;
-    width: 349px;
-    border: 4px;
+#layout {
+    height:101%;
+    width: 116%;
+    margin-left:11%;
+}
+
+#layout #notification{
+    margin-left: 1%;
+    margin-right: -14%;
+    display: inline-block;
+    overflow: scroll;
+    height: 101%;
+    width: 91%;
     background-color: #fff;
     font-size: 21px;
     font-weight: bold;
-}
-
-#layout{
-    padding-left: 13%;
-    margin-left: 1%;
-    margin-right: -14%;
+    text-align: center;
 }
 
 #name{

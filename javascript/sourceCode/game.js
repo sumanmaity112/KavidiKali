@@ -16,6 +16,7 @@ var Game = function(specialValues,size,diceValues){
 	this.dice = new dice(diceValues);
 	this.counter = 0;
 	this.winner=undefined;
+	this.notification_text="";
 	this.resetGame = function(){
 		var succefullySendRes = 0;
 		return function(req,res){
@@ -49,6 +50,8 @@ Game.prototype = {
 	},
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue)){
+			this.players[playerId].notification_text = playerId +" got an extra chance to roll dice";
+			this.players[playerId].emitter.emit("new_notification");
 			this.players[playerId].chances++;
 			return true;  
 		};
@@ -121,10 +124,11 @@ Game.prototype = {
 		this.counter=0;
 		this.winner=undefined;
  	},
+ 	createNote:function(){
+ 		this.notification_text = "<p>"+this.players[this.currentPlayer].notification+"</p>";
+ 	},
  	getNotification : function(){
- 		var note = this.players[this.currentPlayer].notification;
- 		console.log(note);
- 		return note;
+ 		return this.notification_text;
  	}
 };
 

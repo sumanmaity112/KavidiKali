@@ -22,6 +22,8 @@ Player.prototype = {
 	rollDice : function(dice){
 		var diceValue = dice.roll();
 		this.diceValues.push(diceValue);
+		this.notification_text = this.id+" got "+diceValue;
+		this.emitter.emit("new_notification");
 		this.chances--;
 		return diceValue;
 	},
@@ -68,7 +70,7 @@ Player.prototype = {
 	},
 	addListener: function(listener){
 		this.emitter.addListener("Game_over",listener.whenGameOver.bind(listener));
-		this.emitter.addListener("new_notification",listener.getNotification.bind(listener));
+		this.emitter.addListener("new_notification",listener.createNote.bind(listener));
 	},
 	get coinColor(){
 		return this.coins[this.id+'1'].colour;

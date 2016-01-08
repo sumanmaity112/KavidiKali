@@ -126,7 +126,7 @@ describe('Player',function(){
 		 	var listener = {
 		 		gameOver : false,
 		 		whenGameOver :function(){this.gameOver = true},
-		 		getNotification : function(){}
+		 		createNote:function(){}
 		 	};
 		 	var removeCoin = function(){};
 			var	path = [{id:'2,0',place:place,removeCoin:removeCoin},

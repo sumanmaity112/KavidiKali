@@ -2,7 +2,7 @@ var selectedCoin;
 var currentStateOfGame;
 var activeTiles, refreshWindow, updateValues;
 var turnTemplate = "Its __UserID__'s turn "
-
+var prev_note = "";
 
 function makeGrid(){
 	var table='<table class="grid">'
@@ -20,9 +20,10 @@ function makeGrid(){
 var notification = function(){
 	$.get('update?toUpdate=notification',function(data){
 		if(data){
-			var html = $('#notification').html();
-			html = html.replace(html,data)
-			$('#notification').text(html);
+			if(data!=prev_note){
+				prev_note = data;
+				$(data).appendTo("#notification");	
+			}
 		}
 	});
 }
