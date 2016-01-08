@@ -3,7 +3,7 @@ var assert = require('assert');
 var requestHandler = require('../routing.js');
 var Game = require('../../javascript/sourceCode/game.js');
 var sinon = require('sinon');
-var game={players:{}};
+var game={players:{},id:'123456789'};
 var games={};
 games={};
 games['123546789']=game;
@@ -26,7 +26,7 @@ describe("get handlers",function(){
 	});	
 	describe("/waitingPage.html",function(){
 		it("serves waitingPage.html file when requested",function(done){
-			game={players:{}};
+			game={players:{},id:'123456789'};
 			games={};
 			games['123546789']=game;
 			controller = requestHandler(games);
@@ -312,7 +312,7 @@ describe("get handlers",function(){
 describe("POST handlers",function(){
 	describe("index page",function(){
 		it("redirects player to the waiting page after login from url /",function(done){
-			game={players:{}};
+			game={players:{},id:"123846789"};
 			game.createPlayer=function(){
 				game.players.rony = {coinColor:'red'};
 			};
@@ -328,7 +328,7 @@ describe("POST handlers",function(){
 				.expect('Location','/waitingPage.html',done)
 		});
 		it("redirects player to the waiting page after login from url /indexPage.html",function(done){
-			game={players:{}};
+			game={players:{},id:'123846789'};
 			game.createPlayer=function(){
 				game.players.rony = {coinColor:'red'};
 			};
@@ -347,7 +347,8 @@ describe("POST handlers",function(){
 			var games={};
 			var game={
 				players:{rock:{},jack:{},johnny:{}},
-				createPlayer:function(){}
+				createPlayer:function(){},
+				id:'123546789'
 			}
 			var games={'123546789':game};
 			controller = requestHandler(games);
@@ -364,13 +365,15 @@ describe("POST handlers",function(){
 		it('create a new game when a new player want to join game after 4th player',function(done){
 			var games={};
 			var game={
-				players:{rock:{},jack:{},johnny:{},rony:{}}
+				players:{rock:{},jack:{},johnny:{},rony:{}},
+				id:'123546789'
 			}
 			var games={'123546789':game};
 			controller = requestHandler(games);
 			request(controller)
 				.post('/login')
 				.send('name=rose')
+				.expect('set-cookie',['userId=rose; Path=/'])
 				.end(function(req,res){
 					assert.notEqual('123546789',res.header['set-cookie'][1]);
 					done();

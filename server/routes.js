@@ -5,10 +5,15 @@ var application = require('./application.js');
 var operations = require('./operations.js');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser')
-var loadGame= require('./games.js').loadGame;
+var getGame = require('./games.js').loadGame;
 var enquiries = application.enquiry;
 
 var app=express();
+
+var loadGame = function(req, res, next){
+	req.game = getGame(req.games, req.cookies.gameId);
+	next();
+};
 
 var method_not_allowed = function(req, res){
 	res.statusCode = 405;
@@ -26,7 +31,8 @@ var login = function(req, res, next){
 var createPlayer = function(userId,req,res){
 	application.register(userId,req.game);
 	res.cookie('userId', userId);
-	res.cookie('gameId',req.tempGameId);
+	console.log(req.game,"==============")
+	res.cookie('gameId',req.game.id);
 	res.redirect('/waitingPage.html');
 	res.end();
 };

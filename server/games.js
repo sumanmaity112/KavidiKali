@@ -15,30 +15,25 @@ var findNoOfJoinedPlayer = function(games){
 	var recentGame = games[findRecentGameId(games)];
 	return Object.keys(recentGame.players).length;
 };
-var isValidCookie = function(req){
-	var cookieGameId = req.cookies.gameId;
-	return cookieGameId && lodash.has(req.games,cookieGameId);
+var isValidGame = function(games, gameId){
+	return gameId && lodash.has(games,gameId);
 };
-var chooseGame = function(req){
-	var recentGameId = findRecentGameId(req.games);
-	var recentGame = req.games[recentGameId];
-	if(!isValidCookie(req)){
-		req.game = recentGame;
-		req.tempGameId = recentGameId;
+var chooseGame = function(games, gameId){
+	var recentGameId = findRecentGameId(games);
+	var recentGame = games[recentGameId];
+	if(!isValidGame(games, gameId)){
+		recentGame.id = recentGameId;
+		return recentGame;
 	}
-	else{
-		var gameId = req.cookies.gameId;
-		req.game = req.games[gameId];
-	}
+	else
+		return games[gameId];
 }
 
-exports.loadGame = function(req, res, next){
-	var gamesId = Object.keys(req.games);
-	var cookieGameId = req.cookies.gameId;
-	if((gamesId.length==0 || findNoOfJoinedPlayer(req.games)==4)&& !isValidCookie(req))
-		createGame(req.games);
-	chooseGame(req);
-	next();
+exports.loadGame = function(games, gameId){
+	var listOfGames = Object.keys(games);
+	if((listOfGames.length==0 || findNoOfJoinedPlayer(games)==4)&& !isValidGame(games, gameId))
+		createGame(games);
+	return chooseGame(games, gameId);
 };
 
 exports.removeGame = function(gameId){
