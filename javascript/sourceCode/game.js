@@ -8,12 +8,16 @@ var Coin = require('./coin.js');
 var removeGame = require('../../server/games.js').removeGame;
 var ld  =  require('lodash');
 
-var Game = function(specialValues,size,diceValues){
-	this.safePositions = generateSafePositions(size);
+const DICE_VALUES = [1,2,3,4,5,6];
+const SIZE_OF_BOARD = 5;
+const SPECIAL_VALUES = [6];
+
+var Game = function(){
+	this.safePositions = generateSafePositions(SIZE_OF_BOARD);
 	this.players = {};
-	this.specialValues = specialValues;
-	this.tiles = tiles.generateTiles(size);
-	this.dice = new dice(diceValues);
+	this.specialValues = SPECIAL_VALUES;
+	this.tiles = tiles.generateTiles(SIZE_OF_BOARD);
+	this.dice = new dice(DICE_VALUES);
 	this.counter = 0;
 	this.winner=undefined;
 	this.notification_text="";

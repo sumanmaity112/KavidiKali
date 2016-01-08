@@ -4,7 +4,7 @@ var lodash = require('lodash');
 
 var createGame = function(games){
 	var gameId = chance.string({length: 9});
-	games[gameId] = new Game([6],5,[1,2,3,4,5,6]);
+	games[gameId] = new Game();
 };
 
 var findRecentGameId = function(games){
