@@ -55,7 +55,7 @@ body{
 	width: 80px;
     background: #62a;
     color: white;
-    border-radius: 5px;
+    border-radius: 21px;
     font-size: 18px;
     margin-left: -59px;
     margin-top: 826px;
@@ -112,22 +112,22 @@ body{
 }
 
 #layout {
-    height:101%;
-    width: 116%;
-    margin-left:11%;
+    height: 93%;
+    width: 99%;
+    margin-left: 15%;
+    border: 1px solid black;
 }
 
 #layout #notification{
-    margin-left: 1%;
-    margin-right: -14%;
     display: inline-block;
     overflow: scroll;
-    height: 101%;
-    width: 91%;
+    height: 100%;
+    width: 99%;
     background-color: #fff;
     font-size: 21px;
     font-weight: bold;
     text-align: center;
+    border: 1px solid black;
 }
 
 #name{

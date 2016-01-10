@@ -31,7 +31,6 @@ var login = function(req, res, next){
 var createPlayer = function(userId,req,res){
 	application.register(userId,req.game);
 	res.cookie('userId', userId);
-	console.log(req.game,"==============")
 	res.cookie('gameId',req.game.id);
 	res.redirect('/waitingPage.html');
 	res.end();
