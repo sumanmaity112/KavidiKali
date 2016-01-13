@@ -188,7 +188,6 @@ describe("get handlers",function(){
 						},
 				winner:'rocky'
 			};
-			game.resetGame = function(){}
 			games={};
 			games['123546789']=game;
 			controller = requestHandler(games);

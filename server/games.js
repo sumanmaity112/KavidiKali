@@ -29,7 +29,7 @@ var chooseGame = function(games, gameId){
 
 exports.loadGame = function(games, gameId){
 	var listOfGames = Object.keys(games);
-	if((listOfGames.length==0 || findNoOfJoinedPlayer(games)==4)&& !isValidGame(games, gameId))
+	if((listOfGames.length==0 || findNoOfJoinedPlayer(games)==4) && !isValidGame(games, gameId))
 		createGame(games);
 	return chooseGame(games, gameId);
 };
@@ -37,3 +37,5 @@ exports.loadGame = function(games, gameId){
 exports.removeGame = function(gameId){
 	games = lodash.omit(games,gameId);
 };
+
+

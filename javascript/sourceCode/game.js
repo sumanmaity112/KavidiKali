@@ -21,16 +21,6 @@ var Game = function(id){
 	this.counter = 0;
 	this.winner=undefined;
 	this.notification_text="";
-	this.resetGame = function(){
-		var succefullySendRes = 0;
-		return function(req,res){
-			succefullySendRes++;
-			res.clearCookie('userId');
-			res.clearCookie('gameId');
-			if(succefullySendRes==4)
-				this.reset();
-		};
-	}();
 };
 
 Game.prototype = {

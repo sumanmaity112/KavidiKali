@@ -60,9 +60,8 @@ var movesTo = function(gameMaster, obj){
 };
 
 var checkStatus = function(gameMaster){
-	var status =  Object.keys(gameMaster.players).some(function(player){
-		return gameMaster.players[player].isWin;
-	});
+	var status = (!!gameMaster.winner);
+	gameMaster = status ? completedGame(gameMaster) : gameMaster; 
 	return status.toString();
 };
 
@@ -70,6 +69,10 @@ var myNameAndColor = function(gameMaster, obj){
 	var color = gameMaster.players[obj.player].coinColor
 	return obj.player + '\nYour coin color : '+color;
 };
+
+var completedGame = function(game){
+	return {players:Object.keys(game.players),winner:game.winner}
+}
 
 exports.enquiries = {
 	'isValidPlayer'		: function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)},
@@ -79,5 +82,5 @@ exports.enquiries = {
 	'isGameOver'		: checkStatus,
 	'whatIsMyName'		: function(gameMaster, obj){ return obj.player},
 	'myNameAndColor'	: myNameAndColor,
-	'whoIsTheWinner'	: function(gameMaster,obj,req,res){ gameMaster.winner && gameMaster.resetGame(req,res); return gameMaster.winner}
+	'whoIsTheWinner'	: function(gameMaster,obj){ return gameMaster.winner}
 };
