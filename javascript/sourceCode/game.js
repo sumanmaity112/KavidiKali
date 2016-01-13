@@ -5,14 +5,14 @@ var pathLib = require('./generatePath.js');
 var dice = require('./dice.js');
 var player = require('./player.js');
 var Coin = require('./coin.js');
-var removeGame = require('../../server/games.js').removeGame;
 var ld  =  require('lodash');
 
 const DICE_VALUES = [1,2,3,4,5,6];
 const SIZE_OF_BOARD = 5;
 const SPECIAL_VALUES = [6];
 
-var Game = function(){
+var Game = function(id){
+	this.id=id;
 	this.safePositions = generateSafePositions(SIZE_OF_BOARD);
 	this.players = {};
 	this.specialValues = SPECIAL_VALUES;

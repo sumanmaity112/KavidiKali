@@ -4,7 +4,7 @@ var lodash = require('lodash');
 
 var createGame = function(games){
 	var gameId = chance.string({length: 9});
-	games[gameId] = new Game();
+	games[gameId] = new Game(gameId);
 };
 
 var findRecentGameId = function(games){
@@ -21,10 +21,8 @@ var isValidGame = function(games, gameId){
 var chooseGame = function(games, gameId){
 	var recentGameId = findRecentGameId(games);
 	var recentGame = games[recentGameId];
-	if(!isValidGame(games, gameId)){
-		recentGame.id = recentGameId;
+	if(!isValidGame(games, gameId))
 		return recentGame;
-	}
 	else
 		return games[gameId];
 }
