@@ -61,7 +61,7 @@ var movesTo = function(gameMaster, obj){
 
 var checkStatus = function(gameMaster){
 	var status = (!!gameMaster.winner);
-	gameMaster = status ? completedGame(gameMaster) : gameMaster; 
+	gameMaster = status && gameMaster.finished ? completedGame(gameMaster) : gameMaster; 
 	return status.toString();
 };
 
@@ -71,7 +71,7 @@ var myNameAndColor = function(gameMaster, obj){
 };
 
 var completedGame = function(game){
-	return {players:Object.keys(game.players),winner:game.winner}
+	return {players:Object.keys(game.players),winner:game.winner,finished:true}
 }
 
 exports.enquiries = {
