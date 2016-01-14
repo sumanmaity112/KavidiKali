@@ -85,7 +85,6 @@ describe('Player',function(){
 			var player = new Player('Jani',path,coins);
 			player.rollDice(dice);
 			player.moveCoin('Jani1','4,0');
-			console.log(player.diceValues)
 			assert.deepEqual(stateOfCoins,JSON.stringify(player.coins));
 		});
 	});

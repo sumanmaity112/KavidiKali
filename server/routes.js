@@ -69,7 +69,11 @@ var handleUpdate = function(req, res, next){
 
 var handleEnquiry = function(req, res, next){
 	var obj = createFunctionalObj(req);
-	var response = enquiries(obj,req.game,req,res);
+	var response = enquiries(obj,req.game);
+	if(req.url=='/enquiry?question=isGameOver'){
+		res.clearCookie('userId')
+		res.clearCookie('gameId');
+	}
 	res.end(response);
 };
 

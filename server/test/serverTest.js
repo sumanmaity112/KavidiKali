@@ -136,11 +136,13 @@ describe("get handlers",function(){
 					games={};
 					games['123546789']=game;
 					controller = requestHandler(games);
-
+					var expectedCookie = ['userId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+										'gameId=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'].join();
 					request(controller)
 						.get('/enquiry?question=isGameOver')
-						.set('cookie',['userId=rony'])
+						.set('cookie',['userId=rony;gameId=123546789'])
 						.expect('true')
+						.expect('set-cookie',expectedCookie)
 						.expect(200,done);
 				});
 			});
