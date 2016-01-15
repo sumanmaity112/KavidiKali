@@ -70,7 +70,7 @@ var handleUpdate = function(req, res, next){
 var handleEnquiry = function(req, res, next){
 	var obj = createFunctionalObj(req);
 	var response = enquiries(obj,req.game);
-	if(req.url=='/enquiry?question=isGameOver'){
+	if(req.url=='/enquiry?question=whoIsTheWinner' && response!='undefined'){
 		res.clearCookie('userId')
 		res.clearCookie('gameId');
 	}

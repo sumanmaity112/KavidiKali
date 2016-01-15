@@ -1,6 +1,6 @@
 var http = require('http');
 var requestHandler =  require('./routing.js');
-const PORT=8080;
+const PORT=process.env.HOST_PORT || 8080;
 var games={};
 var controller = requestHandler(games);
 
