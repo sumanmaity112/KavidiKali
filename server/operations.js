@@ -61,7 +61,7 @@ var movesTo = function(gameMaster, obj){
 
 var checkStatus = function(gameMaster){
 	var status = (!!gameMaster.winner);
-	gameMaster = status && gameMaster.finished ? completedGame(gameMaster) : gameMaster; 
+	gameMaster = status && !gameMaster.finished ? completedGame(gameMaster) : gameMaster; 
 	return status.toString();
 };
 
@@ -82,5 +82,6 @@ exports.enquiries = {
 	'isGameOver'		: checkStatus,
 	'whatIsMyName'		: function(gameMaster, obj){ return obj.player},
 	'myNameAndColor'	: myNameAndColor,
-	'whoIsTheWinner'	: function(gameMaster,obj){ return gameMaster.winner}
+	'whoIsTheWinner'	: function(gameMaster,obj){ return gameMaster.winner},
+	'playerTurn'		: function(gameMaster,obj){	return (4-Object.keys(gameMaster.players).indexOf(obj.player)).toString();}
 };

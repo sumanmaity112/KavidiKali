@@ -4,18 +4,36 @@ var activeTiles, refreshWindow, updateValues;
 var turnTemplate = "Its __UserID__'s turn "
 var prev_note = "";
 
-function makeGrid(){
+
+var rotatePoint = function(x, y, length){
+	var newX = length-y;
+	var newY = x;
+	return [newX,newY]
+}
+
+var getPoint = function(x, y, rotateCount) {
+	var newY = y;
+	var newX = x;
+	for(var i =0; i<rotateCount; i++){
+		var points = rotatePoint(newX, newY, 4);
+		newX = points[0];
+		newY = points[1];
+	}
+	return [newY,newX].join(',');
+}
+
+var createGrid = function(rotateCount){
 	var table='<table class="grid">'
 	for(var rowCount=5;rowCount>=-1;rowCount--){
 		var row = '<tr>';
 		for(var columnCount=-1;columnCount<6;columnCount++)
-			row+='<td id="'+columnCount+','+rowCount+'" class="tile" ></td>';
+			row+='<td id="'+getPoint(rowCount, columnCount, rotateCount)+'" class="tile" ></td>';
 		row += '</tr>';
 		table += row;
 	};
 	table+='</table>';
 	return table;
-};
+}
 
 var notification = function(){
 	$.get('update?toUpdate=notification',function(data){
@@ -136,29 +154,31 @@ var restore = function(){
 };
 
 window.onload = function(){
-	document.getElementById("board").innerHTML = makeGrid();
-	var safePlaces = ['4,2','2,4','2,2','0,2','2,0'];
-	var outerLoop = ['-1,5','0,5','1,5','2,5','3,5','4,5','5,5','-1,4','-1,3','-1,2','-1,1','-1,0','-1,-1',
-					'0,-1','1,-1','2,-1','3,-1','4,-1','5,-1','5,0','5,1','5,2','5,3','5,4','5,5'];
-	var yards = ['2,-1','5,2','2,5','-1,2'];
-	safePlaces.forEach(function(safePlace){
-		document.getElementById(safePlace).className = 'safePlace';
+	$.get('enquiry?question=playerTurn',function(data){
+		document.getElementById("board").innerHTML = createGrid(+data);
+		var safePlaces = ['4,2','2,4','2,2','0,2','2,0'];
+		var outerLoop = ['-1,5','0,5','1,5','2,5','3,5','4,5','5,5','-1,4','-1,3','-1,2','-1,1','-1,0','-1,-1',
+						'0,-1','1,-1','2,-1','3,-1','4,-1','5,-1','5,0','5,1','5,2','5,3','5,4','5,5'];
+		var yards = ['2,-1','5,2','2,5','-1,2'];
+		safePlaces.forEach(function(safePlace){
+			document.getElementById(safePlace).className = 'safePlace';
+		});
+		outerLoop.forEach(function(tile){
+			document.getElementById(tile).className = 'outerTile'
+		});
+		var colorSequence=["red","green","blue","yellow"];
+		yards.forEach(function(place,index){
+			document.getElementById(place).className = 'parking';
+			document.getElementById(place).id = colorSequence[index]+'_yard';
+		});
+		refreshWindow = setInterval(function(){
+			refreshBoard();
+			currentPlayer();
+			restore();
+			updateDiceValues();
+			notification();	
+		},500);
 	});
-	outerLoop.forEach(function(tile){
-		document.getElementById(tile).className = 'outerTile'
-	});
-	var colorSequence=["red","green","blue","yellow"];
-	yards.forEach(function(place,index){
-		document.getElementById(place).className = 'parking';
-		document.getElementById(place).id = colorSequence[index]+'_yard';
-	});
-	myName();
-	refreshWindow = setInterval(function(){
-		refreshBoard();
-		currentPlayer();
-		restore();
-		updateDiceValues();
-		notification();	
-	},500); 
+	myName(); 
 	document.querySelector('#dice').onclick = rollDice;
 };
