@@ -71,6 +71,7 @@ describe("get handlers",function(){
 				players:{rocky:{},
 						 rony:{}
 						},
+				id:123546789
 			};
 			games={};
 			games['123546789']=game;
@@ -88,6 +89,7 @@ describe("get handlers",function(){
 						 rincy:{},
 						 rinto:{}
 						},
+				id:123546789
 			};
 			games={};
 			games['123546789']=game;
@@ -101,7 +103,7 @@ describe("get handlers",function(){
 		describe("enquiry ",function(){
 			describe("currentPlayer",function(){
 				beforeEach(function(){
-					game={players:{}};
+					game={players:{},id:123546789};
 					game.players={rocky:{},jacky:{},joy:{},rony:{}};
 					game.currentPlayer = 'rony'
 					games={};
@@ -130,7 +132,8 @@ describe("get handlers",function(){
 						players:{rocky:{isWin:true},
 								 rony:{}
 								},
-						winner:'rocky'
+						winner:'rocky',
+						id:123546789
 					};
 					game.resetGame = function(){}
 					games={};
@@ -149,6 +152,7 @@ describe("get handlers",function(){
 						players:{rocky:{coinColor:'red'},
 								 rony:{}
 								},
+						id:123546789
 					};
 					games={};
 					games['123546789']=game;
@@ -164,7 +168,8 @@ describe("get handlers",function(){
 			describe("whatIsMyName",function(){
 				it("gives the name of the requester",function(done){
 					game={
-						players:{rocky:{}}
+						players:{rocky:{}},
+						id:123546789
 					};
 					games={};
 					games['123546789']=game;
@@ -185,7 +190,8 @@ describe("get handlers",function(){
 				players:{rocky:{},
 						 rony:{}
 						},
-				winner:'rocky'
+				winner:'rocky',
+				id:123546789
 			};
 			games={};
 			games['123546789']=game;
@@ -202,7 +208,7 @@ describe("get handlers",function(){
 	});
 	describe("/update",function(){
 		it("updates dice values when it gets request from valid player",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			var rocky = {diceValues:[5]};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
 			game.setChances=function(){};
@@ -219,7 +225,7 @@ describe("get handlers",function(){
 				.expect(200,done)
 		});
 		it("doesn't updates dice values when it gets request from invalid player",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			var rocky = {rollDice:function(dice){return 5;},chances:0,
 						 diceValues:[5]};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
@@ -238,7 +244,7 @@ describe("get handlers",function(){
 				.expect(405,done)
 		});
 		it("updates the number of player when it gets request from valid player",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{}};
 			games={};
 			games['123546789']=game;
@@ -251,7 +257,7 @@ describe("get handlers",function(){
 
 		});
 		it("gives out falsey value but statusCode 200 if all the players have joined the game",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{},jisna:{}};
 			games={};
 			games['123546789']=game;
@@ -264,7 +270,7 @@ describe("get handlers",function(){
 
 		});
 		it("gives 405 when it gets request from an invalid player",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{}};
 			games={};
 			games['123546789']=game;
@@ -276,7 +282,7 @@ describe("get handlers",function(){
 				.expect(405,done)
 		});
 		it("gives current state of the game when it gets request from valid player",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{},rocky:{}};
 			game.stateOfGame = function(){
 				return {id:'jacky',coins:{jacky1:{currentPosition:'2,0'}}}
@@ -292,7 +298,7 @@ describe("get handlers",function(){
 
 		});
 		it("gives 405 when it gets update board request from invalid player",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{},rocky:{}};
 			game.stateOfGame = function(){
 				return {id:'jacky',coins:{jacky1:{currentPosition:'2,0'}}}
@@ -306,10 +312,50 @@ describe("get handlers",function(){
 				.expect('Method is not allowed')
 				.expect(405,done)
 		});
+		it("returns the current notification when it get request from registered player",function(done){
+			game={players:{},id:123546789};
+			game.players={jacky:{},joy:{},johnny:{},rocky:{}};
+			game.notification_text="joy got 2"
+			game.getNotification=function(){return this.notification_text}
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+			request(controller)
+				.get('/update?toUpdate=notification')
+				.set('cookie',['userId=jacky;gameId=123546789'])
+				.expect(200)
+				.expect('joy got 2',done)
+		});
 	});
 });
 
 describe("POST handlers",function(){
+	describe("isValidName",function(){
+		it("returns true if a name is unique for a game",function(done){
+			game={players:{},id:123546789};
+			game.players={jacky:{},joy:{},johnny:{}};
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+			request(controller)
+				.post('/isValidName')
+				.send('name=rocky')
+				.expect('true')
+				.expect(200,done)
+		});
+		it("returns false if a name is not unique for a game",function(done){
+			game={players:{},id:123546789};
+			game.players={jacky:{},joy:{},johnny:{}};
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+			request(controller)
+				.post('/isValidName')
+				.send('name=jacky')
+				.expect('false')
+				.expect(200,done)
+		});
+	});
 	describe("index page",function(){
 		it("redirects player to the waiting page after login from url /",function(done){
 			game={players:{},id:"123846789"};
@@ -378,11 +424,25 @@ describe("POST handlers",function(){
 					assert.notEqual('123546789',res.header['set-cookie'][1]);
 					done();
 				})
-		})
+		});
+		it("redirects the player to indexPage if he/she want to join the game one of the previously joined players name",function(done){
+			var games={};
+			var game={
+				players:{rock:{},jack:{},johnny:{}},
+				id:'123546789'
+			}
+			var games={'123546789':game};
+			controller = requestHandler(games);
+			request(controller)
+				.post('/login')
+				.send('name=rock')
+				.expect(302)
+				.expect('Location','/index.html',done)
+		});
 	});
 	describe("doInstruction",function(){
 		it("performs action roll dice get from registered player",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			var rocky = {rollDice:function(dice){return 5;},chances:1};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
 			game.setChances=function(){};
@@ -400,7 +460,7 @@ describe("POST handlers",function(){
 				.expect(200,done);
 		});
 		it("doesn't performs action roll dice get from unregistered player",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			var rocky = {rollDice:function(dice){return 5;},chances:1};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
 			game.setChances=function(){};
@@ -418,7 +478,7 @@ describe("POST handlers",function(){
 				.expect(405,done);
 		});
 		it("performs action moveCoin if instruction is got from right player and right coin with right position",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			var rocky = {moveCoin:sinon.spy(),chances:1};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
 			game.currentPlayer = 'rocky';
@@ -440,7 +500,7 @@ describe("POST handlers",function(){
 				});
 		});
 		it("performs action moveCoin if instruction is got from right player and right coin with right position and nextPlayer is called",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			var rocky = {moveCoin:sinon.spy(),chances:1};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
 			game.currentPlayer = 'rocky';
@@ -464,7 +524,7 @@ describe("POST handlers",function(){
 				});
 		});
 		it("says wrong player if any player requests for instruction other than currentPlayer",function(done){
-			game={players:{}};
+			game={players:{},id:123546789};
 			var rocky = {moveCoin:sinon.spy(),chances:1};
 			game.players={rocky:rocky,jacky:{},joy:{},johnny:{}};
 			game.currentPlayer = 'rocky';

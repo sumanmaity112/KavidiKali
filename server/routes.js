@@ -24,15 +24,16 @@ var method_not_allowed = function(req, res){
 var login = function(req, res, next){
 	if(enquiries({question:'players'},req.game).length <= 3)
 		createPlayer(req.body.name, req, res);
-	else 
-		res.end('Please wait, a game is already started');
 };
 
 var createPlayer = function(userId,req,res){
-	application.register(userId,req.game);
-	res.cookie('userId', userId);
-	res.cookie('gameId',req.game.id);
-	res.redirect('/waitingPage.html');
+	if(application.register(userId,req.game)){
+		res.cookie('userId', userId);
+		res.cookie('gameId',req.game.id);
+		res.redirect('/waitingPage.html');
+	}
+	else
+		res.redirect('/index.html')
 	res.end();
 };
 
@@ -85,6 +86,10 @@ var isValidPlayer = function(req, res, next){
 		method_not_allowed(req, res);
 };
 
+var nameValidation = function(req,res){
+	res.end(application.isValidName(req.game,req.body.name).toString());
+}
+
 app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -94,6 +99,8 @@ app.use(loadGame);
 app.get('^/main.html$', isPlayerRegistered);
 
 app.use(express.static('./HTML'));
+
+app.post('/isValidName',nameValidation);
 
 app.post('^/login$',login);
 

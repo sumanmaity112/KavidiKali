@@ -33,9 +33,3 @@ exports.loadGame = function(games, gameId){
 		createGame(games);
 	return chooseGame(games, gameId);
 };
-
-exports.removeGame = function(gameId){
-	games = lodash.omit(games,gameId);
-};
-
-

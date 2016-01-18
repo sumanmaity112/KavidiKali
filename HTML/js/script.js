@@ -40,7 +40,7 @@ var notification = function(){
 		if(data){
 			if(data!=prev_note){
 				prev_note = data;
-				$(data).appendTo("#notification");	
+				$(data).prependTo("#notification");	
 			}
 		}
 	});

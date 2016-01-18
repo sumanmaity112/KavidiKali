@@ -4,6 +4,7 @@ javascript/sourceCode/jquery-2.1.4.min.js
 .DS_Store
 **/.DS_Store
 *.JSON
-npm-debug.log
+npm*
 TODO
 **/coverage
+git-hooks/**
