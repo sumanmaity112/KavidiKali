@@ -36,8 +36,8 @@ describe('Game',function(){
 			assert.equal(1,Object.keys(game.players).indexOf('Dicaprio'))
 		});
 		it("creates a player with respective path",function(){
-			game.createPlayer('suman');
-			var playerPathIdGivenByGame = game.players.suman.path.map(function(tile){
+			game.createPlayer('rock');
+			var playerPathIdGivenByGame = game.players.rock.path.map(function(tile){
 				return tile.id;
 			});
 			var path = ['2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2',
@@ -45,29 +45,29 @@ describe('Game',function(){
 			assert.deepEqual(playerPathIdGivenByGame,path);
 		});
 		it("creates multiple players with their respective path",function(){
-			game.createPlayer('suman');
-			var playerPathIdGivenByGame = game.players.suman.path.map(function(tile){
+			game.createPlayer('rock');
+			var playerPathIdGivenByGame = game.players.rock.path.map(function(tile){
 				return tile.id;
 			});
 			var path = ['2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2',
 						'0,1','0,0','1,0'];
 			assert.deepEqual(playerPathIdGivenByGame,path);
-			game.createPlayer('supriya');
-			playerPathIdGivenByGame = game.players.supriya.path.map(function(tile){
+			game.createPlayer('jiya');
+			playerPathIdGivenByGame = game.players.jiya.path.map(function(tile){
 				return tile.id;
 			});
 			path = ['4,2','4,3','4,4','3,4','2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0',
 					'4,0','4,1'];
 			assert.deepEqual(playerPathIdGivenByGame,path);
-			game.createPlayer('saran');
-			playerPathIdGivenByGame = game.players.saran.path.map(function(tile){
+			game.createPlayer('peter');
+			playerPathIdGivenByGame = game.players.peter.path.map(function(tile){
 				return tile.id;
 			});
 			path = ['2,4','1,4','0,4','0,3','0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1','4,2','4,3',
 					'4,4','3,4'];
 			assert.deepEqual(playerPathIdGivenByGame,path);
-			game.createPlayer('syani');
-			playerPathIdGivenByGame = game.players.syani.path.map(function(tile){
+			game.createPlayer('gwen');
+			playerPathIdGivenByGame = game.players.gwen.path.map(function(tile){
 				return tile.id;
 			});
 			path = ['0,2','0,1','0,0','1,0','2,0','3,0','4,0','4,1','4,2','4,3','4,4','3,4','2,4','1,4',
@@ -75,44 +75,44 @@ describe('Game',function(){
 			assert.deepEqual(playerPathIdGivenByGame,path);
 		});
 		it('creates a player with respective coins',function(){
-			game.createPlayer('suman');
-			var coins = {suman1 : { id: 'suman1',currentPosition: -1,reachedDestination: false,colour: 'red'},
-						suman2 : { id: 'suman2',currentPosition: -1,reachedDestination: false,colour: 'red'},
-						suman3 : { id: 'suman3',currentPosition: -1,reachedDestination: false,colour: 'red'},
-						suman4 : { id: 'suman4',currentPosition: -1,reachedDestination: false,colour: 'red'}
+			game.createPlayer('rock');
+			var coins = {rock1 : { id: 'rock1',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						rock2 : { id: 'rock2',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						rock3 : { id: 'rock3',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						rock4 : { id: 'rock4',currentPosition: -1,reachedDestination: false,colour: 'red'}
 					};
-			assert.deepEqual(coins,findPlayersCoinDetails(game.players.suman.coins));
+			assert.deepEqual(coins,findPlayersCoinDetails(game.players.rock.coins));
 		});
 		it('creates multiple players with their respective coins',function(){
-			game.createPlayer('suman');
-			var coins ={suman1 : { id: 'suman1',currentPosition: -1,reachedDestination: false,colour: 'red'},
-						suman2 : { id: 'suman2',currentPosition: -1,reachedDestination: false,colour: 'red'},
-						suman3 : { id: 'suman3',currentPosition: -1,reachedDestination: false,colour: 'red'},
-						suman4 : { id: 'suman4',currentPosition: -1,reachedDestination: false,colour: 'red'}
+			game.createPlayer('rock');
+			var coins ={rock1 : { id: 'rock1',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						rock2 : { id: 'rock2',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						rock3 : { id: 'rock3',currentPosition: -1,reachedDestination: false,colour: 'red'},
+						rock4 : { id: 'rock4',currentPosition: -1,reachedDestination: false,colour: 'red'}
 					};
-			assert.deepEqual(coins,findPlayersCoinDetails(game.players.suman.coins));
+			assert.deepEqual(coins,findPlayersCoinDetails(game.players.rock.coins));
 
-			game.createPlayer('syani');
-			coins = {syani1 : { id: 'syani1',currentPosition: -1,reachedDestination: false,colour: 'green'},
-					syani2 : { id: 'syani2',currentPosition: -1,reachedDestination: false,colour: 'green'},
-					syani3 : { id: 'syani3',currentPosition: -1,reachedDestination: false,colour: 'green'},
-					syani4 : { id: 'syani4',currentPosition: -1,reachedDestination: false,colour: 'green'}
+			game.createPlayer('gwen');
+			coins = {gwen1 : { id: 'gwen1',currentPosition: -1,reachedDestination: false,colour: 'green'},
+					gwen2 : { id: 'gwen2',currentPosition: -1,reachedDestination: false,colour: 'green'},
+					gwen3 : { id: 'gwen3',currentPosition: -1,reachedDestination: false,colour: 'green'},
+					gwen4 : { id: 'gwen4',currentPosition: -1,reachedDestination: false,colour: 'green'}
 				};
-			assert.deepEqual(coins,findPlayersCoinDetails(game.players.syani.coins));
-			game.createPlayer('saran');
-			coins = {saran1 : { id: 'saran1',currentPosition: -1,reachedDestination: false,colour: 'blue'},
-					saran2 : { id: 'saran2',currentPosition: -1,reachedDestination: false,colour: 'blue'},
-					saran3 : { id: 'saran3',currentPosition: -1,reachedDestination: false,colour: 'blue'},
-					saran4 : { id: 'saran4',currentPosition: -1,reachedDestination: false,colour: 'blue'}
+			assert.deepEqual(coins,findPlayersCoinDetails(game.players.gwen.coins));
+			game.createPlayer('peter');
+			coins = {peter1 : { id: 'peter1',currentPosition: -1,reachedDestination: false,colour: 'blue'},
+					peter2 : { id: 'peter2',currentPosition: -1,reachedDestination: false,colour: 'blue'},
+					peter3 : { id: 'peter3',currentPosition: -1,reachedDestination: false,colour: 'blue'},
+					peter4 : { id: 'peter4',currentPosition: -1,reachedDestination: false,colour: 'blue'}
 				};
-			assert.deepEqual(coins,findPlayersCoinDetails(game.players.saran.coins));
-			game.createPlayer('supriya');
-			coins = {supriya1 : { id: 'supriya1',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
-					supriya2 : { id: 'supriya2',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
-					supriya3 : { id: 'supriya3',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
-					supriya4 : { id: 'supriya4',currentPosition: -1,reachedDestination: false,colour: 'yellow'}
+			assert.deepEqual(coins,findPlayersCoinDetails(game.players.peter.coins));
+			game.createPlayer('jiya');
+			coins = {jiya1 : { id: 'jiya1',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
+					jiya2 : { id: 'jiya2',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
+					jiya3 : { id: 'jiya3',currentPosition: -1,reachedDestination: false,colour: 'yellow'},
+					jiya4 : { id: 'jiya4',currentPosition: -1,reachedDestination: false,colour: 'yellow'}
 				};
-			assert.deepEqual(coins,findPlayersCoinDetails(game.players.supriya.coins));
+			assert.deepEqual(coins,findPlayersCoinDetails(game.players.jiya.coins));
 		});
 	});
 		
@@ -261,32 +261,38 @@ describe('Game',function(){
 	});
 	describe("whenGameOver",function(){
 		it("reset the game master when all coins of a player already reached destination",function(){
-			game.createPlayer("suman");
-			var suman = game.players.suman;
-			suman.diceValues.push(1);
-			suman.coins.suman1.move("2,2");
-			suman.coins.suman2.move("2,2");
-			suman.coins.suman3.move("2,2");
-			assert.ok(!suman.isWin);
-			suman.coins.suman4.move("2,2");
-			assert.ok(suman.isWin);
+			game.createPlayer("rock");
+			var rock = game.players.rock;
+			rock.diceValues.push(1);
+			rock.coins.rock1.move("2,2");
+			rock.coins.rock2.move("2,2");
+			rock.coins.rock3.move("2,2");
+			assert.ok(!rock.isWin);
+			rock.coins.rock4.move("2,2");
+			assert.ok(rock.isWin);
 			assert.ok(game.players,{});
 		});
 		it("sets the game.winner to the current player who won the game",function(){
-			game.createPlayer('sooraj');
+			game.createPlayer('john');
 			game.whenGameOver();
-			assert.ok(game.winner=='sooraj');
+			assert.ok(game.winner=='john');
 		});
 	});
 	describe("reset",function(){
 		it("removes all the players and makes a fresh list for players",function(){
-			game.createPlayer('sooraj');
-			game.createPlayer('suman');
-			game.createPlayer('supriya');
-			game.createPlayer('saran');
+			game.createPlayer('john');
+			game.createPlayer('rock');
+			game.createPlayer('jiya');
+			game.createPlayer('peter');
 			assert.ok(Object.keys(game.players).length == 4);
 			game.reset();
 			assert.ok(Object.keys(game.players).length == 0);
+		});
+	});
+	describe("getNotification",function(){
+		it("return notification text ",function(){
+			game.notification_text="jp got 2";
+			assert.equal(game.getNotification(),'jp got 2');
 		});
 	});
 });
