@@ -327,6 +327,49 @@ describe("get handlers",function(){
 				.expect('joy got 2',done)
 		});
 	});
+	describe("enquiry?question=playerTurn",function(){
+		game={players:{},id:123546789};
+		game.players={jacky:{},joy:{},johnny:{},rocky:{}};
+		games={};
+		games['123546789']=game;
+		controller = requestHandler(games);
+		it("returns the players turn number as 4 when get request from 1st player",function(done){
+			request(controller)
+				.get('/enquiry?question=playerTurn')
+				.set('cookie',['userId=jacky;gameId=123546789'])
+				.expect('4')
+				.expect(200,done)
+		});
+		it("returns the players turn number as 3 when get request from 2nd player",function(done){
+			request(controller)
+				.get('/enquiry?question=playerTurn')
+				.set('cookie',['userId=joy;gameId=123546789'])
+				.expect('3')
+				.expect(200,done)
+		});
+		it("returns the players turn number as 2 when get request from 3rd player",function(done){
+			request(controller)
+				.get('/enquiry?question=playerTurn')
+				.set('cookie',['userId=johnny;gameId=123546789'])
+				.expect('2')
+				.expect(200,done)
+		});
+		it("returns the players turn number as 1 when get request from 4th player",function(done){
+			request(controller)
+				.get('/enquiry?question=playerTurn')
+				.set('cookie',['userId=rocky;gameId=123546789'])
+				.expect('1')
+				.expect(200,done)
+		});
+		it("gives 405 when it get request from unregistered player",function(done){
+			request(controller)
+				.get('/enquiry?question=playerTurn')
+				.set('cookie',['userId=jack;gameId=123546789'])
+				.expect('Method is not allowed')
+				.expect(405,done)
+		});
+	});
+
 });
 
 describe("POST handlers",function(){

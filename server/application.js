@@ -25,10 +25,8 @@ exports.enquiry = function(obj,gameMaster){
 };
 
 exports.register = function(name,gameMaster){
-	if(lodash.has(gameMaster.players,name)){
-		console.log('__________ DUPLICATE PLAYER');
+	if(lodash.has(gameMaster.players,name))
 		return false;
-	}
 	gameMaster.createPlayer(name);
 	var obj = {question:'players'};
 	exports.enquiry(obj,gameMaster).length == 1 && gameMaster.players[name].chances++;
