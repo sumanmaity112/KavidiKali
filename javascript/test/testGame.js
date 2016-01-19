@@ -18,7 +18,7 @@ describe('Game',function(){
 		game = new Game([6],5,[1,2,3,4,5,6]);
 	});
 	describe('analyzeDiceValue',function(){
-		it('return true when dice value is same as special value',function(){
+		it('return truFe when dice value is same as special value',function(){
 			assert.ok(game.analyzeDiceValue(6));
 		});
 		it('return false when dice value is not same as special value',function(){
@@ -246,6 +246,14 @@ describe('Game',function(){
 			var diceValues = [1,2,3,4,5];
 			assert.deepEqual(game.getAllValidMovesOfCoin(coin,diceValues,player.path),undefined);	
 		});
+		it('gives all possible moves of coin if coin is onBoard',function(){
+			game.createPlayer('orange');
+			var player = game.players['orange'];
+			var coin = player.coins['orange1'];
+			coin.currentPosition = '2,0';
+			var diceValues = [1,2,3];
+			assert.deepEqual(game.getAllValidMovesOfCoin(coin,diceValues,player.path),[ '3,0', '4,0', '4,1' ]);
+		})
 	});
 	describe('anyMoreMoves',function(){
 		it('gives false if the player has no coins on board and hasn\'t got "6"',function(){
