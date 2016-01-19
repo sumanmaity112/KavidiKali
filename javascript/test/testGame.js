@@ -210,7 +210,7 @@ describe('Game',function(){
 			assert.equal(currPlayer,'yellow');
 		});
 		it('gives the next player a chance to roll dice',function(){
-			var dice = {roll:function(){sinon.stub().returns(6)}};
+			var dice = {roll:function(){sinon.stub().returns(4)}};
 			game.createPlayer('red');
 			game.createPlayer('yellow');
 			game.createPlayer('blue');
@@ -230,6 +230,22 @@ describe('Game',function(){
 			game.nextPlayer();
 			currPlayer = game.currentPlayer;
 			assert.equal(currPlayer,'green');
+		});
+		it("removes the all dice values of current player if current player doesn't have any more moves",function(done){
+			this.timeout(3000);
+			var dice = {roll:function(){return 2}};
+			game.createPlayer('red');
+			game.createPlayer('yellow');
+			game.createPlayer('blue');
+			game.createPlayer('green');
+			game.players['red'].chances++;
+			game.players['red'].rollDice(dice);
+			game.nextPlayer();
+			assert.equal(game.currentPlayer,'yellow');
+			setTimeout(function(){
+				assert.deepEqual(game.players['red'].diceValues,[])	
+				done();
+			},2500);
 		});
 	});
 	describe('getAllValidMovesOfCoin',function(){
