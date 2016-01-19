@@ -89,7 +89,7 @@ Game.prototype = {
 		var getMoves = this.getAllValidMovesOfCoin.bind(this);
 		var specialValue = this.specialValues;
 		var movesPerCoin = Object.keys(player.coins).map(function(coin){
-			return getMoves(player.coins[coin],player.diceValues,player.path,specialValue);
+			return getMoves(player.coins[coin],player.diceValues,player.path);
 		});
 		var totalMoves = ld.flatten(movesPerCoin);
 		return !!ld.pull(totalMoves,undefined)[0];
