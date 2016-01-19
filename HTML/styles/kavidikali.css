@@ -136,6 +136,12 @@ body{
 	font-size: 17px;
 }
 
+#gameId{
+    width: 200px;
+    height: 30px;
+    font-size: 14px;
+}
+
 #userid{
 	width: 200px;
 	height: 100px;
@@ -155,8 +161,7 @@ body{
 }
 
 #login{
-    padding-left: 530.875;
-    width: 314.125;
+    padding-left: 441.875;
     padding-top: 236.797;
     border-top-width: 0px;
 }

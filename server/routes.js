@@ -11,7 +11,7 @@ var enquiries = application.enquiry;
 var app=express();
 
 var loadGame = function(req, res, next){
-	req.game = getGame(req.games, req.cookies.gameId);
+	req.game = getGame(req.games, req.cookies.gameId,req.body.gameId);
 	next();
 };
 

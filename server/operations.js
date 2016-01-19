@@ -80,7 +80,7 @@ exports.enquiries = {
 	'players' 			: function(gameMaster){ return Object.keys(gameMaster.players);},
 	'movesWhere' 		: movesTo,
 	'isGameOver'		: checkStatus,
-	'whatIsMyName'		: function(gameMaster, obj){ return obj.player},
+	'whatIsMyDetails'	: function(gameMaster, obj){ return JSON.stringify({'name':obj.player,'gameId':gameMaster.id})},
 	'myNameAndColor'	: myNameAndColor,
 	'whoIsTheWinner'	: function(gameMaster,obj){ return gameMaster.winner},
 	'playerTurn'		: function(gameMaster,obj){	return (4-Object.keys(gameMaster.players).indexOf(obj.player)).toString();}

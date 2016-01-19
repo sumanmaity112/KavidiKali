@@ -11,8 +11,8 @@ var findRecentGameId = function(games){
 	return lodash.last(Object.keys(games));
 };
 
-var findNoOfJoinedPlayer = function(games){
-	var recentGame = games[findRecentGameId(games)];
+var findNoOfJoinedPlayer = function(games,gameId){
+	var recentGame = games[gameId];
 	return Object.keys(recentGame.players).length;
 };
 var isValidGame = function(games, gameId){
@@ -27,9 +27,12 @@ var chooseGame = function(games, gameId){
 		return games[gameId];
 }
 
-exports.loadGame = function(games, gameId){
+exports.loadGame = function(games, gameId,optionalGameId){
+	if(optionalGameId && isValidGame(games,optionalGameId) && findNoOfJoinedPlayer(games,optionalGameId)<=3)
+		return chooseGame(games, optionalGameId);
 	var listOfGames = Object.keys(games);
-	if((listOfGames.length==0 || findNoOfJoinedPlayer(games)==4) && !isValidGame(games, gameId))
+	var lastGameId = findRecentGameId(games);
+	if((listOfGames.length==0 || findNoOfJoinedPlayer(games,lastGameId)==4) && !isValidGame(games, gameId))
 		createGame(games);
 	return chooseGame(games, gameId);
 };

@@ -34,7 +34,7 @@ describe("get handlers",function(){
 			request(controller)
 				.get('/waitingPage.html')
 				.expect(200)
-				.expect(/You are Successfully logged in/)
+				.expect(/you are successfully logged in/)
 				.expect('content-Type',/text\/html/,done);
 		});
 	});
@@ -165,7 +165,7 @@ describe("get handlers",function(){
 						.expect(200,done);
 				});
 			});
-			describe("whatIsMyName",function(){
+			describe("whatIsMyDetails",function(){
 				it("gives the name of the requester",function(done){
 					game={
 						players:{rocky:{}},
@@ -176,9 +176,9 @@ describe("get handlers",function(){
 					controller = requestHandler(games);
 
 					request(controller)
-						.get('/enquiry?question=whatIsMyName')
+						.get('/enquiry?question=whatIsMyDetails')
 						.set('cookie',['userId=rocky;gameId=123546789'])
-						.expect('rocky')
+						.expect('{"name":"rocky","gameId":123546789}')
 						.expect(200,done);
 				});
 			});
@@ -462,9 +462,10 @@ describe("POST handlers",function(){
 			request(controller)
 				.post('/login')
 				.send('name=rose')
-				.expect('set-cookie',['userId=rose; Path=/'])
 				.end(function(req,res){
-					assert.notEqual('123546789',res.header['set-cookie'][1]);
+					assert.notEqual('gameId=123546789, Path=/',res.header['set-cookie'][1]);
+					assert.equal('/waitingPage.html',res.header.location);
+					assert.equal(302,res.status)
 					done();
 				})
 		});
@@ -481,6 +482,57 @@ describe("POST handlers",function(){
 				.send('name=rock')
 				.expect(302)
 				.expect('Location','/index.html',done)
+		});
+		it("allow to join a new player to a specific game when it get a valid gameId",function(done){
+			var game={
+				players:{rock:{},jack:{},johnny:{}},
+				createPlayer:function(){},
+				id:'123546789'
+			}
+			var games={'123546789':game};
+			controller = requestHandler(games);
+			request(controller)
+				.post('/login')
+				.send('name=rocky&gameId=123546789')
+				.expect(302)
+				.expect('Location','/waitingPage.html')
+				.expect('set-cookie','userId=rocky; Path=/,gameId=123546789; Path=/',done)
+		});
+		it("create a new game when it get a valid gameId but that game already have 4 players",function(done){
+			var game={
+				players:{rock:{},jack:{},johnny:{},joy:{}},
+				createPlayer:function(){},
+				id:'123546789'
+			}
+			var games={'123546789':game};
+			controller = requestHandler(games);
+			request(controller)
+				.post('/login')
+				.send('name=rocky&gameId=123546789')
+				.end(function(req,res){
+					assert.notEqual('gameId=123546789; Path=/',res.header['set-cookie'][1]);
+					assert.equal('/waitingPage.html',res.header.location);
+					assert.equal(302,res.status);
+					done();
+				})
+		});
+		it("create a new game when a new player want to join to a specific game with a invalid gameId ",function(done){
+			var game={
+				players:{rock:{},jack:{},johnny:{},joy:{}},
+				createPlayer:function(){},
+				id:'123546789'
+			}
+			var games={'123546789':game};
+			controller = requestHandler(games);
+			request(controller)
+				.post('/login')
+				.send('name=rocky&gameId=123546708')
+				.end(function(req,res){
+					assert.notEqual('gameId=123546708; Path=/',res.header['set-cookie'][1]);
+					assert.equal('/waitingPage.html',res.header.location);
+					assert.equal(302,res.status);
+					done();
+				})
 		});
 	});
 	describe("doInstruction",function(){
