@@ -11,7 +11,8 @@ var enquiries = application.enquiry;
 var app=express();
 
 var loadGame = function(req, res, next){
-	req.game = getGame(req.games, req.cookies.gameId,req.body.gameId);
+	console.log(req.body,'--------------',Object.keys(req.games),'*****')
+	req.game = getGame(req.games, req.cookies.gameId,req.body,req.url);
 	next();
 };
 
@@ -86,21 +87,29 @@ var isValidPlayer = function(req, res, next){
 		method_not_allowed(req, res);
 };
 
-var nameValidation = function(req,res){
-	res.end(application.isValidName(req.game,req.body.name).toString());
+var detailsValidation = function(req,res){
+	res.end(application.checkDetails(req.games,req.body));
+};
+
+var availableGame = function(req,res){
+	res.end(application.availableGame(req.games));
 }
 
 app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('^/availableGame$', availableGame);
+
+app.post('/isValidDetails',detailsValidation);
+
 app.use(loadGame);
 
 app.get('^/main.html$', isPlayerRegistered);
 
+
 app.use(express.static('./HTML'));
 
-app.post('/isValidName',nameValidation);
 
 app.post('^/login$',login);
 

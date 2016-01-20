@@ -15,8 +15,10 @@ exports.handleUpdates = function(obj,gameMaster){
 	return updater(gameMaster,obj);
 };
 
-exports.isValidName = function(gameMaster,name){
-	return !lodash.has(gameMaster.players,name);
+exports.checkDetails = function(games,details){
+	var name = games[details.gameId] ? !lodash.has(games[details.gameId].players,details.name) : true;
+	var result={gameId:lodash.has(games,details.gameId),name:name};
+	return JSON.stringify(result);
 }
 
 exports.enquiry = function(obj,gameMaster){
@@ -32,3 +34,10 @@ exports.register = function(name,gameMaster){
 	exports.enquiry(obj,gameMaster).length == 1 && gameMaster.players[name].chances++;
 	return true;
 };
+
+exports.availableGame = function(games){
+	var result = Object.keys(games).filter(function(game){
+		return Object.keys(games[game].players).length<4;
+	});
+	return JSON.stringify(result);
+}

@@ -3,21 +3,19 @@ var Game = require('./../javascript/sourceCode/game.js');
 var lodash = require('lodash');
 
 var createGame = function(games){
-	var gameId = chance.string({length: 9});
+	var gameId = chance.natural();
 	games[gameId] = new Game(gameId);
 };
 
 var findRecentGameId = function(games){
 	return lodash.last(Object.keys(games));
 };
-
-var findNoOfJoinedPlayer = function(games,gameId){
-	var recentGame = games[gameId];
-	return Object.keys(recentGame.players).length;
-};
 var isValidGame = function(games, gameId){
 	return gameId && lodash.has(games,gameId);
 };
+var findNoOfPlayer=function(game){
+	return Object.keys(game.players).length;
+}
 var chooseGame = function(games, gameId){
 	var recentGameId = findRecentGameId(games);
 	var recentGame = games[recentGameId];
@@ -25,14 +23,19 @@ var chooseGame = function(games, gameId){
 		return recentGame;
 	else
 		return games[gameId];
-}
-
-exports.loadGame = function(games, gameId,optionalGameId){
-	if(optionalGameId && isValidGame(games,optionalGameId) && findNoOfJoinedPlayer(games,optionalGameId)<=3)
-		return chooseGame(games, optionalGameId);
-	var listOfGames = Object.keys(games);
-	var lastGameId = findRecentGameId(games);
-	if((listOfGames.length==0 || findNoOfJoinedPlayer(games,lastGameId)==4) && !isValidGame(games, gameId))
+};
+var findGame = function(games,gameId){
+	if(!games[gameId]|| (games[gameId]&&findNoOfPlayer(games[gameId])==4)){
 		createGame(games);
-	return chooseGame(games, gameId);
+		gameId=undefined;
+	}
+	return chooseGame(games,gameId);
+}
+exports.loadGame = function(games, gameId, data,url){
+	if((data.option=='joinGame' && url=='/login')||(url=='/isValidDetails')){
+		return findGame(games,data.gameId);
+	}
+	if(Object.keys(games).length==0 || data.option=='newGame')
+		createGame(games);
+	return chooseGame(games,gameId);
 };

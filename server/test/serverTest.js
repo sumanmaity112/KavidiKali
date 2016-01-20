@@ -369,33 +369,76 @@ describe("get handlers",function(){
 				.expect(405,done)
 		});
 	});
+	describe("availableGame",function(){
+		it("gives the all available game where a player can join",function(done){
+			var game1={players:{},id:123546789};
+			game1.players={jacky:{},joy:{},johnny:{}};
+			var game2={players:{},id:123546780};
+			game2.players={jack:{},john:{},johnny:{}};
+			var game3={players:{},id:123546781};
+			game3.players={jack:{},john:{},johnny:{},jacky:{}};
+			games={};
+			games['123546789']=game1;
+			games['123546780']=game2;
+			games['123546781']=game3;
+			controller = requestHandler(games);
+			request(controller)
+				.get('/availableGame')
+				.expect(200)
+				.expect('["123546780","123546789"]',done)
+		});
+	});
 
 });
 
 describe("POST handlers",function(){
-	describe("isValidName",function(){
-		it("returns true if a name is unique for a game",function(done){
+	describe("isValidDetails",function(){
+		it("returns object which hold details when name is unique for a game and gameId is also valid",function(done){
 			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{}};
 			games={};
 			games['123546789']=game;
 			controller = requestHandler(games);
 			request(controller)
-				.post('/isValidName')
-				.send('name=rocky')
-				.expect('true')
+				.post('/isValidDetails')
+				.send('name=rocky&gameId=123546789')
+				.expect('{"gameId":true,"name":true}')
 				.expect(200,done)
 		});
-		it("returns false if a name is not unique for a game",function(done){
+		it("returns object which hold details when a name is not unique for a game and gameId is also valid",function(done){
 			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{}};
 			games={};
 			games['123546789']=game;
 			controller = requestHandler(games);
 			request(controller)
-				.post('/isValidName')
-				.send('name=jacky')
-				.expect('false')
+				.post('/isValidDetails')
+				.send('name=jacky&gameId=123546789&option=joinGame')
+				.expect('{"gameId":true,"name":false}')
+				.expect(200,done)
+		});
+		it("returns object which hold details when name is unique for a game but gameId is invalid",function(done){
+			var game={players:{},id:123546789};
+			game.players={jacky:{},joy:{},johnny:{}};
+			var games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+			request(controller)
+				.post('/isValidDetails')
+				.send('name=rocky&gameId=1235467890')
+				.expect('{"gameId":false,"name":true}')
+				.expect(200,done)
+		});
+		it("returns object which hold details when a name is not unique for a game and gameId is also invalid",function(done){
+			var game={players:{},id:123546789};
+			game.players={jacky:{},joy:{},johnny:{}};
+			var games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+			request(controller)
+				.post('/isValidDetails')
+				.send('name=jacky&gameId=1235467899&option=joinGame')
+				.expect('{"gameId":false,"name":true}')
 				.expect(200,done)
 		});
 	});
@@ -411,7 +454,7 @@ describe("POST handlers",function(){
 			controller = requestHandler(games);
 			request(controller)
 				.post('/login')
-				.send("name=rony")
+				.send("name=rony&option=joinGame&gameId=123846789")
 				.expect('set-cookie','userId=rony; Path=/,gameId=123846789; Path=/')
 				.expect(302)
 				.expect('Location','/waitingPage.html',done)
@@ -427,7 +470,7 @@ describe("POST handlers",function(){
 
 			request(controller)
 				.post('/login')
-				.send("name=rony")
+				.send("name=rony&option=joinGame&gameId=123846789")
 				.expect('set-cookie','userId=rony; Path=/,gameId=123846789; Path=/')
 				.expect(302)
 				.expect('Location','/waitingPage.html',done)
@@ -443,31 +486,24 @@ describe("POST handlers",function(){
 			controller = requestHandler(games);
 			request(controller)
 				.post('/login')
-				.send('name=rose')
+				.send('name=rose&option=joinGame&gameId=123546789')
 				.expect('set-cookie',['userId=rose; Path=/'])
 				.end(function(req,res){
 					var expectCookie = 'gameId=123546789; Path=/'
 					assert.equal(expectCookie,res.header['set-cookie'][1]);
 					done();
 				})
-		})
-		it('create a new game when a new player want to join game after 4th player',function(done){
-			var games={};
-			var game={
-				players:{rock:{},jack:{},johnny:{},rony:{}},
-				id:'123546789'
-			}
-			var games={'123546789':game};
-			controller = requestHandler(games);
+		});
+		it("create new game if there no game is present",function(){
+			var controller = requestHandler({});
 			request(controller)
 				.post('/login')
-				.send('name=rose')
+				.send('name=rose&option=newGame')
 				.end(function(req,res){
-					assert.notEqual('gameId=123546789, Path=/',res.header['set-cookie'][1]);
 					assert.equal('/waitingPage.html',res.header.location);
 					assert.equal(302,res.status)
 					done();
-				})
+				})	
 		});
 		it("redirects the player to indexPage if he/she want to join the game one of the previously joined players name",function(done){
 			var games={};
@@ -479,7 +515,7 @@ describe("POST handlers",function(){
 			controller = requestHandler(games);
 			request(controller)
 				.post('/login')
-				.send('name=rock')
+				.send('name=rock&gameId=123546789&option=joinGame')
 				.expect(302)
 				.expect('Location','/index.html',done)
 		});
@@ -493,7 +529,7 @@ describe("POST handlers",function(){
 			controller = requestHandler(games);
 			request(controller)
 				.post('/login')
-				.send('name=rocky&gameId=123546789')
+				.send('name=rocky&gameId=123546789&option=joinGame')
 				.expect(302)
 				.expect('Location','/waitingPage.html')
 				.expect('set-cookie','userId=rocky; Path=/,gameId=123546789; Path=/',done)
@@ -508,7 +544,7 @@ describe("POST handlers",function(){
 			controller = requestHandler(games);
 			request(controller)
 				.post('/login')
-				.send('name=rocky&gameId=123546789')
+				.send('name=rocky&gameId=123546789&option=joinGame')
 				.end(function(req,res){
 					assert.notEqual('gameId=123546789; Path=/',res.header['set-cookie'][1]);
 					assert.equal('/waitingPage.html',res.header.location);
@@ -526,7 +562,7 @@ describe("POST handlers",function(){
 			controller = requestHandler(games);
 			request(controller)
 				.post('/login')
-				.send('name=rocky&gameId=123546708')
+				.send('name=rocky&gameId=123546708&option=joinGame')
 				.end(function(req,res){
 					assert.notEqual('gameId=123546708; Path=/',res.header['set-cookie'][1]);
 					assert.equal('/waitingPage.html',res.header.location);
