@@ -11,15 +11,14 @@
 		<div id="notification"></div>
 		<br>
 		<form name="loginForm" id="login" method="POST" action="login" onsubmit="return check();">
-			<input type="text" name="name" placeholder="Enter your name ......" id="name" required>
-			<input type="text" name="gameId" placeholder="Enter game ID (Optional) ...." id="gameId">
+			<input type="text" name="name" placeholder="Enter your name ......" id="name" required> <br><br>
+			<input type="radio" name="option" value="newGame" checked="checked" id="newGame"> Create a new game <br>
+			<input type="radio" name="option" value="joinGame" id="joinGame"> Join a game 
+			<select name="gameId" id="gameId"></select><br><br>
 			<input type="submit" value="submit" id="submit">
 		</form>	
 	</div>
+	<div id="availableGame"></div>
 </body>
 </html>
 
-
-
-
-	

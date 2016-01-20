@@ -1,9 +1,11 @@
 var chance = new require('chance')();
 var Game = require('./../javascript/sourceCode/game.js');
 var lodash = require('lodash');
+const ID_LENGTH = 6;
+const POSSIBLE_ID_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 var createGame = function(games){
-	var gameId = chance.natural();
+	var gameId = chance.string({length:ID_LENGTH,pool:POSSIBLE_ID_CHARACTERS});
 	games[gameId] = new Game(gameId);
 };
 

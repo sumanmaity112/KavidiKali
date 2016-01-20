@@ -149,7 +149,7 @@ body{
 }
 
 #submit{
-    margin-left: 0px;
+    margin-left: 50px;
     padding-bottom: 2px;
     width: 72px;
     height: 29px;
@@ -161,7 +161,7 @@ body{
 }
 
 #login{
-    padding-left: 441.875;
+    padding-left: 542.875;
     padding-top: 236.797;
     border-top-width: 0px;
 }
