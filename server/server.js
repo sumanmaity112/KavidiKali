@@ -1,11 +1,10 @@
 var http = require('http');
 var requestHandler =  require('./routing.js');
-const PORT=process.env.HOST_PORT || 8080;
+var IP_ADDRESS = process.env.OPENSHIFT_NODEJS_IP;
+var PORT = process.env.OPENSHIFT_NODEJS_PORT ||  8080;
 var games={};
 var controller = requestHandler(games);
 
 var server = http.createServer(controller);
-server.listen(PORT,function(){
-	console.log('server is listen on ',PORT);
-});
+server.listen(PORT,IP_ADDRESS);
 
