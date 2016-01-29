@@ -2,10 +2,11 @@
 	padding-top: 100px;
 	text-align: center;
 	margin: 0 auto;
+	height: 250px;
 }
 
 .player{
-	margin-top: 15px;
+	margin-top: 40px;
 	list-style-type: none;
 	font-size: 25px;
 	color: gray;
