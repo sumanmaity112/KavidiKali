@@ -1,0 +1,45 @@
+body{
+	font-family: 'lucida grande';
+}
+
+.header{
+	font-size: 25px;
+	font-weight: 100;
+	text-align: center;
+	width: 300px;
+	margin: 0 auto;
+}
+
+h1{
+	border-bottom: 1px solid black;
+}
+
+.footer {
+   position:fixed;
+   bottom:0px;
+   height:50px;
+   width:100%;
+}
+
+#footer {
+	padding-top: 10px;
+	width : 800px;
+	height: 50px;
+	margin: 0 auto;
+	border-top: 3px solid gray;
+	text-align: center;
+}
+
+.footer_elements {
+	height: 30px;
+	width: 145px;
+	margin-left: 8px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#gitHub {
+	height: 30px;
+	width: 30px;
+}
+

@@ -34,7 +34,7 @@ describe("get handlers",function(){
 			request(controller)
 				.get('/waitingPage.html')
 				.expect(200)
-				.expect(/you are successfully logged in/)
+				.expect(/<div class="waiting_dots" id="dot_0">/)
 				.expect('content-Type',/text\/html/,done);
 		});
 	});
@@ -206,7 +206,7 @@ describe("get handlers",function(){
 				.expect(200,done);
 		});
 	});
-	describe("/update",function(){
+	describe("update",function(){
 		it("updates dice values when it gets request from valid player",function(done){
 			game={players:{},id:123546789};
 			var rocky = {diceValues:[5]};
@@ -243,7 +243,7 @@ describe("get handlers",function(){
 				.expect('Method is not allowed')
 				.expect(405,done)
 		});
-		it("updates the number of player when it gets request from valid player",function(done){
+		it("updates the list of players when it gets request from valid player",function(done){
 			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{}};
 			games={};
@@ -252,7 +252,7 @@ describe("get handlers",function(){
 			request(controller)
 				.get('/update?toUpdate=waitingPage')
 				.set('cookie',['userId=jacky;gameId=123546789'])
-				.expect('3')
+				.expect('["jacky","joy","johnny"]')
 				.expect(200,done)
 
 		});

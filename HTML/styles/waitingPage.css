@@ -1,0 +1,44 @@
+.players{
+	padding-top: 100px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.player{
+	margin-top: 15px;
+	list-style-type: none;
+	font-size: 25px;
+	color: gray;
+}
+
+#last_player{
+	font-weight: 800;
+	color: black;
+}
+
+.waiting_dots{
+	height: 20px;
+	width: 20px;
+	background-color: gray;
+	margin-top: 20px;
+	margin-left: 20px;
+	float: left;
+}
+
+.selected_waiting_dot{
+	height: 20px;
+	width: 20px;
+	background-color: black;
+	margin-top: 20px;
+	margin-left: 20px;
+	float: left;
+}
+
+.waiting{
+	padding-top: 100px;
+	width: 150px;
+	height: 200px;
+	margin: 0 auto; 
+
+}
+

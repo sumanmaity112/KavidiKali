@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Waiting For Players</title>
+	<title>Waiting</title>
+	<link rel="stylesheet" href="styles/waitingPage.css">
+	<link rel="stylesheet" href="styles/common.css">
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="js/waitingPage.js"></script>
 </head>
 <body>
-	<div>
-		<h2 id="userId">you are successfully logged in  </h2>
-		<h3>Number of players joined...  <p id="noOfPlayers">__numberOfPlayer__</p></h3>
+	<div class="header">
+		<h1>Kavidikali</h1>
+	</div>
+	<div class="players">
+	</div>
+	<div class="waiting">
+		<div class="waiting_dots" id="dot_0"></div>
+		<div class="waiting_dots" id="dot_1"></div>
+		<div class="waiting_dots" id="dot_2"></div>
+	</div>
+	<div class="footer">
+		<div id="footer">
+			<div class="footer_elements" id="about">About</div>
+			<div class="footer_elements" id="issues">Issues</div>
+			<div class="footer_elements" id="git"><img src="images/GitHub-Mark.png" id="gitHub"></div>
+			<div class="footer_elements" id="help">Help</div>
+			<div class="footer_elements" id="contact">Contact</div>
+		</div>
 	</div>
 </body>
 </html>
