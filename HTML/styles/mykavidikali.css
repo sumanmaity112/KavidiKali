@@ -1,0 +1,51 @@
+.tile {
+	height: 75px;
+	width: 75px;
+	background-color: lightgray;
+	border-radius: 3px;
+}
+
+.grid {
+	margin:0 auto;
+}
+
+.playArea {
+	/*background-color: yellow;*/
+	width: 600px;
+	height: 600px;
+	padding-top: 50px;
+	margin: 0 auto;
+}
+
+/*.notification {
+	width: 200px;
+	height: 600px;
+	display: inline-block;
+	background-color: yellow;
+}*/
+
+/*.body {
+	background-color: yellow;
+	width: 810px;
+	margin: 0 auto;
+}*/
+
+.safeTile {
+	background-color: darkgray;
+	border: 1px solid black;
+}
+
+.outerTile {
+	background-color: white;
+}
+
+.coin {
+	width: 15px;
+	height: 15px;
+	border-radius: 10px;
+	background-color: red;
+	margin-left: 1.5px;
+	margin-right: 1.5px;
+	display: inline-block;
+
+}
