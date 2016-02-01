@@ -7,6 +7,7 @@ const POSSIBLE_ID_CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 var createGame = function(games){
 	var gameId = chance.string({length:ID_LENGTH,pool:POSSIBLE_ID_CHARACTERS});
 	games[gameId] = new Game(gameId);
+	return gameId;
 };
 
 var findRecentGameId = function(games){
@@ -37,7 +38,8 @@ exports.loadGame = function(games, gameId, data,url){
 	if((data.option=='joinGame' && url=='/login')||(url=='/isValidDetails')){
 		return findGame(games,data.gameId);
 	}
-	if(Object.keys(games).length==0 || data.option=='newGame')
-		createGame(games);
+	if(Object.keys(games).length==0 || data.option=='newGame'){
+		gameId = createGame(games);
+	}
 	return chooseGame(games,gameId);
 };
