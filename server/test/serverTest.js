@@ -13,14 +13,14 @@ describe("get handlers",function(){
 		it("serves index file if '/' is given",function(done){
 			request(controller).get('/')
 				.expect(200)
-				.expect(/Welcome To KavidiKali/,done)
+				.expect(/KavidiKali Game/,done)
 		});
 	});
 	describe("/index.html",function(){
 		it("serves index file index.html is requested",function(done){
 			request(controller).get('/index.html')
 				.expect(200)
-				.expect(/Welcome To KavidiKali/)
+				.expect(/KavidiKali Game/)
 				.expect('content-Type',/text\/html/,done);
 		});
 	});	
@@ -42,7 +42,7 @@ describe("get handlers",function(){
 		it("serves index file if '' is requested",function(done){
 			request(controller).get('')
 				.expect(200)
-				.expect(/Welcome To KavidiKali/,done);
+				.expect(/KavidiKali Game/,done);
 		});
 	});
 	describe("wrong url",function(){
@@ -385,7 +385,7 @@ describe("get handlers",function(){
 			request(controller)
 				.get('/availableGame')
 				.expect(200)
-				.expect('["123546780","123546789"]',done)
+				.expect('{"123546780":["jack","john","johnny"],"123546789":["jacky","joy","johnny"]}',done)
 		});
 	});
 
