@@ -13,50 +13,18 @@
 
 	<div class="userInfo">
 		<h3>Enter Your Name</h3>
-		<form name="loginForm" id="login" method="POST" action="login" onsubmit="return check();">
-			<input type="text" name="name" placeholder="Ex: John Smith" id="name" required> <br><br>
-			<input type="button" class="button" value="Continue" id="continue" onclick="changeDOM()">
-		</form>
+		<div id="login">
+			<input type="text" name="name" placeholder="Ex: John Smith" id="name">
+			<input type="button" class="button" value="Continue" id="continue">
+		</div>
 	</div>
-	<div class="selectGame">
+	<div class="selectGame hidden">
 		<div class="createGame">
 			<input type="button" class="button" value="Create Game" id="createGame_button" onclick="">
 		</div>
 		<div class="joinGame">
 				<h3>Available Games</h3>
-				<table class="availableGames">
-					<th>
-						GAME
-					</th>
-					<th>
-						player 1
-					</th>
-					<th>
-						player 2
-					</th>
-					<th>
-						player 3
-					</th>
-					<th>
-						player 4
-					</th>
-					<tr>
-						<td>
-							gfhdgd
-						</td>
-						<td>
-							supriya
-						</td>
-						<td>
-							sooraj Parameswaran
-						</td>
-						<td>
-							syanima
-						</td>
-						<td>
-							saran
-						</td>
-					</tr>
+				<table class="availableGames" id="availableGames">
 				</table>
 		</div>
 

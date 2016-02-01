@@ -36,8 +36,13 @@ exports.register = function(name,gameMaster){
 };
 
 exports.availableGame = function(games){
-	var result = Object.keys(games).filter(function(game){
-		return Object.keys(games[game].players).length<4;
+	var result = {};
+	Object.keys(games).forEach(function(game){
+		var gameObj = games[game];
+		var players = Object.keys(gameObj.players)
+		if(players.length<4){
+			result[gameObj.id] = players;
+		};
 	});
 	return JSON.stringify(result);
 }

@@ -1,51 +1,71 @@
-var validGameId = true, validName=true,timer;
-var alertPlayer=function(){
-	if(!validGameId)
-		return alert('Check entered gameId');
-	if(!validName)
-		return alert('Entered another name');
-}
-var check = function(){
-	alertPlayer();
-	return validGameId && validName;
+var update;
+
+window.onload = function(){
+	$('#continue').click(hideUserInfo); 
+	$('#createGame_button').click(createGame);
 };
 
-var enable=function(){
-	$("#gameId").prop('disabled', false);
+var hideUserInfo = function(){
+	$('.userInfo').addClass('hidden');
+	$('.selectGame').removeClass('hidden');
+	update = setInterval(updateAvailableGames, 1000);
 };
 
-var disable=function(){
-	$("#gameId").prop('disabled', true);
+var createGame = function(){
+	var playerName = $('#name').val();
+	var obj = {};
+	obj.name = playerName;
+	obj.option = 'newGame';
+	var form = createForm(obj, 'POST', 'login');
+	clearInterval(update);
+	form.submit();
 };
-var availableGame = function(){
-	var content ='';
+
+var createForm = function(obj, method, action){
+	var keys = Object.keys(obj);
+	var form = document.createElement('form');
+	var node = document.createElement("input");
+	for (var i = 0; i < keys.length; i++) {
+		node.name = keys[i];
+		node.value = obj[keys[i]];
+		form.appendChild(node.cloneNode());
+	};
+	form.method = method;
+	form.action = action;
+	form.style.display = "none";
+	return form;
+};
+
+var updateAvailableGames = function(){
 	$.getJSON('availableGame',function(data){
-		content =  '<ul>'
-		data.forEach(function(value){
-			if(value)
-				content+='<li>'+value+'</li>';
-		});
-		content +='</ul>'
-		var newGame = '<input type="Submit" value="newGame" id="newGame" name="option">';
-		var createdDOM = newGame + content;
-		$('.updateDOM').html(createdDOM);
+		var gameIds = Object.keys(data);
+		var heading = '<tr><th>GAME</th><th>Player 1</th><th>Player 2</th><th>Player 3</th></tr>'
+		var rows = gameIds.map(function(gameId){
+			return createRow(gameId, data[gameId]);
+		})
+		$('#availableGames').html(heading+rows.join(" "));	
 	});
 };
-var removeInterval = function(){
-	clearInterval(timer);
-}
 
-var changeDOM = function(){
-	$('#continue').remove();
-	availableGame();
-}
-$(document).ready(function(){
-	$('#gameId').keyup(function(){
-		var urlData = 'name='+$('#name').val()+'&gameId='+$('#gameId').val();
-		$.post('isValidDetails',urlData,function(data){
-			data = JSON.parse(data);
-			validName = data.name;
-			validGameId = data.gameId;
-		});
-	});
-})
+var createRow = function(key, values){
+	var row = '<tr id="'+key+'" class="games" onClick="joinGame(this.id)">';
+	row += createRowData(key);
+	for (var i = 0; i < 3; i++) {
+		row += createRowData(values[i] || '');
+	};
+	return row;
+};
+
+var createRowData = function(text){
+	return '<td>'+text+'</td>';
+};
+
+var joinGame = function(id){
+	var playerName = $('#name').val();
+	var obj = {};
+	obj.name = playerName;
+	obj.option = 'joinGame';
+	obj.gameId = id;
+	var form = createForm(obj, 'POST', 'login');
+	form.submit();
+};
