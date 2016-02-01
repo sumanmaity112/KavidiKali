@@ -1,0 +1,53 @@
+body{
+  width: 400px;
+  margin: 0 auto;
+  font-family: sans-serif;
+}
+
+#heading{
+		font-size: 50px;
+    width: 300px;
+    border-bottom: 3px solid black;
+		margin: 0 auto;
+		font-weight: 500;
+		text-align: center;
+}
+
+#login{
+    width: 190px;
+    margin: 0 auto;
+    padding-top: 40px;
+    padding-bottom: 10%;
+}
+
+#name{
+  width: 252px;
+  height: 42px;
+  font-size: 17px;
+  margin-left: -31px;
+}
+
+#continue{
+    margin-left: -1px;
+    padding-bottom: 2px;
+    width: 252px;
+    height: 42px;
+    margin-left: -31px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.userInfo{
+  padding-top: 20%;
+  border-radius: 5px;
+  margin-top: 51%;
+}
+
+h3{
+  text-align: center;
+  margin: 0 auto;
+  font-size:33px;
+  font-weight: lighter;
+  margin-top: -12%;
+}

@@ -1,11 +1,9 @@
 body{
-	padding: 40 30 40 30;
-	background-color: lightgrey;
+		padding: 40 30 40 30;
     margin-left: 25px;
     margin-right: 25px;
     margin-top: 20px;
     margin-bottom: 20px;
-
 }
 
 #body{
@@ -17,15 +15,7 @@ body{
     margin-bottom: 0px;
 }
 
-#heading{
-	font-family: sans-serif;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    width: 1325px;
-    height: 35px;
-    border-top-width: 0px;
-    padding-left: 0px;
-}
+
 
 .rightPane {
     float: left;
@@ -132,12 +122,6 @@ body{
     border: 1px solid black;
 }
 
-#name{
-	width: 200px;
-	height: 30px;
-	font-size: 17px;
-}
-
 #gameId{
     width: 200px;
     height: 30px;
@@ -148,24 +132,6 @@ body{
 	width: 200px;
 	height: 100px;
 	background-color: #fff;
-}
-
-#submit{
-    margin-left: 50px;
-    padding-bottom: 2px;
-    width: 72px;
-    height: 29px;
-    background: #62a;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-}
-
-#login{
-    padding-left: 542.875;
-    padding-top: 236.797;
-    border-top-width: 0px;
 }
 
 .outerTile{
@@ -237,5 +203,3 @@ body{
     font-size: 27px;
     margin-top: -103%;
 }
-
-

@@ -18,21 +18,28 @@ var disable=function(){
 	$("#gameId").prop('disabled', true);
 };
 var availableGame = function(){
+	var content ='';
 	$.getJSON('availableGame',function(data){
-		var content = '';
+		content =  '<ul>'
 		data.forEach(function(value){
 			if(value)
-				content+='<option value="'+value+'">'+value+'</option>';
+				content+='<li>'+value+'</li>';
 		});
-		$('#gameId').html(content);
+		content +='</ul>'
+		var newGame = '<input type="Submit" value="newGame" id="newGame" name="option">';
+		var createdDOM = newGame + content;
+		$('.updateDOM').html(createdDOM);
 	});
 };
 var removeInterval = function(){
 	clearInterval(timer);
 }
-$(document).ready(function(){
+
+var changeDOM = function(){
+	$('#continue').remove();
 	availableGame();
-	disable();
+}
+$(document).ready(function(){
 	$('#gameId').keyup(function(){
 		var urlData = 'name='+$('#name').val()+'&gameId='+$('#gameId').val();
 		$.post('isValidDetails',urlData,function(data){
@@ -41,10 +48,4 @@ $(document).ready(function(){
 			validGameId = data.gameId;
 		});
 	});
-	document.querySelector('#joinGame').onclick=enable;
-	document.querySelector('#newGame').onclick=disable;
-	document.querySelector('#gameId').onclick = removeInterval;
-	timer = setInterval(function(){
-		availableGame();
-	},2000);
 })

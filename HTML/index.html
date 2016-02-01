@@ -1,24 +1,20 @@
 <html>
 <head>
 	<title>KavidiKali Game</title>
-	<link rel="stylesheet" href="styles/kavidikali.css">
+	<link rel="stylesheet" href="styles/index.css">
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 </head>
-<body bgcolor="#639CFF">
-	<h1 id="heading"align="center">Welcome To KavidiKali</h1>
-	<div >
-		<div id="notification"></div>
-		<br>
+<body>
+		<h1 id="heading">KavidiKali</h1>
+	<div class="userInfo">
+		<h3>Enter Your Name</h3>
 		<form name="loginForm" id="login" method="POST" action="login" onsubmit="return check();">
-			<input type="text" name="name" placeholder="Enter your name ......" id="name" required> <br><br>
-			<input type="radio" name="option" value="newGame" checked="checked" id="newGame"> Create a new game <br>
-			<input type="radio" name="option" value="joinGame" id="joinGame"> Join a game 
-			<select name="gameId" id="gameId"></select><br><br>
-			<input type="submit" value="submit" id="submit">
-		</form>	
+			<input type="text" name="name" placeholder="Example: John Smith" id="name" required> <br><br>
+			<input type="button" value="Continue..." id="continue" onclick="changeDOM()">
+			<div class="updateDOM">
+			</div>
+		</form>
 	</div>
-	<div id="availableGame"></div>
 </body>
 </html>
-
