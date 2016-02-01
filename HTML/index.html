@@ -2,19 +2,73 @@
 <head>
 	<title>KavidiKali Game</title>
 	<link rel="stylesheet" href="styles/index.css">
+	<link rel="stylesheet" href="styles/common.css">
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 </head>
 <body>
-		<h1 id="heading">KavidiKali</h1>
+	<div class="header">
+		<img src="images/kavidi.png" id="kavidi_head">
+	</div>
+
 	<div class="userInfo">
 		<h3>Enter Your Name</h3>
 		<form name="loginForm" id="login" method="POST" action="login" onsubmit="return check();">
-			<input type="text" name="name" placeholder="Example: John Smith" id="name" required> <br><br>
-			<input type="button" value="Continue..." id="continue" onclick="changeDOM()">
-			<div class="updateDOM">
-			</div>
+			<input type="text" name="name" placeholder="Ex: John Smith" id="name" required> <br><br>
+			<input type="button" class="button" value="Continue" id="continue" onclick="changeDOM()">
 		</form>
+	</div>
+	<div class="selectGame">
+		<div class="createGame">
+			<input type="button" class="button" value="Create Game" id="createGame_button" onclick="">
+		</div>
+		<div class="joinGame">
+				<h3>Available Games</h3>
+				<table class="availableGames">
+					<th>
+						GAME
+					</th>
+					<th>
+						player 1
+					</th>
+					<th>
+						player 2
+					</th>
+					<th>
+						player 3
+					</th>
+					<th>
+						player 4
+					</th>
+					<tr>
+						<td>
+							gfhdgd
+						</td>
+						<td>
+							supriya
+						</td>
+						<td>
+							sooraj Parameswaran
+						</td>
+						<td>
+							syanima
+						</td>
+						<td>
+							saran
+						</td>
+					</tr>
+				</table>
+		</div>
+
+	</div>
+	<div class="footer">
+		<div id="footer">
+			<div class="footer_elements" id="about">About</div>
+			<div class="footer_elements" id="issues"><a href="https://github.com/sumanmaity112/KavidiKali/issues" target="_blank">Issues</a></div>
+			<div class="footer_elements" id="git"><a href="https://github.com/sumanmaity112/KavidiKali" target="_blank"><img src="images/GitHub-Mark.png" id="gitHub"></a></div>
+			<div class="footer_elements" id="help">Help</div>
+			<div class="footer_elements" id="contact">Contact</div>
+		</div>
 	</div>
 </body>
 </html>
