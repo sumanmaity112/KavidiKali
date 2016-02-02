@@ -53,6 +53,7 @@ var createRow = function(key, values){
 	for (var i = 0; i < 3; i++) {
 		row += createRowData(values[i] || '');
 	};
+	row += '</tr>'
 	return row;
 };
 

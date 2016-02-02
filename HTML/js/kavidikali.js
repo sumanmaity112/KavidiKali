@@ -33,7 +33,7 @@ var createGrid = function(rotateCount){
 };
 
 var coinToDOMElement = function(coin) {
-	return '<div class="coin "'+coin.colour+' id="'+coin.id+'">';
+	return '<div class="coin '+coin.colour+'" id="'+coin.id+'">';
 };
 
 var coinsThatHaveMoved=function(oldStatus,newStatus) {
@@ -89,9 +89,20 @@ var refreshBoard = function(){
 	});
 };
 
+var notification = function(){
+	$.get('update?toUpdate=notification',function(data){
+		if(data){
+			if(data!=prev_note){
+				prev_note = data;
+				$(data).prependTo("#notifications");	
+			}
+		}
+	});
+};
+
 
 window.onload = function(){
-	$('.playArea').html(createGrid(0));
+	$('.board').html(createGrid(0));
 	var safeTiles = ['4,2','2,4','2,2','0,2','2,0'];
 	var outerLoop = ['-1,5','0,5','1,5','2,5','3,5','4,5','5,5','-1,4','-1,3','-1,2','-1,1','-1,0','-1,-1',
 					'0,-1','1,-1','2,-1','3,-1','4,-1','5,-1','5,0','5,1','5,2','5,3','5,4','5,5'];
@@ -109,5 +120,6 @@ window.onload = function(){
 	});
 	refreshWindow = setInterval(function(){
 			refreshBoard();
+			notification();
 		},500);
 }
