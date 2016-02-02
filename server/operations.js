@@ -1,6 +1,4 @@
 var lodash = require('lodash');
-var queryString = require('querystring');
-
 
 var rollDice = function(gameMaster, obj){
 	var player = gameMaster.players[obj.player];

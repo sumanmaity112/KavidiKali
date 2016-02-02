@@ -1,10 +1,10 @@
 var express = require('express');
 var lodash = require('lodash');
-var querystring = require('querystring');
 var application = require('./application.js');
 var operations = require('./operations.js');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var urlParser= require('url-parse');
 var getGame = require('./games.js').loadGame;
 var enquiries = application.enquiry;
 
@@ -49,11 +49,8 @@ var isPlayerRegistered = function(req, res, next){
 };
 
 var createFunctionalObj = function(req){
-	var url = req.url;
-	var indexOfSlash = url.indexOf('?');
-	var obj = querystring.parse(url.slice(indexOfSlash+1));
-	var player = req.cookies.userId;
-	obj.player = player;
+	var obj = urlParser.qs.parse(req.url);
+	obj.player = req.cookies.userId;
 	return obj;
 };
 
@@ -109,7 +106,6 @@ app.get('^/main.html$', isPlayerRegistered);
 
 
 app.use(express.static('./HTML'));
-
 
 app.post('^/login$',login);
 
