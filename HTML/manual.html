@@ -1,132 +1,141 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Manual Page</title>
+  <title>Manual Page</title>
+  <link rel="stylesheet" href="styles/common.css" media="screen" title="no title" charset="utf-8">
+  <link rel="stylesheet" href="styles/manual.css" media="screen" title="no title" charset="utf-8">
 </head>
+
 <body>
-	<h1>
-		MANUAL PAGE
-	</h1>
-	<h2 align="center"> <font size="8px">
-		KAVIDIKALI GAME <br>------------------------------------------------------------------------------
-	</font>
-	</h2>
-	<font size="6px">
-		
-	<p>
-		<ol>
-			<li>
-				Architecture:-
-				<ul>
-					<li>
-						Board Structure:-
-						<ul>
-							<li>
-								5 by 5 board
-							</li>
-							<li>
-								4 sides
-							</li>
-							<li>
-								25 tiles including one home at the center of the board
-							</li>
-							<li>
-								board has 2 loops - outer loop and inner loop
-							</li>
-							<li>
-								4 safe places in the outer loop at a distance of 3 tiles
-							</li>
-							<li>
-								Each side has one safe place of outer loop
-							</li>
-						</ul>
-					</li>
-				
-					<li>
-						Players:-
-						<ul>
-							<li>
-								4 players
-							</li>
-						</ul>
-					</li>
-					<li>
-						Coins:-
-						<ul>
-							<li>
-								each player has 4 Coins of same colour
-							</li>
-							<li>
-								each player is differentiated by colours
-							</li>
-						</ul>
-					</li>
-					<li>
-						Dice:-
-						<ul>
-							<li>
-								has 6 sides with number from 1 to 6
-							</li>
-						</ul>
-					</li>
-				</ul>
-			</li>
-			 <br/>
-			<li>
-				Constraints:-
-				<ul>
-					<li>
-						Each side of the board is the entry point of each player
-					</li>
-					<li>
-						Each player has 4 coins to play with. His/Her target is to take all the four coins from the starting position outside the board to the main home. 
-					</li>
-					<li>
-						The coin can enter only through safe place.
-					</li>
-					<li>
-						The player has to get 6 on dice while dicing to enter each Coin.
-					</li>
-					<li>
-						If the player gets 6 on dice while dicing he/she will get extra chance.
-					</li>
-					<li>
-						While dicing what the player gets on dice the player will move coin according to that number
-					</li>
-					<li>
-						After making a throw, if a player has valid moves, he/she will make the moves, if not, the next player gets his/her chance to make the throw in an anti clockwise order.
-					</li>
-					<li>
-						After finishing of valid move of current player next player gets chance.
-					</li>
-					<li>
-						The player want to round the outer loop atleast one time.
-					</li>
-					<li>
-						If the move has resulted in killing a coin(replace a coin )of opponents,  
-						current player gets an extra chance.<br>
-						
-						 He/she is also given permission to enter inner loop . Otherwise he/she can not enter into inner loop but he/she can possible to round on outer loop repeatedly.
-					</li>
-					<li>
-						The player can not kill the opponent's coin that are in any of the safe places.
-					</li>
-					<li>
-						Multiple pieces of the same player or opponents can be placed together in a safe place.
-					</li>
-					<li>
-						The killed coin has to get out from board.This coin can enter to the game by getting 6 on dice and should repeat the same path.
-					</li>
-					<li>
-						The coin has to round inner loop to get into the home.
-					</li>
-					<li>
-						When all coins of a player gets into the main home he/she will win the game. Then the game finished.
-					</li>
-				</ul>
-			</li> 
-		</ol> 
-	</p>
-	</font>
+  <div class="header">
+    <img src="images/kavidi.png" id="kavidi_head">
+  </div>
+  <div class="text">
+    <p>
+      <ol>
+        <li>
+          Architecture:
+          <ul>
+            <li>
+              <div class="headings">Board Structure:</div>
+              <ul>
+                <li>
+                  5 by 5 board
+                </li>
+                <li>
+                  4 sides
+                </li>
+                <li>
+                  25 tiles including one home at the center of the board
+                </li>
+                <li>
+                  Board has 2 loops - outer loop and inner loop
+                </li>
+                <li>
+                  4 safe places in the outer loop at a distance of 3 tiles
+                </li>
+                <li>
+                  Each side has one safe place of outer loop
+                </li>
+              </ul>
+            </li>
+
+            <li>
+              <div class="headings">Players: </div>
+              <ul>
+                <li>
+                  4 players
+                </li>
+              </ul>
+            </li>
+            <li>
+              <div class="headings"> Coins: </div>
+              <ul>
+                <li>
+                  Each player has 4 coins of same colour
+                </li>
+                <li>
+                  Each player is differentiated by colours
+                </li>
+              </ul>
+            </li>
+            <li>
+              <div class="headings"> Dice: </div>
+              <ul>
+                <li>
+                  Has 6 sides with number from 1 to 6
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <br/>
+        <li>
+          Constraints:
+          <ul class="b">
+            <li>
+              Each side of the board is the entry point of each player
+            </li>
+            <li>
+              Each player has 4 coins to play with. His/Her target is to take all the four coins from the starting position outside the board to the main home.
+            </li>
+            <li>
+              The coin can enter only through safe place.
+            </li>
+            <li>
+              The player has to get 6 on dice while dicing to enter each coin.
+            </li>
+            <li>
+              If the player gets 6 on dice while dicing he/she will get extra chance.
+            </li>
+            <li>
+              While dicing what the player gets on dice the player will move coin according to that number
+            </li>
+            <li>
+              After making a throw, if a player has valid moves, he/she will make the moves, if not, the next player gets his/her chance to make the throw in an anti clockwise order.
+            </li>
+            <li>
+              After finishing of valid move of current player next player gets chance.
+            </li>
+            <li>
+              The player want to round the outer loop atleast one time.
+            </li>
+            <li>
+              If the move has resulted in killing a coin (replace a coin) of opponents, current player gets an extra chance.
+              <br> He/she is also given permission to enter inner loop . Otherwise he/she can not enter into inner loop but he/she can possible to round on outer loop repeatedly.
+            </li>
+            <li>
+              The player can not kill the opponent's coin that are in any of the safe places.
+            </li>
+            <li>
+              Multiple pieces of the same player or opponents can be placed together in a safe place.
+            </li>
+            <li>
+              The killed coin has to get out from board.This coin can enter to the game by getting 6 on dice and should repeat the same path.
+            </li>
+            <li>
+              The coin has to round inner loop to get into the home.
+            </li>
+            <li>
+              When all coins of a player gets into the main home he/she will win the game. Then the game finished.
+            </li>
+          </ul>
+        </li>
+      </ol>
+    </p>
+  </div>
+  <div class="footer">
+    <div id="footer">
+      <div class="footer_elements" id="about"><a class="hover" href="https://en.wikipedia.org/wiki/Ashta_Chamma_(board_game)" target="_blank">About</a></div>
+      <div class="footer_elements" id="issues"><a class="hover" href="https://github.com/sumanmaity112/KavidiKali/issues" target="_blank">Issues</a></div>
+      <div class="footer_elements" id="git">
+        <a class="hover" href="https://github.com/sumanmaity112/KavidiKali" target="_blank"><img src="images/GitHub-Mark.png" id="gitHub"></a>
+      </div>
+      <div class="footer_elements" id="help"><a class="hover" href="manual.html">Help</a></div>
+      <div class="footer_elements" id="contact"><a class="hover" href="contact.html">Contact</a></div>
+    </div>
+  </div>
 </body>
+
 </html>

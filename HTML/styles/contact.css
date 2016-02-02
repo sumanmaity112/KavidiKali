@@ -1,0 +1,24 @@
+body {
+  font-family: 'lucida grande', sans-serif;
+  padding-left: 10px;
+}
+.name a.names:hover {
+  color: #4078c0;
+  text-decoration: none;
+}
+.name {
+  width: 1024px;
+  margin: 0 auto;
+  padding: 0 200px;
+}
+.contacts {
+  text-decoration: none;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.47);
+  font-weight: 220;
+}
+h1 {
+  font-size: 22px;
+  color: rgba(0, 0, 0, 0.55);
+  font-weight: 450;
+}

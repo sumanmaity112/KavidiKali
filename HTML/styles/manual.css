@@ -1,0 +1,27 @@
+.text {
+  font-family: "medium-content-sans-serif-font", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: 300;
+  width: 1024px;
+  margin: 0 auto;
+  padding: 0 200px;
+  height: 626px;
+  overflow: scroll;
+  line-height: 1.28;
+  letter-spacing: -0.020em;
+}
+ul:only-of-type {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.47);
+  font-weight: 220;
+}
+.headings {
+  font-size: 19px;
+  color: rgba(0, 0, 0, 0.55);
+  font-weight: 450;
+}
+.b {
+  list-style-type: square;
+}

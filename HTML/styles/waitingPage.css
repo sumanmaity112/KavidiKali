@@ -1,43 +1,42 @@
-.players{
-	padding-top: 100px;
-	text-align: center;
-	margin: 0 auto;
-	height: 250px;
+.players {
+  padding-top: 100px;
+  text-align: center;
+  margin: 0 auto;
+  height: 250px;
 }
-
-.player{
-	margin-top: 40px;
-	list-style-type: none;
-	font-size: 25px;
-	color: gray;
+.player {
+  margin-top: 40px;
+  list-style-type: none;
+  font-size: 25px;
+  color: gray;
 }
-
-#last_player{
-	font-weight: 800;
-	color: black;
+#last_player {
+  font-weight: 800;
+  color: black;
 }
-
-.waiting_dots{
-	height: 20px;
-	width: 20px;
-	background-color: gray;
-	margin-top: 20px;
-	margin-left: 20px;
-	float: left;
+.waiting_dots {
+  height: 20px;
+  width: 20px;
+  background-color: gray;
+  margin-top: 20px;
+  margin-left: 20px;
+  float: left;
 }
-
-.selected_waiting_dot{
-	height: 20px;
-	width: 20px;
-	background-color: black;
-	margin-top: 20px;
-	margin-left: 20px;
-	float: left;
+.selected_waiting_dot {
+  height: 20px;
+  width: 20px;
+  background-color: black;
+  margin-top: 20px;
+  margin-left: 20px;
+  float: left;
 }
-
-.waiting{
-	padding-top: 100px;
-	width: 150px;
-	height: 200px;
-	margin: 0 auto; 
+.waiting {
+  padding-top: 100px;
+  width: 150px;
+  height: 200px;
+  margin: 0 auto;
+}
+.footer_elements a.hover:hover {
+  color: #4078c0;
+  text-decoration: underline;
 }
