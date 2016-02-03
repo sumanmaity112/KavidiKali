@@ -12,7 +12,9 @@ body {
   padding-bottom: 10px;
 }
 #kavidi_head {
-  height: 40px;
+  height: 45px;
+  width: 260px;
+  margin-bottom: -8px;
 }
 .footer {
   position: fixed;
@@ -22,7 +24,7 @@ body {
 }
 #footer {
   /*padding-top: 10px;*/
-  padding-top: 20px;
+  padding-top: 15px;
   width: 1024px;
   height: 50px;
   margin: 0 auto;
@@ -39,6 +41,7 @@ body {
 #gitHub {
   height: 30px;
   width: 30px;
+  margin-top: -6px;
 }
 .footer a:link, a:visited {
   color: inherit;
