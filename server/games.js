@@ -33,6 +33,15 @@ var findGame = function(games,gameId){
 		gameId=undefined;
 	}
 	return chooseGame(games,gameId);
+};
+exports.removeGame = function(games){
+	var unwantedGames=[];
+	for(var id in games){
+		if(games[id].readyToRemove)
+			unwantedGames.push(id);
+	}
+	unwantedGames.forEach(function(id){games = lodash.omit(games,id)});
+	return games;
 }
 exports.loadGame = function(games, gameId, data,url){
 	if((data.option=='joinGame' && url=='/login')||(url=='/isValidDetails')){

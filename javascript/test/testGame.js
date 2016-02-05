@@ -319,5 +319,24 @@ describe('Game',function(){
 			assert.equal(game.getNotification(),'jp got 2');
 		});
 	});
+	describe("resetGame",function(){
+		it("invoke reset game function when it got 4 unique request",function(){
+			game = new Game();
+			game.createPlayer('john');
+			game.createPlayer('rock');
+			game.createPlayer('jiya');
+			game.createPlayer('peter');
+			assert.ok(Object.keys(game.players).length == 4);
+			assert.ok(!game.readyToRemove);
+			game.resetGame('john');
+			assert.ok(!game.readyToRemove);
+			game.resetGame('rock');
+			assert.ok(!game.readyToRemove);
+			game.resetGame('jiya');
+			assert.ok(!game.readyToRemove);
+			game.resetGame('peter');
+			assert.ok(game.readyToRemove);
+		});
+	});
 });
 

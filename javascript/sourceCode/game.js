@@ -21,6 +21,16 @@ var Game = function(id){
 	this.counter = 0;
 	this.winner=undefined;
 	this.notification_text="";
+	this.resetGame = function(){
+		var gotRequestFrom=[];
+		return function(userId){
+			if(gotRequestFrom.indexOf(userId)==-1){
+				gotRequestFrom.push(userId);
+			}
+			if(gotRequestFrom.length==4)
+				this.reset();
+		};
+	}();
 };
 
 Game.prototype = {
@@ -114,6 +124,7 @@ Game.prototype = {
  	},
  	reset : function(){
  		console.log('GAME SUCESSFULLY RESET');
+ 		this.readyToRemove=true;
  		this.players={};
 		this.counter=0;
 		this.winner=undefined;
