@@ -1,5 +1,5 @@
 body {
-  font-family: 'lucida grande';
+  font-family: 'lucida grande', sans-serif;
 }
 .header {
   font-size: 25px;
@@ -21,19 +21,21 @@ body {
   bottom: 0px;
   height: 50px;
   width: 100%;
+  /*background-color: #ffffff;*/
 }
 #footer {
   /*padding-top: 10px;*/
   padding-top: 15px;
-  width: 1024px;
+  width: 70%;
   height: 50px;
   margin: 0 auto;
   border-top: 1.5px solid gray;
   text-align: center;
+  overflow: auto;
 }
 .footer_elements {
   height: 30px;
-  width: 145px;
+  width: 18%;
   margin-left: 8px;
   display: inline-block;
   vertical-align: middle;

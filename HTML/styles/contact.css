@@ -6,9 +6,10 @@ body {
   text-decoration: none;
 }
 .name {
-  width: 1024px;
+  width: 70%;
   margin: 0 auto;
-  padding: 0 200px;
+  padding-left: calc(7% - 1em);
+  padding-right: calc(7% - 1em);
 }
 .contacts {
   text-decoration: none;
@@ -26,10 +27,14 @@ h1 {
   color: #4078c0;
 }
 .contactBody {
-  padding: 25px 150px;
+  padding-top: calc(8% - 1em);
+  padding-left: calc(18% - 1em);
+  padding-right: calc(18% - 1em);
 }
 .email {
-  padding: 35px 300px;
+  padding-top: calc(5% - 1em);
+  padding-left: calc(40% - 1em);
+  padding-right: calc(40% - 1em);
 }
 #twitter {
   padding-left: 400px;
@@ -42,5 +47,7 @@ h1 {
 .git {
   margin-bottom: -6px;
 }
-
+html, body {
+  height: 100%;
+  width: 100%;
 }
