@@ -5,14 +5,14 @@ var operations = require('./operations.js');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var urlParser= require('url-parse');
-var getGame = require('./games.js').loadGame;
+var lib = require('./games.js');
 var enquiries = application.enquiry;
 
 var app=express();
 
 var loadGame = function(req, res, next){
-	
-	req.game = getGame(req.games, req.cookies.gameId,req.body,req.url);
+	req.games = lib.removeGame(req.games);
+	req.game = lib.loadGame(req.games, req.cookies.gameId,req.body,req.url);
 	next();
 };
 
@@ -70,6 +70,7 @@ var handleEnquiry = function(req, res, next){
 	var obj = createFunctionalObj(req);
 	var response = enquiries(obj,req.game);
 	if(req.url=='/enquiry?question=whoIsTheWinner' && response!='undefined'){
+		req.game.resetGame(req.cookies.userId);
 		res.clearCookie('userId')
 		res.clearCookie('gameId');
 	}
