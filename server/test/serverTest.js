@@ -191,7 +191,8 @@ describe("get handlers",function(){
 						 rony:{}
 						},
 				winner:'rocky',
-				id:123546789
+				id:123546789,
+				resetGame:function(){}
 			};
 			games={};
 			games['123546789']=game;

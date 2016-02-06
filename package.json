@@ -2,7 +2,7 @@
   "name": "kavidi_kali",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./server/server.js",
   "scripts": {
     "test": "mocha server/test/ javascript/test/",
     "coverage": "istanbul cover _mocha server/test/ javascript/test/",
@@ -32,12 +32,12 @@
     "chance": "^0.8.0",
     "cookie-parser": "^1.4.0",
     "express": "^4.13.3",
-    "lodash": "^3.10.1"
+    "lodash": "^3.10.1",
+    "url-parse": "^1.0.5"
   },
   "engines": {
     "node": ">= 0.6.0",
     "npm": ">= 1.0.0"
   },
-  "private": true,
-  "main": "./server/server.js"
+  "private": true
 }

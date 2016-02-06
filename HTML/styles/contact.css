@@ -1,0 +1,53 @@
+body {
+  font-family: 'lucida grande', sans-serif;
+}
+.name a.names:hover {
+  color: #4078c0;
+  text-decoration: none;
+}
+.name {
+  width: 70%;
+  margin: 0 auto;
+  padding-left: calc(7% - 1em);
+  padding-right: calc(7% - 1em);
+}
+.contacts {
+  text-decoration: none;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.47);
+  font-weight: 220;
+  line-height: 2.2;
+}
+h1 {
+  font-size: 22px;
+  color: rgba(0, 0, 0, 0.80);
+  font-weight: 450;
+}
+.contacts:hover {
+  color: #4078c0;
+}
+.contactBody {
+  padding-top: calc(8% - 1em);
+  padding-left: calc(18% - 1em);
+  padding-right: calc(18% - 1em);
+}
+.email {
+  padding-top: calc(5% - 1em);
+  padding-left: calc(40% - 1em);
+  padding-right: calc(40% - 1em);
+}
+#twitter {
+  padding-left: 400px;
+  margin-bottom: -10px;
+}
+#twitter1 {
+  padding-left: 380px;
+  margin-bottom: -10px;
+}
+.git {
+  margin-bottom: -6px;
+}
+html, body {
+  height: 100%;
+  width: 100%;
+}

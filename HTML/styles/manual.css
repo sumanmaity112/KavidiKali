@@ -1,0 +1,38 @@
+.text {
+  font-family: "medium-content-sans-serif-font", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+  /*font-size: 24px;*/
+  font-style: normal;
+  color: rgba(0, 0, 0, 0.85);
+  /*font-weight: 300;*/
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 6px;
+  height: calc(100% - 145px);
+  overflow: scroll;
+  line-height: 1.28;
+  letter-spacing: -0.020em;
+}
+ul:only-of-type {
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.67);
+  font-weight: 220;
+}
+.headings {
+  font-size: 19px;
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 450;
+}
+.b {
+  list-style-type: square;
+}
+.title {
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.85);
+}
+html, body {
+  height: 100%;
+  width: 100%;
+}
+::-webkit-scrollbar {
+  display: none;
+}
