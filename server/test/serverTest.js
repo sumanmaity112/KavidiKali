@@ -222,7 +222,7 @@ describe("get handlers",function(){
 			request(controller)
 				.get('/update?toUpdate=diceValues')
 				.set('cookie',['userId=rocky;gameId=123546789'])
-				.expect('diceValues=5')
+				.expect('[5]')
 				.expect(200,done)
 		});
 		it("doesn't updates dice values when it gets request from invalid player",function(done){
@@ -518,7 +518,7 @@ describe("POST handlers",function(){
 				.post('/login')
 				.send('name=rock&gameId=123546789&option=joinGame')
 				.expect(302)
-				.expect('Location','/index.html',done)
+				.expect('Location','/kavidiKali.html',done)
 		});
 		it("allow to join a new player to a specific game when it get a valid gameId",function(done){
 			var game={
@@ -588,7 +588,7 @@ describe("POST handlers",function(){
 			request(controller)
 				.get('/instruction?action=rollDice')
 				.set('cookie',['userId=rocky;gameId=123sahbj'])
-				.expect('diceValue5')
+				.expect('5')
 				.expect(200,done);
 		});
 		it("doesn't performs action roll dice get from unregistered player",function(done){
