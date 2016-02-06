@@ -23,18 +23,18 @@ var method_not_allowed = function(req, res){
 };
 
 var login = function(req, res, next){
-	if(enquiries({question:'players'},req.game).length <= 3)
-		createPlayer(req.body.name, req, res);
+	createPlayer(req.body.name, req, res);
 };
 
 var createPlayer = function(userId,req,res){
 	if(application.register(userId,req.game)){
+		console.log('userId ',userId);
 		res.cookie('userId', userId);
 		res.cookie('gameId',req.game.id);
 		res.redirect('/waitingPage.html');
 	}
 	else
-		res.redirect('/index.html')
+		res.redirect('/kavidiKali.html')
 	res.end();
 };
 

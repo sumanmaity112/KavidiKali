@@ -2,10 +2,10 @@
 <html>
 <head>
 	<title>Kavidikali</title>
-	<link rel="stylesheet" href="styles/mykavidikali.css">
+	<link rel="stylesheet" href="styles/mykavidikali1.css">
 	<link rel="stylesheet" href="styles/common.css">
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-	<script type="text/javascript" src="js/kavidikali.js"></script>
+	<script type="text/javascript" src="js/myKavidikali.js"></script>
 </head>
 <body>
 	<div class="header">
@@ -14,31 +14,18 @@
 	
 	<div class="body">
 		
-		<div class="board"></div>
+			<div class="board"></div>
+			
+
 		<div class="playInfo">
-			<div class="players">
-				<div class="player_container">
-					<div class="player">Supriya</div>
-					<div class="colour"></div>
-				</div>
-				<div class="player_container">
-					<div class="player current_player">Syanima</div>
-					<div class="colour"></div>
-				</div>
-				<div class="player_container">
-					<div class="player">Saran</div>
-					<div class="colour"></div>
-				</div>
-			</div>
+			<div class="myInfo_head">Players</div>
+			<ul class="players">
+			</ul>
 			<div class="myInfo">
-				<div id="playerName" class="myInfo_head">Sooraj Parameswaran</div>
+				<div id="myName" class="myInfo_head">Sooraj Parameswaran</div>
 				<div class="myInfos">
 					<div class="myInfo_head">Enter Board</div>
 					<div id="enterBoard">
-						<div class="coin " id="Sooraj Parameswaran1"></div>
-						<div class="coin " id="Sooraj Parameswaran1"></div>
-						<div class="coin " id="Sooraj Parameswaran1"></div>
-						<div class="coin " id="Sooraj Parameswaran1"></div>
 					</div>
 				</div>
 				<div class="myInfos">
@@ -49,10 +36,6 @@
 				<div class="myInfos" style="border:none">
 					<div class="myInfo_head">Final Temple</div>
 					<div id="reachedDestination">
-						<div class="coin " id="Sooraj Parameswaran1"></div>
-						<div class="coin " id="Sooraj Parameswaran1"></div>
-						<div class="coin " id="Sooraj Parameswaran1"></div>
-						<div class="coin " id="Sooraj Parameswaran1"></div>
 					</div>
 				</div>
 			</div>
@@ -61,8 +44,13 @@
 				<div id="notifications"></div>
 			</div>
 			<div class="dice_area">
-				<div id="dice_values"></div>
-				<div id="dice"></div>
+				<div id="dice_values">
+					<div id="last_dice_value"></div>
+					<div id="diceValues"></div>
+				</div>
+				<div class="dice">
+					<div id="dice">Dice</div>
+				</div>
 			</div>
 		</div>
 

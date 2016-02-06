@@ -21,7 +21,7 @@ var updateJoinedPlayers = function(){
 			}
 			else{
 				clearInterval(timer);
-				$(location).attr('href','/main.html');
+				$(location).attr('href','/kavidiKali.html');
 			}	
 		});
 	},500);

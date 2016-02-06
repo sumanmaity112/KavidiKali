@@ -6,7 +6,7 @@ var rollDice = function(gameMaster, obj){
 	var player = gameMaster.players[obj.player];
 	var diceValue = player.chances>0 && player.rollDice(gameMaster.dice);
 	gameMaster.setChances(diceValue,player.id) || gameMaster.nextPlayer();
-	return 'diceValue'+diceValue;
+	return diceValue.toString();
 };
 
 var moveCoin = function(gameMaster, obj){
@@ -23,7 +23,7 @@ exports.actions = {
 //========================================================================================================
 
 var getAllDiceValues = function(gameMaster, obj){
-	return 'diceValues='+gameMaster.players[obj.player].diceValues;
+	return JSON.stringify(gameMaster.players[obj.player].diceValues);
 };
 
 var refreshBoard = function(gameMaster){
@@ -72,16 +72,25 @@ var myNameAndColor = function(gameMaster, obj){
 
 var completedGame = function(game){
 	return {players:Object.keys(game.players),winner:game.winner,finished:true}
-}
+};
+
+var players = function(gameMaster){ 
+	var result = Object.keys(gameMaster.players).map(function(player){
+		return {name:player,
+				colour:gameMaster.players[player].coinColor}
+	})
+	return JSON.stringify(result);
+};
 
 exports.enquiries = {
 	'isValidPlayer'		: function(gameMaster,obj){ return lodash.has(gameMaster.players,obj.player)},
 	'currentPlayer'		: function(gameMaster){ return gameMaster.currentPlayer;},
-	'players' 			: function(gameMaster){ return Object.keys(gameMaster.players);},
+	'players' 			: players,
 	'movesWhere' 		: movesTo,
 	'isGameOver'		: checkStatus,
 	'whatIsMyDetails'	: function(gameMaster, obj){ return JSON.stringify({'name':obj.player,'gameId':gameMaster.id})},
 	'myNameAndColor'	: myNameAndColor,
 	'whoIsTheWinner'	: function(gameMaster,obj){ return gameMaster.winner},
-	'playerTurn'		: function(gameMaster,obj){	return (4-Object.keys(gameMaster.players).indexOf(obj.player)).toString();}
+	'playerTurn'		: function(gameMaster,obj){	return (4-Object.keys(gameMaster.players).indexOf(obj.player)).toString();},
+	'myInfo'			: function(gameMaster,obj){ return JSON.stringify(gameMaster.players[obj.player]);}
 };
