@@ -13,13 +13,13 @@
 
 ul:only-of-type {
   font-size: 18px;
-  color: rgba(0, 0, 0, 0.67);
+  color: rgba(0, 0, 0, 0.90);
   font-weight: inherit;
 }
 
 .text .title {
   font-size: 20px;
-  color: rgba(0, 0, 0, 0.80);
+  color: rgba(0, 0, 0, 0.95);
   font-weight: inherit;
 }
 
@@ -32,7 +32,7 @@ ul:only-of-type {
 ul>p {
   font-size: 20px;
   font-weight: 200;
-  color: rgba(0, 0, 0, 0.75);
+  color: rgba(0, 0, 0, 0.90);
 }
 
 .senior {
