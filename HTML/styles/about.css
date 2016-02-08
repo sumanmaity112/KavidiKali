@@ -10,50 +10,66 @@
   line-height: 1.28;
   letter-spacing: -0.020em;
 }
+
 ul:only-of-type {
   font-size: 18px;
   color: rgba(0, 0, 0, 0.67);
   font-weight: inherit;
 }
+
 .text .title {
   font-size: 20px;
   color: rgba(0, 0, 0, 0.80);
   font-weight: inherit;
 }
+
 .b {
   font-size: 17px;
   list-style-type: square;
   font-weight: inherit;
 }
+
 ul>p {
   font-size: 20px;
   font-weight: 200;
   color: rgba(0, 0, 0, 0.75);
 }
+
 .senior {
   height: 24%;
   width: 24%;
 }
+
 .seniorBoard {
   height: 30%;
   width: 24%;
 }
+
 ::-webkit-scrollbar {
   display: none;
 }
+
 html, body {
   height: 100%;
   width: 100%;
 }
+
 .SB {
   padding-left: calc(10% - 1em);
 }
+
 .cowry {
   padding-left: calc(17% - 1em);
 }
+
 .dice {
   padding-left: calc(22% - 1em);
 }
+
 .JB {
   padding-left: calc(22% - 1em);
+}
+
+.sources{
+  padding-left: calc(5% - 1em);
 }
