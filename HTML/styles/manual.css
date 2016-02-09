@@ -14,13 +14,13 @@
 }
 ul:only-of-type {
   font-size: 18px;
-  color: rgba(0, 0, 0, 0.67);
-  font-weight: 220;
+  color: rgba(0, 0, 0, 0.90);
+  font-weight: 200;
 }
 .headings {
   font-size: 19px;
-  color: rgba(0, 0, 0, 0.75);
-  font-weight: 450;
+  color: rgba(0, 0, 0, 0.95);
+  font-weight: 500;
 }
 .b {
   list-style-type: square;
