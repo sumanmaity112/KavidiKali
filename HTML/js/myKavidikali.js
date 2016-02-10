@@ -25,7 +25,7 @@ var createGrid = function(rotateCount){
 	for(var rowCount=5;rowCount>=-1;rowCount--){
 		var row = '<tr>';
 		for(var columnCount=-1;columnCount<6;columnCount++)
-			row+='<td id="'+getPoint(columnCount, rowCount, rotateCount)+'" class="tile" ></td>';
+			row+='<td id="'+getPoint(rowCount, columnCount, rotateCount)+'" class="tile" ></td>';
 		row += '</tr>';
 		table += row;
 	};
@@ -218,28 +218,27 @@ var updateDiceValues = function(){
 
 
 window.onload = function(){
-	var playerTurn = 0;
-	var rotations = [270,180,90,0]
-	var serverValue = 4-playerTurn;
-	var rotateCount = (serverValue-1)<0 ? 3 :serverValue-1;
+	$.get('enquiry?question=playerTurn',function(data, status){
+		console.log(data);
+		$('.board').html(createGrid(+data));
+		var safeTiles = ['4,2','2,4','2,2','0,2','2,0'];
+		var outerLoop = ['-1,5','0,5','1,5','2,5','3,5','4,5','5,5','-1,4','-1,3','-1,2','-1,1','-1,0','-1,-1',
+						'0,-1','1,-1','2,-1','3,-1','4,-1','5,-1','5,0','5,1','5,2','5,3','5,4','5,5'];
+		var yards = ['2,-1','5,2','2,5','-1,2'];
+		safeTiles.forEach(function(safeTile){
+			document.getElementById(safeTile).className += ' safeTile';
+		});
+		outerLoop.forEach(function(tile){
+			document.getElementById(tile).className += ' outerTile';
+		});
+		var colorSequence=["red","green","blue","yellow"];
 
-	$('.board').html(createGrid(1));
-	var safeTiles = ['4,2','2,4','2,2','0,2','2,0'];
-	var outerLoop = ['-1,5','0,5','1,5','2,5','3,5','4,5','5,5','-1,4','-1,3','-1,2','-1,1','-1,0','-1,-1',
-					'0,-1','1,-1','2,-1','3,-1','4,-1','5,-1','5,0','5,1','5,2','5,3','5,4','5,5'];
-	var yards = ['2,-1','5,2','2,5','-1,2'];
-	safeTiles.forEach(function(safeTile){
-		document.getElementById(safeTile).className += ' safeTile';
+		yards.forEach(function(place, index){
+			document.getElementById(place).className = 'parking';
+			document.getElementById(place).id = colorSequence[index]+'_yard';
+		});
 	});
-	outerLoop.forEach(function(tile){
-		document.getElementById(tile).className += ' outerTile';
-	});
-	var colorSequence=["red","green","blue","yellow"];
 
-	yards.forEach(function(place, index){
-		document.getElementById(place).className = 'parking';
-		document.getElementById(place).id = colorSequence[index]+'_yard';
-	});
 	setInfo();
 	$('#dice').click(rollDice);
 	refreshWindow = setInterval(function(){

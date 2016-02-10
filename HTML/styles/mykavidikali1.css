@@ -95,8 +95,6 @@
 .colour {
 	width: 20px;
 	height: 12px;
-	/*margin-left: 10%;*/
-	background-color: blue;
 	border-radius: 4px;
 	float: right;
 }
