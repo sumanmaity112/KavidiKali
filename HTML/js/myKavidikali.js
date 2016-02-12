@@ -41,7 +41,6 @@ var coinsThatHaveMoved=function(oldStatus,newStatus) {
 	if(!oldStatus)
 		return Object.keys(newStatus);
 	return Object.keys(oldStatus).filter(function(coinId){
-		console.log(oldStatus[coinId].currentPosition,newStatus[coinId].currentPosition)
 		return oldStatus[coinId].currentPosition!=newStatus[coinId].currentPosition;
 	});
 };
@@ -68,9 +67,9 @@ var placeCoin = function(coin){
 
 var coinClick = function(){
 	selectedCoin = this.id;
-	$.getJSON('enquiry?question=movesWhere&coin='+selectedCoin,function(activeTiles,status){
+	$.getJSON('enquiry?question=movesWhere&coin='+selectedCoin,function(data,status){
+		activeTiles = data;
 		for(var pos in activeTiles){
-			console.log(activeTiles[pos])
 			document.getElementById(activeTiles[pos]).onclick = tileClick;
 		};
 	});
@@ -189,7 +188,6 @@ var toNameCase = function(name){
 
 var currentPlayer = function(){
 	$.get('enquiry?question=currentPlayer',function(player,status){
-		console.log(player);
 		$('.current_player').removeClass('current_player');
 		$('#list_'+player).addClass('current_player');
 	});
@@ -197,7 +195,6 @@ var currentPlayer = function(){
 
 var rollDice = function(){
 	$.get('instruction?action=rollDice',function(data){
-		console.log(data);
 		document.querySelector('#last_dice_value').innerHTML = data;
 	});
 };
@@ -219,7 +216,6 @@ var updateDiceValues = function(){
 
 window.onload = function(){
 	$.get('enquiry?question=playerTurn',function(data, status){
-		console.log(data);
 		$('.board').html(createGrid(+data));
 		var safeTiles = ['4,2','2,4','2,2','0,2','2,0'];
 		var outerLoop = ['-1,5','0,5','1,5','2,5','3,5','4,5','5,5','-1,4','-1,3','-1,2','-1,1','-1,0','-1,-1',
@@ -246,6 +242,6 @@ window.onload = function(){
 			refreshBoard();
 			notification();
 			updateDiceValues();
-			myInfo();
+			// myInfo();
 		},500);
 }
