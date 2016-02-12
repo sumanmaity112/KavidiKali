@@ -17,14 +17,12 @@ body {
   margin-bottom: -8px;
 }
 .footer {
-  position: fixed;
+  position: static;
   bottom: 0px;
   height: 50px;
   width: 100%;
-  /*background-color: #ffffff;*/
 }
 #footer {
-  /*padding-top: 10px;*/
   padding-top: 15px;
   width: 70%;
   height: 50px;

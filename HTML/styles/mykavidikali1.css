@@ -4,10 +4,10 @@
 	background-color: #E6E6E6;
 	border-radius: 4px;
 	border: 2px solid #B3B3B3;
+	text-align: center;
 }
 
 .board {
-	/*width: 1000px;*/
 	height: 680px;
 	border-right: 2px solid #CCCCCC;
 	display: inline-block;
@@ -34,6 +34,7 @@
 .parking {
 	background-color: #E6E6E6;
 	border-radius: 4px;
+	text-align: center;
 }
 
 .coin,.coinRep {
@@ -51,26 +52,22 @@
 	height: 650px;
 	float: right;
 	display: inline-block;
-	/*border:1px solid lightgray;*/
 }
 
 .players {
-	/*margin-top: 100px;*/
-	/*height: 30px;*/
 	margin-bottom: 20px;
-	list-style-type: none;	
+	list-style-type: none;
 	height: 75px;
+	margin-bottom: 20%;
 }
 
 .myInfo {
 	height: 90px;
-	/*background-color:#E6E6E6; */
 	border-radius: 5px;
 	color: #4C4C4C;
 }
 
 .player_container {
-	/*width: 110px;*/
 	margin: 0 auto;
 	height: 30px;
 }
@@ -129,6 +126,7 @@
 	text-align: center;
 	font-weight: 800;
 	border-bottom: 1px solid lightgray;
+	margin-top: 5%;
 }
 
 .dice_area {
@@ -165,7 +163,7 @@
 }
 
 #yellow_box {
-	background-color: yellow;	
+	background-color: yellow;
 }
 
 #dice {
@@ -193,7 +191,6 @@
 #last_dice_value {
 	height:inherit;
 	width: 20%;
-	/*background-color: yellow;*/
 	border-right: 1.5px solid lightgray;
 }
 
