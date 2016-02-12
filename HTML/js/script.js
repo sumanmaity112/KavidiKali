@@ -40,7 +40,7 @@ var notification = function(){
 		if(data){
 			if(data!=prev_note){
 				prev_note = data;
-				$(data).prependTo("#notification");	
+				$(data).prependTo("#notification");
 			}
 		}
 	});
@@ -102,21 +102,21 @@ var removeCoinsFromOldPositions = function(coinsToBeErased){
 	coinsToBeErased.forEach(function(coinId) {
 		$("#"+coinId).remove();
 	});
-} 
+}
 
 var refreshBoard = function(){
-	$.get('update?toUpdate=board',function(data,status){
-		var stateOfGame = JSON.parse(data);
-		var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
-		removeCoinsFromOldPositions(coinsToBeUpdated);
+		$.get('update?toUpdate=board',function(data,status){
+			var stateOfGame = JSON.parse(data);
+			var coinsToBeUpdated = coinsThatHaveMoved(currentStateOfGame,stateOfGame);
+			removeCoinsFromOldPositions(coinsToBeUpdated);
 
-		placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
-		currentStateOfGame=stateOfGame;
-		var coins = $('.coins');
-		for(var i=0; i<coins.length;i++){
-			coins[i].onclick = coinClick;
-		}; 
-	});
+			placeCoinsInCurrentPosition(stateOfGame,coinsToBeUpdated);
+			currentStateOfGame=stateOfGame;
+			var coins = $('.coins');
+			for(var i=0; i<coins.length;i++){
+				coins[i].onclick = coinClick;
+			};
+		});
 };
 
 var coinClick = function(){
@@ -176,9 +176,9 @@ window.onload = function(){
 			currentPlayer();
 			restore();
 			updateDiceValues();
-			notification();	
+			notification();
 		},500);
 	});
-	myName(); 
+	myName();
 	document.querySelector('#dice').onclick = rollDice;
 };

@@ -98,7 +98,7 @@ var refreshBoard = function(){
 		var coins = $('.coin');
 		for(var i=0; i<coins.length;i++){
 			coins[i].onclick = coinClick;
-		}; 
+		};
 	});
 };
 
@@ -139,7 +139,7 @@ var notification = function(){
 		if(data){
 			if(data!=prev_note){
 				prev_note = data;
-				$(data).prependTo("#notifications");	
+				$(data).prependTo("#notifications");
 			}
 		}
 	});
@@ -169,13 +169,10 @@ var setInfo = function(){
 		var self = data.name;
 		$.getJSON('enquiry?question=players',function(list){
 			list.forEach(function(player){
-				if(player.name != self){
 					$('.players').append(getPlayerDiv(player.name, player.colour));
-				};
 			});
 		});
 		$('#myName').html(self.toUpperCase());
-		
 	})
 };
 
@@ -207,7 +204,7 @@ var updateDiceValues = function(){
 	$.getJSON('update?toUpdate=diceValues',function(data,status){
 		var diceValues = '';
 		data.forEach(function(diceValue){
-			diceValues += makeDiceValue(diceValue);
+			diceValues += "	"+makeDiceValue(diceValue);
 		})
 		document.querySelector('#diceValues').innerHTML = diceValues;
 	});
