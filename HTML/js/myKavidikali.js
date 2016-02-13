@@ -117,7 +117,6 @@ var appendCoins = function(element, count){
 
 var myInfo = function(){
 	$.getJSON('enquiry?question=myInfo',function(data){
-		console.log(data.matured);
 		var id = data.id;
 		myCoinColor = data.coins[id+"1"].colour;
 		var coinsOnBoard = 0;

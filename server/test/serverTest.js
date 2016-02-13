@@ -370,6 +370,44 @@ describe("get handlers",function(){
 				.expect(405,done)
 		});
 	});
+	describe("myInfo",function(){
+		it("gives stringified object of winner",function(done){
+			game={
+					players:{rocky:{colour:"red",id:"rocky",coins:{}},
+							 rony:{colour:"yellow",id:"rony",coins:{}}
+							},
+					winner:'rocky',
+					id:123546789,
+					resetGame:function(){}
+				};
+				games={};
+				games['123546789']=game;
+			var controller = requestHandler(games)
+			request(controller)
+			.get('/enquiry?question=myInfo')
+			.set('cookie',['userId=rocky;gameId=123546789'])
+			.expect('{"colour":"red","id":"rocky","coins":{}}')
+			.expect(200,done);
+		});
+		it("gives stringified object of the winner",function(done){
+			game={
+					players:{rocky:{colour:"red",id:"rocky",coins:{}},
+							 rony:{colour:"yellow",id:"rony",coins:{}}
+							},
+					winner:'rony',
+					id:123546789,
+					resetGame:function(){}
+				};
+				games={};
+				games['123546789']=game;
+			var controller = requestHandler(games)
+			request(controller)
+			.get('/enquiry?question=myInfo')
+			.set('cookie',['userId=rony;gameId=123546789'])
+			.expect('{"colour":"yellow","id":"rony","coins":{}}')
+			.expect(200,done);
+		});
+	});
 	describe("availableGame",function(){
 		it("gives the all available game where a player can join",function(done){
 			var game1={players:{},id:123546789};
