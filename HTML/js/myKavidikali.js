@@ -2,6 +2,7 @@ var selectedCoin;
 var currentStateOfGame;
 var activeTiles, refreshWindow, updateValues;
 var prev_note = '';
+var myCoinColor;
 
 var rotatePoint = function(x, y, length){
 	var newX = length-y;
@@ -102,8 +103,23 @@ var refreshBoard = function(){
 	});
 };
 
+var appendCoins = function(element, count){
+	var html = ''
+	for (var i = 0; i < 4; i++) {
+		if(i<count){
+			html += '<div class="coins_'+myCoinColor+' filledCoin"></div>';
+		}
+		else
+		html += '<div class="coinRep"></div>';
+	};
+	element.html(html);
+}
+
 var myInfo = function(){
 	$.getJSON('enquiry?question=myInfo',function(data){
+		console.log(data.matured);
+		var id = data.id;
+		myCoinColor = data.coins[id+"1"].colour;
 		var coinsOnBoard = 0;
 		var coinsReachedDestination = 0;
 		var coins = data.coins;
@@ -122,17 +138,6 @@ var myInfo = function(){
 	});
 };
 
-var appendCoins = function(element, count){
-	var html = ''
-	for (var i = 0; i < 4; i++) {
-		if(i<count){
-			html += '<div class="coinRep filledCoin"></div>';
-		}
-		else
-			html += '<div class="coinRep"></div>';
-	};
-	element.html(html);
-}
 
 var notification = function(){
 	$.get('update?toUpdate=notification',function(data, status){
@@ -239,6 +244,6 @@ window.onload = function(){
 			refreshBoard();
 			notification();
 			updateDiceValues();
-			// myInfo();
+			myInfo();
 		},500);
 }
