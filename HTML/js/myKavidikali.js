@@ -205,11 +205,21 @@ var updateDiceValues = function(){
 		var diceValues = '';
 		data.forEach(function(diceValue){
 			diceValues += "	"+makeDiceValue(diceValue);
-		})
+		});
 		document.querySelector('#diceValues').innerHTML = diceValues;
 	});
 };
-
+var restore = function(){
+	$.get('enquiry?question=isGameOver',function(data){
+		if(data=='true'){
+			$.get('enquiry?question=whoIsTheWinner',function(data){
+				$('Sorry gameover '+data+' won the game').prependTo("#notifications");
+				clearInterval(refreshWindow);
+				clearInterval(updateValues);
+			});
+		};
+	});
+};
 
 window.onload = function(){
 	$.get('enquiry?question=playerTurn',function(data, status){
@@ -238,6 +248,7 @@ window.onload = function(){
 			currentPlayer();
 			refreshBoard();
 			notification();
+			restore();
 			updateDiceValues();
 			// myInfo();
 		},500);

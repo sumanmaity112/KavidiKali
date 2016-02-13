@@ -123,10 +123,7 @@ Game.prototype = {
 		this.winner=this.currentPlayer;
  	},
  	reset : function(){
- 		console.log('GAME SUCESSFULLY RESET');
  		this.readyToRemove=true;
- 		this.players={};
-		this.counter=0;
 		this.winner=undefined;
  	},
  	createNote:function(){
