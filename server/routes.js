@@ -18,7 +18,6 @@ var loadGame = function(req, res, next){
 
 var method_not_allowed = function(req, res){
 	res.statusCode = 405;
-	console.log(res.statusCode);
 	res.end('Method is not allowed');
 };
 
@@ -28,7 +27,6 @@ var login = function(req, res, next){
 
 var createPlayer = function(userId,req,res){
 	if(application.register(userId,req.game)){
-		console.log('userId ',userId);
 		res.cookie('userId', userId);
 		res.cookie('gameId',req.game.id);
 		res.redirect('/waitingPage.html');

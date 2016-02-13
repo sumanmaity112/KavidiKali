@@ -59,7 +59,7 @@ var movesTo = function(gameMaster, obj){
 
 var checkStatus = function(gameMaster){
 	var status = (!!gameMaster.winner);
-	gameMaster = status && !gameMaster.finished ? completedGame(gameMaster) : gameMaster; 
+	gameMaster = status && !gameMaster.finished ? completedGame(gameMaster) : gameMaster;
 	return status.toString();
 };
 
@@ -72,7 +72,7 @@ var completedGame = function(game){
 	return {players:Object.keys(game.players),winner:game.winner,finished:true}
 };
 
-var players = function(gameMaster){ 
+var players = function(gameMaster){
 	var result = Object.keys(gameMaster.players).map(function(player){
 		return {name:player,
 				colour:gameMaster.players[player].coinColor}
@@ -90,5 +90,5 @@ exports.enquiries = {
 	'myNameAndColor'	: myNameAndColor,
 	'whoIsTheWinner'	: function(gameMaster,obj){ return gameMaster.winner},
 	'playerTurn'		: function(gameMaster,obj){	return (4-Object.keys(gameMaster.players).indexOf(obj.player)).toString();},
-	'myInfo'			: function(gameMaster,obj){ return JSON.stringify(gameMaster.players[obj.player]);}
+	'myInfo'			: function(gameMaster,obj){return JSON.stringify(gameMaster.players[obj.player]);}
 };
