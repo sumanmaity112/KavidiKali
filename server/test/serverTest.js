@@ -25,17 +25,30 @@ describe("get handlers",function(){
 		});
 	});	
 	describe("/waitingPage.html",function(){
-		it("serves waitingPage.html file when requested",function(done){
-			game={players:{},id:'123456789'};
+		it("serves waitingPage.html file when get request from registered player",function(done){
+			game={players:{rocky:{}},id:'123456789'};
 			games={};
 			games['123546789']=game;
 			controller = requestHandler(games);
 
 			request(controller)
 				.get('/waitingPage.html')
+				.set('cookie',['userId=rocky;gameId=123546789'])
 				.expect(200)
 				.expect(/<div class="waiting_dots" id="dot_0">/)
 				.expect('content-Type',/text\/html/,done);
+		});
+		it("redirects to index.html when get request from unregistered player",function(done){
+			game={players:{rocky:{}},id:'123456789'};
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+
+			request(controller)
+				.get('/waitingPage.html')
+				.set('cookie',['userId=rock;gameId=123546789'])
+				.expect(302)
+				.expect('Location','/index.html',done);
 		});
 	});
 	describe("Empty URL",function(){
