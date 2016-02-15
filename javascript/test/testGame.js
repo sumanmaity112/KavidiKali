@@ -269,6 +269,20 @@ describe('Game',function(){
 			coin.currentPosition = '2,0';
 			var diceValues = [1,2,3];
 			assert.deepEqual(game.getAllValidMovesOfCoin(coin,diceValues,player.path),[ '3,0', '4,0', '4,1' ]);
+		});
+		it('does nothing if the coins moving position has another same players coin',function(){
+			game.createPlayer('orange');
+			var player = game.players['orange'];
+			var coin1 = player.coins['orange1'];
+			var coin2 = player.coins['orange2'];
+			player.diceValues = [6];
+			player.moveCoin(coin1.id,'2,0')
+			player.diceValues = [6];
+			player.moveCoin(coin2.id,'2,0')
+			player.diceValues = [3];
+			player.moveCoin(coin1.id,'4,1')
+			player.diceValues = [3];
+			assert.deepEqual(game.getAllValidMovesOfCoin(coin2,player.diceValues,player.path),[]);
 		})
 	});
 	describe('anyMoreMoves',function(){
