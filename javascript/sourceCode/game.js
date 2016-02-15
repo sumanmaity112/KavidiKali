@@ -83,7 +83,6 @@ Game.prototype = {
 		var specialValue = this.specialValues;
 		if(coin){
 			if(coin.currentPosition==-1){
-				getTheValidMove(coin,diceValues[0],path)
 				return ld.intersection(diceValues,specialValue).length && [path[0].id] || undefined;
 			}
 			else{
