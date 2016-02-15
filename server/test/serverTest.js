@@ -60,9 +60,9 @@ describe("get handlers",function(){
 				.expect("Method is not allowed",done);
 		});
 	});
-	describe("main.html",function(){
+	describe("kavidiKali.html",function(){
 		it("redirects to index page when joined player is less than 4 and the player is unregistered",function(done){
-			request(controller).get('/main.html')
+			request(controller).get('/kavidiKali.html')
 				.expect(302)
 				.expect('Location','/index.html',done);
 		});
@@ -77,12 +77,12 @@ describe("get handlers",function(){
 			games['123546789']=game;
 			controller = requestHandler(games);
 
-			request(controller).get('/main.html')
+			request(controller).get('/kavidiKali.html')
 				.set('cookie',['userId=rincy;gameId=123546789'])
 				.expect(302)
 				.expect('Location','/index.html',done);
 		});
-		it("serves main.html if all the players are joined and the requester is a valid player",function(done){
+		it("serves kavidiKali.html if all the players are joined and the requester is a valid player",function(done){
 			var game = {
 				players:{rocky:{},
 						 rony:{},
@@ -95,10 +95,10 @@ describe("get handlers",function(){
 			games['123546789']=game;
 			controller = requestHandler(games);
 
-			request(controller).get('/main.html')
+			request(controller).get('/kavidiKali.html')
 				.set('cookie',['userId=rincy;gameId=123546789'])
 				.expect(200)
-				.expect(/KavidiKali Game/,done);
+				.expect(/<title>Kavidikali<\/title>/,done);
 		});
 		describe("enquiry ",function(){
 			describe("currentPlayer",function(){

@@ -225,7 +225,7 @@ var restore = function(){
 	});
 };
 
-window.onload = function(){
+$( document ).ready(function(){
 	$.get('enquiry?question=playerTurn',function(data, status){
 		$('.board').html(createGrid(+data));
 		var safeTiles = ['4,2','2,4','2,2','0,2','2,0'];
@@ -256,4 +256,4 @@ window.onload = function(){
 			updateDiceValues();
 			myInfo();
 		},500);
-}
+});

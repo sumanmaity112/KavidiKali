@@ -101,7 +101,7 @@ app.post('/isValidDetails',detailsValidation);
 
 app.use(loadGame);
 
-app.get('^/main.html$', isPlayerRegistered);
+app.get('^/kavidiKali.html$', isPlayerRegistered);
 
 
 app.use(express.static('./HTML'));
