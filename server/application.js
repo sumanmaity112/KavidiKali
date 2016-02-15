@@ -31,7 +31,7 @@ exports.register = function(name,gameMaster){
 		return false;
 	gameMaster.createPlayer(name);
 	var obj = {question:'players'};
-	exports.enquiry(obj,gameMaster).length == 1 && gameMaster.players[name].chances++;
+	JSON.parse(exports.enquiry(obj,gameMaster)).length == 1 && gameMaster.players[name].chances++;
 	return true;
 };
 

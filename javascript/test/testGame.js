@@ -324,13 +324,16 @@ describe('Game',function(){
 			game.createPlayer('peter');
 			assert.ok(Object.keys(game.players).length == 4);
 			game.reset();
-			assert.ok(Object.keys(game.players).length == 0);
+			assert.ok(game.readyToRemove);
+			assert.ok(!game.winner)
 		});
 	});
 	describe("getNotification",function(){
 		it("return notification text ",function(){
 			game.notification_text="jp got 2";
 			assert.equal(game.getNotification(),'jp got 2');
+			game.notification_text="Sorry gameover";
+			assert.equal(game.getNotification(),'Sorry gameover');
 		});
 	});
 	describe("resetGame",function(){
