@@ -145,12 +145,12 @@ var getTheValidMove = function(coin,movesBy,path){
 	if(nextIndex >= path.length && path.length==16)
 		nextIndex = nextIndex%path.length;
 	var nextPos = path[nextIndex];
-	if(nextPos){
+	// if(nextPos){
 		if(nextPos.contains(coin))
 			return false;	
 		return path[nextIndex].id;
-	}
-	return false;
+	// }
+	// return false;
 };	
 
 var createCoins =  function(id,numberOfCoins,colour){
