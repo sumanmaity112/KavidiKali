@@ -213,7 +213,28 @@ describe("get handlers",function(){
 					.expect(200,done);
 			});
 		});
-		
+		describe("movesWhere",function(){
+			it("gives the valid moves position",function(done){
+				game={
+					players:{rocky:{
+						coins:{
+							rocky1:{currentPosition:'0,0'}
+						},
+						path:[]
+					}},
+					getAllValidMovesOfCoin : function(){},
+					id:123546789
+				};
+				games={};
+				games['123546789']=game;
+				controller = requestHandler(games);
+				request(controller)
+					.get('/enquiry?question=movesWhere&coin=rocky1')
+					.set('cookie',['userId=rocky;gameId=123546789'])
+					.expect(200,done);
+
+			});
+		});		
 	});
 	describe("whoIsTheWinner",function(){
 		it("gives back the name of winner in the game",function(done){
