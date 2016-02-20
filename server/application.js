@@ -15,19 +15,13 @@ exports.handleUpdates = function(obj,gameMaster){
 	return updater(gameMaster,obj);
 };
 
-exports.checkDetails = function(games,details){
-	var name = games[details.gameId] ? !lodash.has(games[details.gameId].players,details.name) : true;
-	var result={gameId:lodash.has(games,details.gameId),name:name};
-	return JSON.stringify(result);
-}
-
 exports.enquiry = function(obj,gameMaster){
 	var enquiry = enquiries[obj.question];
 	return enquiry && enquiry(gameMaster,obj);
 };
 
 exports.register = function(name,gameMaster){
-	if(lodash.has(gameMaster.players,name))
+	if(lodash.has(gameMaster.players,name) || gameMaster.isFull())
 		return false;
 	gameMaster.createPlayer(name);
 	var obj = {question:'players'};
