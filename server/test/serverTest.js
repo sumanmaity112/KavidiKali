@@ -102,7 +102,10 @@ describe("get handlers",function(){
 						 rincy:{},
 						 rinto:{}
 						},
-				id:123546789
+				id:123546789,
+				isFull : function(){
+					return true;
+				}
 			};
 			games={};
 			games['123546789']=game;
@@ -119,7 +122,10 @@ describe("get handlers",function(){
 						 rony:{},
 						 rincy:{}
 						},
-				id:123546789
+				id:123546789,
+				isFull : function(){
+					return false;
+				}
 			};
 			games={};
 			games['123546789']=game;
@@ -299,6 +305,9 @@ describe("get handlers",function(){
 		it("updates the list of players when it gets request from valid player",function(done){
 			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{}};
+			game.isFull = function(){
+				return false;
+			};
 			games={};
 			games['123546789']=game;
 			controller = requestHandler(games);
@@ -312,6 +321,9 @@ describe("get handlers",function(){
 		it("gives out falsey value but statusCode 200 if all the players have joined the game",function(done){
 			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{},jisna:{}};
+			game.isFull = function(){
+				return true;
+			};
 			games={};
 			games['123546789']=game;
 			controller = requestHandler(games);
