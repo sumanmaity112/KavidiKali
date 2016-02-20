@@ -13,9 +13,11 @@ var hideUserInfo = function(){
 
 var createGame = function(){
 	var playerName = $('#name').val();
+	var numberOfPlayers = $(this).val()[0];
 	var obj = {};
 	obj.name = playerName;
 	obj.option = 'newGame';
+	obj.numberOfPlayers = numberOfPlayers;
 	var form = createForm(obj, 'POST', 'login');
 	clearInterval(update);
 	form.submit();

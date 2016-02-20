@@ -30,10 +30,8 @@ var refreshBoard = function(gameMaster){
 };
 
 var updateWaitingPage = function(gameMaster,obj){
-	if(Object.keys(gameMaster.players).length==4)
-		return false;
-	else
-		return JSON.stringify(Object.keys(gameMaster.players));
+	console.log(gameMaster.isFull(),"=========================");
+	return !gameMaster.isFull() && JSON.stringify(Object.keys(gameMaster.players));
 };
 
 var updateNotification = function(gameMaster){

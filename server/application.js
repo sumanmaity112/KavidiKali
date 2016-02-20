@@ -42,6 +42,6 @@ exports.availableGame = function(games){
 };
 
 exports.isGameReady = function(game){
-	maxNoOfPlayers = game.noOfPlayers || 4;
-	return Object.keys(game.players).length==maxNoOfPlayers;
+	console.log("======================",game.isFull())
+	return game.isFull();
 }
