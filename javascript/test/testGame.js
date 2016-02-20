@@ -283,7 +283,15 @@ describe('Game',function(){
 			player.moveCoin(coin1.id,'4,1')
 			player.diceValues = [3];
 			assert.deepEqual(game.getAllValidMovesOfCoin(coin2,player.diceValues,player.path),[]);
-		})
+		});
+		it("circular the when the player is not matured and future tile index greater than 16",function(){
+			game.createPlayer('orange');
+			var player = game.players['orange'];
+			var coin = player.coins['orange1'];
+			coin.currentPosition = '0,0';
+			var diceValues = [6,2];
+			assert.deepEqual(game.getAllValidMovesOfCoin(coin,diceValues,player.path),[ '4,2', '2,0']);
+		});
 	});
 	describe('anyMoreMoves',function(){
 		it('gives false if the player has no coins on board and hasn\'t got "6"',function(){

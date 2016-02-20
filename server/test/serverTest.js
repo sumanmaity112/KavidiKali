@@ -25,17 +25,30 @@ describe("get handlers",function(){
 		});
 	});	
 	describe("/waitingPage.html",function(){
-		it("serves waitingPage.html file when requested",function(done){
-			game={players:{},id:'123456789'};
+		it("serves waitingPage.html file when get request from registered player",function(done){
+			game={players:{rocky:{}},id:'123456789'};
 			games={};
 			games['123546789']=game;
 			controller = requestHandler(games);
 
 			request(controller)
 				.get('/waitingPage.html')
+				.set('cookie',['userId=rocky;gameId=123546789'])
 				.expect(200)
 				.expect(/<div class="waiting_dots" id="dot_0">/)
 				.expect('content-Type',/text\/html/,done);
+		});
+		it("redirects to index.html when get request from unregistered player",function(done){
+			game={players:{rocky:{}},id:'123456789'};
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+
+			request(controller)
+				.get('/waitingPage.html')
+				.set('cookie',['userId=rock;gameId=123546789'])
+				.expect(302)
+				.expect('Location','/index.html',done);
 		});
 	});
 	describe("Empty URL",function(){
@@ -100,89 +113,128 @@ describe("get handlers",function(){
 				.expect(200)
 				.expect(/<title>Kavidikali<\/title>/,done);
 		});
-		describe("enquiry ",function(){
-			describe("currentPlayer",function(){
-				beforeEach(function(){
-					game={players:{},id:123546789};
-					game.players={rocky:{},jacky:{},joy:{},rony:{}};
-					game.currentPlayer = 'rony'
-					games={};
-					games['123546789']=game;
-					controller = requestHandler(games);
-				});
+		it("redirects to waitingPage if a registered player request kavidiKali.html before all players joined",function(done){
+			var game = {
+				players:{rocky:{},
+						 rony:{},
+						 rincy:{}
+						},
+				id:123546789
+			};
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
 
-				it("gives the name of current player when it get request from registered player",function(done){
-					request(controller)
-						.get('/enquiry?question=currentPlayer')
-						.set('cookie',['userId=rony;gameId=123546789'])
-						.expect(200)
-						.expect('rony',done);
-				});
-				it("gives the status code 405 when it get request from unregistered player",function(done){
-					request(controller)
-						.get('/enquiry?question=currentPlayer')
-						.set('cookie',['userId=roy'])
-						.expect(405)
-						.expect('Method is not allowed',done);
-				});
+			request(controller).get('/kavidiKali.html')
+				.set('cookie',['userId=rincy;gameId=123546789'])
+				.expect(302)
+				.expect('Location','/waitingPage.html',done);	
+		});
+	});
+	describe("enquiry ",function(){
+		describe("currentPlayer",function(){
+			beforeEach(function(){
+				game={players:{},id:123546789};
+				game.players={rocky:{},jacky:{},joy:{},rony:{}};
+				game.currentPlayer = 'rony'
+				games={};
+				games['123546789']=game;
+				controller = requestHandler(games);
 			});
-			describe("isGameOver",function(){
-				it("informs player that game is over",function(done){
-					game={
-						players:{rocky:{isWin:true},
-								 rony:{}
-								},
-						winner:'rocky',
-						id:123546789
-					};
-					game.resetGame = function(){}
-					games={};
-					games['123546789']=game;
-					controller = requestHandler(games);
-					request(controller)
-						.get('/enquiry?question=isGameOver')
-						.set('cookie',['userId=rony;gameId=123546789'])
-						.expect('true')
-						.expect(200,done);
-				});
-			});
-			describe("myNameAndColor",function(){
-				it("gives the name and coin colour of the requester",function(done){
-					game={
-						players:{rocky:{coinColor:'red'},
-								 rony:{}
-								},
-						id:123546789
-					};
-					games={};
-					games['123546789']=game;
-					controller = requestHandler(games);
 
-					request(controller)
-						.get('/enquiry?question=myNameAndColor')
-						.set('cookie',['userId=rocky;gameId=123546789'])
-						.expect('rocky\nYour coin color : red')
-						.expect(200,done);
-				});
+			it("gives the name of current player when it get request from registered player",function(done){
+				request(controller)
+					.get('/enquiry?question=currentPlayer')
+					.set('cookie',['userId=rony;gameId=123546789'])
+					.expect(200)
+					.expect('rony',done);
 			});
-			describe("whatIsMyDetails",function(){
-				it("gives the name of the requester",function(done){
-					game={
-						players:{rocky:{}},
-						id:123546789
-					};
-					games={};
-					games['123546789']=game;
-					controller = requestHandler(games);
-
-					request(controller)
-						.get('/enquiry?question=whatIsMyDetails')
-						.set('cookie',['userId=rocky;gameId=123546789'])
-						.expect('{"name":"rocky","gameId":123546789}')
-						.expect(200,done);
-				});
+			it("gives the status code 405 when it get request from unregistered player",function(done){
+				request(controller)
+					.get('/enquiry?question=currentPlayer')
+					.set('cookie',['userId=roy'])
+					.expect(405)
+					.expect('Method is not allowed',done);
 			});
 		});
+		describe("isGameOver",function(){
+			it("informs player that game is over",function(done){
+				game={
+					players:{rocky:{isWin:true},
+							 rony:{}
+							},
+					winner:'rocky',
+					id:123546789
+				};
+				game.resetGame = function(){}
+				games={};
+				games['123546789']=game;
+				controller = requestHandler(games);
+				request(controller)
+					.get('/enquiry?question=isGameOver')
+					.set('cookie',['userId=rony;gameId=123546789'])
+					.expect('true')
+					.expect(200,done);
+			});
+		});
+		describe("myNameAndColor",function(){
+			it("gives the name and coin colour of the requester",function(done){
+				game={
+					players:{rocky:{coinColor:'red'},
+							 rony:{}
+							},
+					id:123546789
+				};
+				games={};
+				games['123546789']=game;
+				controller = requestHandler(games);
+
+				request(controller)
+					.get('/enquiry?question=myNameAndColor')
+					.set('cookie',['userId=rocky;gameId=123546789'])
+					.expect('rocky\nYour coin color : red')
+					.expect(200,done);
+			});
+		});
+		describe("whatIsMyDetails",function(){
+			it("gives the name of the requester",function(done){
+				game={
+					players:{rocky:{}},
+					id:123546789
+				};
+				games={};
+				games['123546789']=game;
+				controller = requestHandler(games);
+
+				request(controller)
+					.get('/enquiry?question=whatIsMyDetails')
+					.set('cookie',['userId=rocky;gameId=123546789'])
+					.expect('{"name":"rocky","gameId":123546789}')
+					.expect(200,done);
+			});
+		});
+		describe("movesWhere",function(){
+			it("gives the valid moves position",function(done){
+				game={
+					players:{rocky:{
+						coins:{
+							rocky1:{currentPosition:'0,0'}
+						},
+						path:[]
+					}},
+					getAllValidMovesOfCoin : function(){},
+					id:123546789
+				};
+				games={};
+				games['123546789']=game;
+				controller = requestHandler(games);
+				request(controller)
+					.get('/enquiry?question=movesWhere&coin=rocky1')
+					.set('cookie',['userId=rocky;gameId=123546789'])
+					.expect(200,done);
+
+			});
+		});		
 	});
 	describe("whoIsTheWinner",function(){
 		it("gives back the name of winner in the game",function(done){

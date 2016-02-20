@@ -1,178 +1,212 @@
-body {
-  padding: 40 30 40 30;
-  margin-left: 25px;
-  margin-right: 25px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-#body {
-  padding-top: 0px;
-  padding-bottom: 0px;
-  width: 1330px;
-  height: 730px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-}
-.rightPane {
-  float: left;
-  padding: 5px;
-  margin: 10px;
-  padding-top: 15px;
-  width: 300px;
-  height: 420px;
-  padding-left: 10px;
-  margin-top: 109px;
-  margin-left: 22%;
-  padding-right: 10px;
-}
-.leftPane {
-  float: left;
-  background-color: lightgrey;
-  padding-left: 50px;
-  padding-top: 20px;
-  padding-bottom: 0px;
-  width: 749.172;
-  height: 698.719;
-}
-#dice {
-  height: 40px;
-  width: 80px;
-  background: #62a;
-  color: white;
-  border-radius: 21px;
-  font-size: 18px;
-  margin-left: -59px;
-  margin-top: 826px;
-}
-#board {
-  width: 800px;
-  table-layout: fixed;
-  min-width: 800px;
-  max-width: 800px;
-  margin-top: 79px;
-  margin-left: 25%;
-}
-.Dice {
-  margin-left: 1024px;
-  margin-top: -200px;
-}
-.grid {
-  border: 2px;
-  width: 750px;
-  height: 700px;
-  table-layout: fixed;
-}
 .tile {
-  background-color: grey;
-  border: 3px solid black;
   height: 90px;
   width: 90px;
-  table-layout: fixed;
+  background-color: #E6E6E6;
+  border-radius: 4px;
+  border: 2px solid #B3B3B3;
   text-align: center;
 }
-.safePlace {
-  background-image: url('/svg/safeCross.svg');
+
+.board {
+  height: 680px;
+  border-right: 2px solid #CCCCCC;
+  display: inline-block;
+  padding-right: 20px;
+}
+
+.body {
+  width: 1100px;
+  height: 750px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.safeTile {
+  background-color: #CCCCCC;
+  border: 1px solid #B3B3B3;
+}
+
+.outerTile {
   background-color: white;
-  border: 3px solid black;
-  height: 100px;
-  width: 100px;
+  border: none;
+}
+
+.parking {
+  background-color: #E6E6E6;
+  border-radius: 4px;
   text-align: center;
 }
-.header {
-  background-color: lightgrey;
-  margin-top: -66px;
+
+.coin,.coinRep {
+  width: 15px;
+  height: 15px;
+  border-radius: 10px;
+  margin-left: 1.5px;
+  margin-right: 1.5px;
+  display: inline-block;
+  background-color: lightgray;
 }
-#information {
+
+.playInfo {
+  width: 350px;
+  height: 650px;
   float: right;
-  width: 300px;
-  padding-left: 0px;
-  height: 100%;
+  display: inline-block;
 }
-#layout {
-  height: 93%;
-  width: 99%;
-  margin-left: 15%;
-  border: 1px solid black;
+
+.players {
+  margin-bottom: 20px;
+  list-style-type: none;
+  height: 75px;
+  margin-bottom: 20%;
 }
-#layout #notification {
+
+.myInfo {
+  height: 90px;
+  border-radius: 5px;
+  color: #4C4C4C;
+}
+
+.player_container {
+  margin: 0 auto;
+  height: 30px;
+}
+
+.player_container > * {
   display: inline-block;
   overflow: scroll;
-  height: 100%;
-  width: 99%;
-  background-color: #fff;
-  font-size: 21px;
-  font-weight: bold;
+}
+
+.player {
   text-align: center;
-  border: 1px solid black;
+  color: #CCCCCC;
+  font-weight: 800;
+  margin: 0 auto;
 }
-#gameId {
-  width: 200px;
-  height: 30px;
-  font-size: 14px;
+
+.current_player {
+  color: #4C4C4C;
+  font-weight: 800;
 }
-#userid {
-  width: 200px;
-  height: 100px;
-  background-color: #fff;
-}
-.outerTile {
-  border: 0px;
-  text-align: center;
-}
-.parking {
-  border: 2px solid black;
-  text-align: center;
-}
-.coins_red {
-  margin-top: -32%;
-  margin-left: 13%;
-}
-.coins_green {
-  margin-top: -89%;
-  margin-left: 33%;
-}
-.coins_blue {
-  margin-top: -89%;
-  margin-left: -7%;
-}
-.coins_yellow {
-  margin-top: -107%;
-  margin-left: 13%;
-}
-#update {
-  border: 1px solid black;
-  height: 20px;
-  width: 50px;
-  margin-left: 55%;
-  margin-top: -2%;
-}
-#updateText {
-  margin-left: 43%
-}
-#manual {
-  border: 2px solid black;
-  border-radius: 5px;
-  font-family: serif;
-  font-size: 20px;
+
+.colour {
+  width: 20px;
+  height: 12px;
+  border-radius: 4px;
   float: right;
 }
-#userID_table {
-  width: 300px;
-  border-left-width: 1px;
+
+.myInfos {
+  width: 110px;
+  display: inline-block;
+  text-align: center;
+  border-right: 1.5px solid gray;
 }
-#diceValues {
-  margin-left: 973px;
+
+.myInfo_head {
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: 800;
+  border-bottom: 1px solid lightgray;
 }
-.updateDice {
-  margin-left: 900px;
-  width: 119px;
+
+#myName {
+  padding-bottom: 3px;
 }
-#playerTurn {
-  font-family: monospace;
-  font-size: 27px;
-  margin-top: -103%;
+
+.notifications {
+  margin-top: 10px;
+  color: #4C4C4C;
+  height: 150px;
+  padding-top: 10px;
+  overflow: scroll;
 }
-a.abt:hover {
-  color: blue;
-  font-size: 150px;
+
+.notifications_head {
+  text-align: center;
+  font-weight: 800;
+  border-bottom: 1px solid lightgray;
+  margin-top: 5%;
+}
+
+.dice_area {
+  border-top: 1.5px solid lightgray;
+  height: 280px;
+}
+
+.coins_red{
+    background-color: red;
+}
+
+.coins_green{
+  background-color: green;
+}
+
+.coins_blue{
+  background-color: blue;
+}
+
+.coins_yellow{
+  background-color: yellow;
+}
+
+#red_box {
+  background-color: red;
+}
+
+#green_box {
+  background-color: green;
+}
+
+#blue_box {
+  background-color: blue;
+}
+
+#yellow_box {
+  background-color: yellow;
+}
+
+#dice {
+  width: 50px;
+  height: 30px;
+  border-radius: 5px;
+  text-align: center;
+  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+}
+
+#dice_values {
+  border-bottom: 1.5px solid lightgray;
+  margin: 0 auto;
+  height: 50px;
+}
+
+#dice_values > * {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+#last_dice_value {
+  height:inherit;
+  width: 20%;
+  border-right: 1.5px solid lightgray;
+}
+
+.dice {
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+  position:relative;
+  margin-top: -23%;
+}
+
+.filledCoin{
+  width: 15px;
+  height: 15px;
+  border-radius: 10px;
+  margin-left: 1.5px;
+  margin-right: 1.5px;
+  display: inline-block;
 }

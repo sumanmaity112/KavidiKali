@@ -1,0 +1,78 @@
+.userInfo {
+  padding-top: 15%;
+  height: 200px;
+  border-radius: 5px;
+  margin: 0 auto;
+  width: 400px;
+}
+h3 {
+  text-align: center;
+  margin: 0 auto;
+  font-size: 33px;
+  font-weight: lighter;
+}
+#login {
+  width: 252px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+#name {
+  width: 252px;
+  height: 42px;
+  font-size: 14px;
+  font-weight: 100;
+  padding: 5px;
+}
+.button {
+  padding-bottom: 2px;
+  width: 252px;
+  height: 42px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  background-color: #e2e2e2;
+  font-weight: 100;
+}
+#kavidi_head1 {
+  height: 45px;
+  width: 260px;
+  margin-bottom: -3px;
+}
+#continue {
+  margin-top: 10px;
+}
+.hidden {
+  display:none; 
+}
+.selectGame {
+  height: 650px;
+  width: 1200px;
+  margin: 0 auto;
+  margin-top: 50px;
+  /*background-color: yellow;*/
+}
+
+.selectGame > * {
+  width: 47%;
+  height: inherit;
+  display: inline-block; 
+}
+.createGame {
+  border-right: 2px solid #ddd;
+}
+#createGame_button, #joinGame_button {
+  margin-left: 175px;
+  margin-top: 300px;
+}
+
+.games {
+  border-radius: 10px;
+  background-color: red;
+  height: 20px;
+  width: 20px;
+}
+
+.games:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}

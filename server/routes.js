@@ -46,6 +46,15 @@ var isPlayerRegistered = function(req, res, next){
 		next();
 };
 
+var isPlayerCanPlay = function(req,res,next){
+	if(application.isGameReady(req.game))
+		next();
+	else{
+		res.redirect('/waitingPage.html');
+		res.end();
+	}
+}
+
 var createFunctionalObj = function(req){
 	var obj = urlParser.qs.parse(req.url);
 	obj.player = req.cookies.userId;
@@ -95,7 +104,9 @@ app.get('^/availableGame$', availableGame);
 
 app.use(loadGame);
 
-app.get('^/kavidiKali.html$', isPlayerRegistered);
+app.get('^/waitingPage.html$', isPlayerRegistered);
+
+app.get('^/kavidiKali.html$', isPlayerRegistered,isPlayerCanPlay);
 
 app.use(express.static('./HTML'));
 
