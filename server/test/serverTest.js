@@ -222,7 +222,9 @@ describe("get handlers",function(){
 						},
 						path:[]
 					}},
-					getAllValidMovesOfCoin : function(){},
+					getAllValidMovesOfCoin : function(){
+						return ['2,3','3,4'];
+					},
 					id:123546789
 				};
 				games={};
@@ -231,8 +233,30 @@ describe("get handlers",function(){
 				request(controller)
 					.get('/enquiry?question=movesWhere&coin=rocky1')
 					.set('cookie',['userId=rocky;gameId=123546789'])
+					.expect('["2,3","3,4"]')
 					.expect(200,done);
-
+			});
+			it("returns 405 when it get request from unregistered player",function(done){
+				game={
+					players:{rocky:{
+						coins:{
+							rocky1:{currentPosition:'0,0'}
+						},
+						path:[]
+					}},
+					getAllValidMovesOfCoin : function(){
+						return ['2,3','3,4'];
+					},
+					id:123546789
+				};
+				games={};
+				games['123546789']=game;
+				controller = requestHandler(games);
+				request(controller)
+					.get('/enquiry?question=movesWhere&coin=rocky1')
+					.set('cookie',['userId=john;gameId=123546789'])
+					.expect('Method is not allowed')
+					.expect(405,done);
 			});
 		});		
 	});
