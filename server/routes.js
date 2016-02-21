@@ -32,7 +32,7 @@ var createPlayer = function(userId,req,res){
 		res.redirect('/waitingPage.html');
 	}
 	else
-		res.redirect('/kavidiKali.html')
+		res.redirect('/index.html')
 	res.end();
 };
 
@@ -86,14 +86,10 @@ var handleEnquiry = function(req, res, next){
 
 var isValidPlayer = function(req, res, next){
 	var player = req.cookies.userId;
-	if(enquiries({question:'isValidPlayer',player:player},req.game))
+	if(req.game && enquiries({question:'isValidPlayer',player:player},req.game))
 		next();
 	else
 		method_not_allowed(req, res);
-};
-
-var detailsValidation = function(req,res){
-	res.end(application.checkDetails(req.games,req.body));
 };
 
 var availableGame = function(req,res){
@@ -105,8 +101,6 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('^/availableGame$', availableGame);
-
-app.post('/isValidDetails',detailsValidation);
 
 app.use(loadGame);
 

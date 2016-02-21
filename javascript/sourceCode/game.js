@@ -11,7 +11,7 @@ const DICE_VALUES = [1,2,3,4,5,6];
 const SIZE_OF_BOARD = 5;
 const SPECIAL_VALUES = [6];
 
-var Game = function(id){
+var Game = function(id, numberOfPlayers){
 	this.id=id;
 	this.safePositions = generateSafePositions(SIZE_OF_BOARD);
 	this.players = {};
@@ -19,6 +19,7 @@ var Game = function(id){
 	this.tiles = tiles.generateTiles(SIZE_OF_BOARD);
 	this.dice = new dice(DICE_VALUES);
 	this.counter = 0;
+	this.numberOfPlayers = numberOfPlayers;
 	this.winner=undefined;
 	this.notification_text="";
 	this.resetGame = function(){
@@ -27,7 +28,7 @@ var Game = function(id){
 			if(gotRequestFrom.indexOf(userId)==-1){
 				gotRequestFrom.push(userId);
 			}
-			if(gotRequestFrom.length==4)
+			if(gotRequestFrom.length==numberOfPlayers)
 				this.reset();
 		};
 	}();
@@ -130,6 +131,10 @@ Game.prototype = {
  	},
  	getNotification : function(){
  		return this.notification_text;
+ 	},
+ 	isFull : function(){
+ 		console.log('game',Object.keys(this.players).length , this.numberOfPlayers)
+ 		return Object.keys(this.players).length == this.numberOfPlayers;
  	}
 };
 

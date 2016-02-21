@@ -1,4 +1,4 @@
-var request = require('superTest');
+	var request = require('superTest');
 var assert = require('assert');
 var requestHandler = require('../routing.js');
 var Game = require('../../javascript/sourceCode/game.js');
@@ -102,7 +102,10 @@ describe("get handlers",function(){
 						 rincy:{},
 						 rinto:{}
 						},
-				id:123546789
+				id:123546789,
+				isFull : function(){
+					return true;
+				}
 			};
 			games={};
 			games['123546789']=game;
@@ -119,7 +122,10 @@ describe("get handlers",function(){
 						 rony:{},
 						 rincy:{}
 						},
-				id:123546789
+				id:123546789,
+				isFull : function(){
+					return false;
+				}
 			};
 			games={};
 			games['123546789']=game;
@@ -323,6 +329,9 @@ describe("get handlers",function(){
 		it("updates the list of players when it gets request from valid player",function(done){
 			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{}};
+			game.isFull = function(){
+				return false;
+			};
 			games={};
 			games['123546789']=game;
 			controller = requestHandler(games);
@@ -336,6 +345,9 @@ describe("get handlers",function(){
 		it("gives out falsey value but statusCode 200 if all the players have joined the game",function(done){
 			game={players:{},id:123546789};
 			game.players={jacky:{},joy:{},johnny:{},jisna:{}};
+			game.isFull = function(){
+				return true;
+			};
 			games={};
 			games['123546789']=game;
 			controller = requestHandler(games);
@@ -507,61 +519,14 @@ describe("get handlers",function(){
 });
 
 describe("POST handlers",function(){
-	describe("isValidDetails",function(){
-		it("returns object which hold details when name is unique for a game and gameId is also valid",function(done){
-			game={players:{},id:123546789};
-			game.players={jacky:{},joy:{},johnny:{}};
-			games={};
-			games['123546789']=game;
-			controller = requestHandler(games);
-			request(controller)
-				.post('/isValidDetails')
-				.send('name=rocky&gameId=123546789')
-				.expect('{"gameId":true,"name":true}')
-				.expect(200,done)
-		});
-		it("returns object which hold details when a name is not unique for a game and gameId is also valid",function(done){
-			game={players:{},id:123546789};
-			game.players={jacky:{},joy:{},johnny:{}};
-			games={};
-			games['123546789']=game;
-			controller = requestHandler(games);
-			request(controller)
-				.post('/isValidDetails')
-				.send('name=jacky&gameId=123546789&option=joinGame')
-				.expect('{"gameId":true,"name":false}')
-				.expect(200,done)
-		});
-		it("returns object which hold details when name is unique for a game but gameId is invalid",function(done){
-			var game={players:{},id:123546789};
-			game.players={jacky:{},joy:{},johnny:{}};
-			var games={};
-			games['123546789']=game;
-			controller = requestHandler(games);
-			request(controller)
-				.post('/isValidDetails')
-				.send('name=rocky&gameId=1235467890')
-				.expect('{"gameId":false,"name":true}')
-				.expect(200,done)
-		});
-		it("returns object which hold details when a name is not unique for a game and gameId is also invalid",function(done){
-			var game={players:{},id:123546789};
-			game.players={jacky:{},joy:{},johnny:{}};
-			var games={};
-			games['123546789']=game;
-			controller = requestHandler(games);
-			request(controller)
-				.post('/isValidDetails')
-				.send('name=jacky&gameId=1235467899&option=joinGame')
-				.expect('{"gameId":false,"name":true}')
-				.expect(200,done)
-		});
-	});
 	describe("index page",function(){
 		it("redirects player to the waiting page after login from url /",function(done){
 			game={players:{},id:"123846789"};
 			game.createPlayer=function(){
 				game.players.rony = {coinColor:'red'};
+			};
+			game.isFull=function(){
+				return false;
 			};
 
 			games={};
@@ -578,6 +543,9 @@ describe("POST handlers",function(){
 			game={players:{},id:'123846789'};
 			game.createPlayer=function(){
 				game.players.rony = {coinColor:'red'};
+			};
+			game.isFull=function(){
+				return false;
 			};
 			games={};
 			games['123846789']=game;
@@ -596,7 +564,10 @@ describe("POST handlers",function(){
 				players:{rock:{},jack:{},johnny:{}},
 				createPlayer:function(){},
 				id:'123546789'
-			}
+			};
+			game.isFull=function(){
+				return false;
+			};
 			var games={'123546789':game};
 			controller = requestHandler(games);
 			request(controller)
@@ -624,21 +595,27 @@ describe("POST handlers",function(){
 			var games={};
 			var game={
 				players:{rock:{},jack:{},johnny:{}},
-				id:'123546789'
-			}
+				id:'123546789',
+				isFull : function(){
+					return false;
+				}
+			};
 			var games={'123546789':game};
 			controller = requestHandler(games);
 			request(controller)
 				.post('/login')
 				.send('name=rock&gameId=123546789&option=joinGame')
 				.expect(302)
-				.expect('Location','/kavidiKali.html',done)
+				.expect('Location','/index.html',done)
 		});
 		it("allow to join a new player to a specific game when it get a valid gameId",function(done){
 			var game={
 				players:{rock:{},jack:{},johnny:{}},
 				createPlayer:function(){},
-				id:'123546789'
+				id:'123546789',
+				isFull : function(){
+					return false;
+				}
 			}
 			var games={'123546789':game};
 			controller = requestHandler(games);
@@ -649,41 +626,23 @@ describe("POST handlers",function(){
 				.expect('Location','/waitingPage.html')
 				.expect('set-cookie','userId=rocky; Path=/,gameId=123546789; Path=/',done)
 		});
-		it("create a new game when it get a valid gameId but that game already have 4 players",function(done){
+		it("redirects to index page if the game trying to join is full",function(done){
 			var game={
 				players:{rock:{},jack:{},johnny:{},joy:{}},
 				createPlayer:function(){},
-				id:'123546789'
+				id:'123546789',
+				isFull : function(){
+					return true;
+				}
 			}
 			var games={'123546789':game};
 			controller = requestHandler(games);
 			request(controller)
 				.post('/login')
 				.send('name=rocky&gameId=123546789&option=joinGame')
-				.end(function(req,res){
-					assert.notEqual('gameId=123546789; Path=/',res.header['set-cookie'][1]);
-					assert.equal('/waitingPage.html',res.header.location);
-					assert.equal(302,res.status);
-					done();
-				})
-		});
-		it("create a new game when a new player want to join to a specific game with a invalid gameId ",function(done){
-			var game={
-				players:{rock:{},jack:{},johnny:{},joy:{}},
-				createPlayer:function(){},
-				id:'123546789'
-			}
-			var games={'123546789':game};
-			controller = requestHandler(games);
-			request(controller)
-				.post('/login')
-				.send('name=rocky&gameId=123546708&option=joinGame')
-				.end(function(req,res){
-					assert.notEqual('gameId=123546708; Path=/',res.header['set-cookie'][1]);
-					assert.equal('/waitingPage.html',res.header.location);
-					assert.equal(302,res.status);
-					done();
-				})
+				.expect(302)
+				.expect('Location','/index.html')
+				.end(done);
 		});
 	});
 	describe("doInstruction",function(){

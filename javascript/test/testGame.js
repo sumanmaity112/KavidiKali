@@ -345,8 +345,8 @@ describe('Game',function(){
 		});
 	});
 	describe("resetGame",function(){
-		it("invoke reset game function when it got 4 unique request",function(){
-			game = new Game();
+		it("invoke reset game function when it got 4 unique request for 4 player game",function(){
+			game = new Game('someid',4);
 			game.createPlayer('john');
 			game.createPlayer('rock');
 			game.createPlayer('jiya');
@@ -360,6 +360,16 @@ describe('Game',function(){
 			game.resetGame('jiya');
 			assert.ok(!game.readyToRemove);
 			game.resetGame('peter');
+			assert.ok(game.readyToRemove);
+		});
+		it("invoke reset game function when it got 2 unique request for 2 player game",function(){
+			game = new Game('someid',2);
+			game.createPlayer('john');
+			game.createPlayer('rock');
+			assert.ok(!game.readyToRemove);
+			game.resetGame('john');
+			assert.ok(!game.readyToRemove);
+			game.resetGame('rock');
 			assert.ok(game.readyToRemove);
 		});
 	});
