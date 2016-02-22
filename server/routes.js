@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var urlParser= require('url-parse');
 var lib = require('./games.js');
 var enquiries = application.enquiry;
+var botPlayer = require('../javascript/bot/botPlayer.js');
 
 var app=express();
 
@@ -23,7 +24,14 @@ var method_not_allowed = function(req, res){
 
 var login = function(req, res, next){
 	createPlayer(req.body.name, req, res);
+	if(req.body.playWithBot){
+		connectToBot(req.game.id);
+	}
 };
+
+var connectToBot = function(gameId){
+	(new botPlayer(gameId)).start();
+}
 
 var createPlayer = function(userId,req,res){
 	if(application.register(userId,req.game)){
@@ -32,14 +40,14 @@ var createPlayer = function(userId,req,res){
 		res.redirect('/waitingPage.html');
 	}
 	else
-		res.redirect('/index.html')
+		res.redirect('/index.html');
 	res.end();
 };
 
 var isPlayerRegistered = function(req, res, next){
 	var player = req.cookies.userId;
 	if(!player || !enquiries({question:'isValidPlayer',player:player},req.game)){
-		res.redirect('/index.html'); 
+		res.redirect('/index.html');
 		res.end();
 	}
 	else

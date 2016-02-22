@@ -1,7 +1,7 @@
 var update;
 
 window.onload = function(){
-	$('#continue').click(hideUserInfo); 
+	$('#continue').click(hideUserInfo);
 	$('#createGame_button').click(createGame);
 };
 
@@ -18,6 +18,7 @@ var createGame = function(){
 	obj.name = playerName;
 	obj.option = 'newGame';
 	obj.numberOfPlayers = numberOfPlayers;
+	obj.playWithBot = $("input[name=playWithBot]").is(":checked");
 	var form = createForm(obj, 'POST', 'login');
 	clearInterval(update);
 	form.submit();
@@ -45,7 +46,7 @@ var updateAvailableGames = function(){
 		var rows = gameIds.map(function(gameId){
 			return createRow(gameId, data[gameId]);
 		})
-		$('#availableGames').html(heading+rows.join(" "));	
+		$('#availableGames').html(heading+rows.join(" "));
 	});
 };
 
