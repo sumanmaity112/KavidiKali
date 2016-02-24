@@ -11,10 +11,13 @@ var createGame = function(games, playerSize){
 };
 
 exports.removeGame = function(games){
-	var unwantedGames=[];
+	var latestTime = new Date().getMinutes();
+	var unwantedGames=[], totalGames = Object.keys(games).length;
 	for(var id in games){
-		if(games[id].readyToRemove)
+		if(games[id].readyToRemove || (latestTime - games[id].lastRequestAt>5 && totalGames>2)){
 			unwantedGames.push(id);
+			totalGames--;
+		}
 	}
 	unwantedGames.forEach(function(id){games = lodash.omit(games,id)});
 	return games;

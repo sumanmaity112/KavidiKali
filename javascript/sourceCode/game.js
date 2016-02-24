@@ -1,4 +1,5 @@
 var lib = require('./tile.js');
+var EventEmitter=require('events').EventEmitter;
 var tiles = lib.tile;
 var generateSafePositions = lib.generateSafePositions;
 var pathLib = require('./generatePath.js');
@@ -32,6 +33,11 @@ var Game = function(id, numberOfPlayers){
 				this.reset();
 		};
 	}();
+	this.lastRequestAt = new Date().getMinutes();
+	this.emitter = new EventEmitter();
+	this.emitter.addListener("getARequest",function(){
+		this.lastRequestAt = new Date().getMinutes();
+	}.bind(this));
 };
 
 Game.prototype = {
@@ -52,6 +58,7 @@ Game.prototype = {
 		});
 		newPlayer.addListener(this);
 		this.players[playerId]=newPlayer;
+		this.emitter.emit("getARequest");
 	},
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue)){
@@ -77,6 +84,7 @@ Game.prototype = {
 		return state;
 	},
 	get currentPlayer(){
+		this.emitter.emit("getARequest");
 		var players = Object.keys(this.players);
 		return players[this.counter]
 	},
@@ -133,7 +141,8 @@ Game.prototype = {
  		return this.notification_text;
  	},
  	isFull : function(){
- 		console.log('game',Object.keys(this.players).length , this.numberOfPlayers)
+ 		console.log('game',Object.keys(this.players).length , this.numberOfPlayers);
+		this.emitter.emit("getARequest");
  		return Object.keys(this.players).length == this.numberOfPlayers;
  	}
 };

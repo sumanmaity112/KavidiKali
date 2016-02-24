@@ -100,9 +100,9 @@ app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('^/availableGame$', availableGame);
-
 app.use(loadGame);
+
+app.get('^/availableGame$', availableGame);
 
 app.get('^/waitingPage.html$', isPlayerRegistered);
 
