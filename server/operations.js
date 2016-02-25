@@ -88,5 +88,8 @@ exports.enquiries = {
 	'myNameAndColor'	: myNameAndColor,
 	'whoIsTheWinner'	: function(gameMaster,obj){ return gameMaster.winner},
 	'playerTurn'		: function(gameMaster,obj){	return (4-Object.keys(gameMaster.players).indexOf(obj.player)).toString();},
-	'myInfo'			: function(gameMaster,obj){return JSON.stringify(gameMaster.players[obj.player]);}
+	'myInfo'			: function(gameMaster,obj){return JSON.stringify(gameMaster.players[obj.player]);},
+	'anyMoreChances':function(gameMaster,obj){
+		return gameMaster.anyMoreChances(obj.player).toString();
+	}
 };
