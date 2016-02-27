@@ -22,7 +22,7 @@ Player.prototype = {
 	rollDice : function(dice){
 		var diceValue = dice.roll();
 		this.diceValues.push(diceValue);
-		this.notification_text = this.id+" got "+diceValue;
+		this.notification_text = this.id+" got "+diceValue+""+this.diceValues.length;
 		this.emitter.emit("new_notification");
 		this.chances--;
 		return diceValue;

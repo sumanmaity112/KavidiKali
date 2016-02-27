@@ -143,6 +143,7 @@ var notification = function(){
 		if(data){
 			if(data!=prev_note){
 				prev_note = data;
+				data = data.slice(0,-5)+'</p>';
 				$(data).prependTo("#notifications");
 			}
 		}

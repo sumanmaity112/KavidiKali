@@ -24,9 +24,8 @@ var method_not_allowed = function(req, res){
 
 var login = function(req, res, next){
 	createPlayer(req.body.name, req, res);
-	if(req.body.playWithBot){
+	if(req.body.playWithBot=='true')
 		connectToBot(req.game.id);
-	}
 };
 
 var connectToBot = function(gameId){

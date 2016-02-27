@@ -30,7 +30,6 @@ var refreshBoard = function(gameMaster){
 };
 
 var updateWaitingPage = function(gameMaster,obj){
-	console.log(gameMaster.isFull(),"=========================");
 	return !gameMaster.isFull() && JSON.stringify(Object.keys(gameMaster.players));
 };
 

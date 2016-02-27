@@ -62,7 +62,7 @@ Game.prototype = {
 	},
 	setChances : function(diceValue,playerId){
 		if(this.analyzeDiceValue(diceValue)){
-			this.players[playerId].notification_text = playerId +" got an extra chance to roll dice";
+			this.players[playerId].notification_text = playerId +" got "+diceValue +" and an extra chance to roll dice"+this.players[playerId].diceValues.length;
 			this.players[playerId].emitter.emit("new_notification");
 			this.players[playerId].chances++;
 			return true;  
@@ -141,7 +141,7 @@ Game.prototype = {
  		return this.notification_text;
  	},
  	isFull : function(){
- 		console.log('game',Object.keys(this.players).length , this.numberOfPlayers);
+ 		// console.log('game',Object.keys(this.players).length , this.numberOfPlayers);
 		this.emitter.emit("getARequest");
  		return Object.keys(this.players).length == this.numberOfPlayers;
  	}
