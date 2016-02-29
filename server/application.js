@@ -33,8 +33,8 @@ exports.availableGame = function(games){
 	var result = {};
 	Object.keys(games).forEach(function(game){
 		var gameObj = games[game];
-		var players = Object.keys(gameObj.players)
-		if(players.length<4){
+		var players = Object.keys(gameObj.players);
+		if(players.length<gameObj.numberOfPlayers){
 			result[gameObj.id] = players;
 		};
 	});
@@ -42,6 +42,5 @@ exports.availableGame = function(games){
 };
 
 exports.isGameReady = function(game){
-	console.log("======================",game.isFull())
 	return game.isFull();
 }

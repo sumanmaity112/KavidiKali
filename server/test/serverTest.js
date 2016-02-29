@@ -498,11 +498,11 @@ describe("get handlers",function(){
 	});
 	describe("availableGame",function(){
 		it("gives the all available game where a player can join",function(done){
-			var game1={players:{},id:123546789};
+			var game1={players:{},id:123546789,numberOfPlayers:4};
 			game1.players={jacky:{},joy:{},johnny:{}};
-			var game2={players:{},id:123546780};
+			var game2={players:{},id:123546780,numberOfPlayers:4};
 			game2.players={jack:{},john:{},johnny:{}};
-			var game3={players:{},id:123546781};
+			var game3={players:{},id:123546781,numberOfPlayers:4};
 			game3.players={jack:{},john:{},johnny:{},jacky:{}};
 			games={};
 			games['123546789']=game1;
