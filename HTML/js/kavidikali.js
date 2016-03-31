@@ -33,7 +33,17 @@ var createGrid = function(rotateCount){
 	table+='</table>';
 	return table;
 };
-
+var serveGameOverWrapper=function(winner){
+	$(".gameOver").html('<body>'+
+		'<div class="wrapper">'+
+				'<div id = "centerWindow" align="center">'+
+					'Game Over !!! '+winner+' won the game'+
+					'<a href="/" class="cancel"> &times </a>'+
+				'</div>'+
+				'<div id="cover"></div>'+
+		'</div>'+
+	'</body>');
+};
 var coinToDOMElement = function(coin) {
 	return '<div class="coin coins_'+coin.colour+'" id="'+coin.id+'">';
 };
@@ -216,11 +226,14 @@ var updateDiceValues = function(){
 };
 var restore = function(){
 	$.get('enquiry?question=isGameOver',function(data){
+		console.log("------"+data);
 		if(data=='true'){
 			$.get('enquiry?question=whoIsTheWinner',function(data){
+				console.log("data is "+data);
 				$('Sorry gameover '+data+' won the game').prependTo("#notifications");
 				clearInterval(refreshWindow);
 				clearInterval(updateValues);
+				serveGameOverWrapper(data);
 			});
 		};
 	});
