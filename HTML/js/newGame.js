@@ -1,6 +1,6 @@
-var AVAILABLEGAMESLIST;
+var CREATEGAMELIST;
 
-function updateAvailableGames(){
+function newGames(){
     /* global d3 */
     var diameter = 500,
         color = d3.scale.category20c();
@@ -10,10 +10,10 @@ function updateAvailableGames(){
         .size([diameter, diameter])
         .padding(1.5);
 
-    d3.json("availableGame", function(error, root) {
+    d3.json("newGames", function(error, root) {
     if (error) throw error;
     
-    if(JSON.stringify(AVAILABLEGAMESLIST) === JSON.stringify(root))
+    if(JSON.stringify(CREATEGAMELIST) === JSON.stringify(root))
         return;
         
    $('#selectGame').html("");
@@ -35,13 +35,14 @@ function updateAvailableGames(){
         .attr("r", function(d) { return d.r; })
         .style("fill", function(d,i) { return color(i); })
         .on("click",function(d) {
-            joinGame(d.gameId);
+            createGame(d.withBot);
+            console.log(createGame);
         });
     
     node.append("text")
       .attr("dy", ".3em")
       .style("text-anchor", "middle")
-      .text(function(d) { return d.gameId.substring(0, d.r / 3); });
+      .text(function(d) { return d.withBot ? "Play with Bot" : "Multi-Player" });
       
     });
 

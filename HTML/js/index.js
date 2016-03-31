@@ -2,24 +2,30 @@ var update;
 
 window.onload = function(){
 	$('#continue').click(hideUserInfo);
-	$('#createGame_button').click(createGame);
 };
 
 var hideUserInfo = function(){
+    if(!$('#name').val())
+        return;
 	$('.userInfo').addClass('hidden');
 	$('.selectGame').removeClass('hidden');
-    updateAvailableGames();
-	update = setInterval(updateAvailableGames, 1000);
+    $('#createGame').click(function(){
+        newGames();
+    })
+    $('#joinGame').click(function(){
+        updateAvailableGames();
+	    update = setInterval(updateAvailableGames, 1000);
+    })
 };
 
-var createGame = function(){
+var createGame = function(withBot){
 	var playerName = $('#name').val();
 	var numberOfPlayers = $(this).val()[0];
 	var obj = {};
 	obj.name = playerName;
 	obj.option = 'newGame';
 	obj.numberOfPlayers = numberOfPlayers;
-	obj.playWithBot = $("input[name=playWithBot]").is(":checked");
+	obj.playWithBot = withBot;
 	var form = createForm(obj, 'POST', 'login');
 	clearInterval(update);
 	form.submit();
@@ -38,31 +44,6 @@ var createForm = function(obj, method, action){
 	form.action = action;
 	form.style.display = "none";
 	return form;
-};
-
-// var updateAvailableGames = function(){
-// 	$.getJSON('availableGame',function(data){
-// 		var gameIds = Object.keys(data);
-// 		var heading = '<tr><th>GAME</th><th>Player 1</th><th>Player 2</th><th>Player 3</th></tr>'
-// 		var rows = gameIds.map(function(gameId){
-// 			return createRow(gameId, data[gameId]);
-// 		})
-// 		$('#availableGames').html(heading+rows.join(" "));
-// 	});
-// };
-
-var createRow = function(key, values){
-	var row = '<tr id="'+key+'" class="games" onClick="joinGame(this.id)">';
-	row += createRowData(key);
-	for (var i = 0; i < 3; i++) {
-		row += createRowData(values[i] || '');
-	};
-	row += '</tr>'
-	return row;
-};
-
-var createRowData = function(text){
-	return '<td>'+text+'</td>';
 };
 
 var joinGame = function(id){

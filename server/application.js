@@ -29,18 +29,6 @@ exports.register = function(name,gameMaster){
 	return true;
 };
 
-exports.availableGame1 = function(games){
-	var result = {};
-	Object.keys(games).forEach(function(game){
-		var gameObj = games[game];
-		var players = Object.keys(gameObj.players)
-		if(players.length<4){
-			result[gameObj.id] = players;
-		};
-	});
-	return JSON.stringify(result);
-};
-
 exports.availableGame = function(games){
 	var result = [];
 	Object.keys(games).forEach(function(game){
@@ -54,6 +42,17 @@ exports.availableGame = function(games){
     console.log(result);
 	return JSON.stringify(result);
 };
+
+exports.newGames = function(games) {
+    var result = [];
+    result.push({value:2,withBot:false});
+    result.push({value:3,withBot:false});
+    result.push({value:4,withBot:false});
+    result.push({value:2,withBot:true});
+    result.push({value:3,withBot:true});
+    result.push({value:4,withBot:true});
+    return JSON.stringify(result);
+}
 
 exports.isGameReady = function(game){
 	console.log("======================",game.isFull())
