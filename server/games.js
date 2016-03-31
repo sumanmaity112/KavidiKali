@@ -28,7 +28,7 @@ exports.loadGame = function(games, gameId, data,url){
 		return games[data.gameId];
 	}
 	if(Object.keys(games).length==0 || data.option=='newGame'){
-		gameId = createGame(games, data.numberOfPlayers);
+		gameId = createGame(games, data.numberOfPlayers||4);
 	}
 	return games[gameId]
 };

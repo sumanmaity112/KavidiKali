@@ -29,7 +29,7 @@ exports.register = function(name,gameMaster){
 	return true;
 };
 
-exports.availableGame = function(games){
+exports.availableGame1 = function(games){
 	var result = {};
 	Object.keys(games).forEach(function(game){
 		var gameObj = games[game];
@@ -38,6 +38,20 @@ exports.availableGame = function(games){
 			result[gameObj.id] = players;
 		};
 	});
+	return JSON.stringify(result);
+};
+
+exports.availableGame = function(games){
+	var result = [];
+	Object.keys(games).forEach(function(game){
+		var gameObj = {gameId:game};
+		var players = Object.keys(games[game].players)
+        gameObj.value = games[game].numberOfPlayers;
+		if(players.length<4){
+			result.push(gameObj);
+		};
+	});
+    console.log(result);
 	return JSON.stringify(result);
 };
 

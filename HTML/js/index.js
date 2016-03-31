@@ -8,6 +8,7 @@ window.onload = function(){
 var hideUserInfo = function(){
 	$('.userInfo').addClass('hidden');
 	$('.selectGame').removeClass('hidden');
+    updateAvailableGames();
 	update = setInterval(updateAvailableGames, 1000);
 };
 
@@ -39,16 +40,16 @@ var createForm = function(obj, method, action){
 	return form;
 };
 
-var updateAvailableGames = function(){
-	$.getJSON('availableGame',function(data){
-		var gameIds = Object.keys(data);
-		var heading = '<tr><th>GAME</th><th>Player 1</th><th>Player 2</th><th>Player 3</th></tr>'
-		var rows = gameIds.map(function(gameId){
-			return createRow(gameId, data[gameId]);
-		})
-		$('#availableGames').html(heading+rows.join(" "));
-	});
-};
+// var updateAvailableGames = function(){
+// 	$.getJSON('availableGame',function(data){
+// 		var gameIds = Object.keys(data);
+// 		var heading = '<tr><th>GAME</th><th>Player 1</th><th>Player 2</th><th>Player 3</th></tr>'
+// 		var rows = gameIds.map(function(gameId){
+// 			return createRow(gameId, data[gameId]);
+// 		})
+// 		$('#availableGames').html(heading+rows.join(" "));
+// 	});
+// };
 
 var createRow = function(key, values){
 	var row = '<tr id="'+key+'" class="games" onClick="joinGame(this.id)">';
