@@ -35,8 +35,7 @@ function newGames(){
         .attr("r", function(d) { return d.r; })
         .style("fill", function(d,i) { return color(i); })
         .on("click",function(d) {
-            createGame(d.withBot);
-            console.log(createGame);
+            createGame(d.value,d.withBot);
         });
     
     node.append("text")

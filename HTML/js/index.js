@@ -18,9 +18,9 @@ var hideUserInfo = function(){
     })
 };
 
-var createGame = function(withBot){
+var createGame = function(sizeOfGame,withBot){
 	var playerName = $('#name').val();
-	var numberOfPlayers = $(this).val()[0];
+	var numberOfPlayers = sizeOfGame;
 	var obj = {};
 	obj.name = playerName;
 	obj.option = 'newGame';

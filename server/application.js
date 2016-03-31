@@ -35,11 +35,10 @@ exports.availableGame = function(games){
 		var gameObj = {gameId:game};
 		var players = Object.keys(games[game].players)
         gameObj.value = games[game].numberOfPlayers;
-		if(players.length<4){
+		if(!games[game].isFull()){
 			result.push(gameObj);
 		};
 	});
-    console.log(result);
 	return JSON.stringify(result);
 };
 
