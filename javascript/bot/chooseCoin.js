@@ -94,7 +94,7 @@ var chooseValidCoin=function(myGameStatus,coinsEligibleToMove,diceValue,opponent
 		console.log(!isMyCoinPresent(myGameStatus.coins,tile),'--------------')
 		
 		if(!isMyCoinPresent(myGameStatus.coins,tile)){
-			console.log({coinId:selectedCoin.id,tileId:tile.id},"*****")
+			// console.log({coinId:selectedCoin.id,tileId:tile.id},"*****")
 			return {coinId:selectedCoin.id,tileId:tile.id};
 		}
 	}

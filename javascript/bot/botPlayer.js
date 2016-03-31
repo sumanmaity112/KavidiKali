@@ -58,7 +58,7 @@ botPlayer.prototype = {
 var rollDice = function(self){
 	var option=createHttpOption('/instruction?action=rollDice','GET',self.cookie);
 	var req = self.http.get(option,function(res){
-		res.on("data",function(data){console.log(data.toString())
+		res.on("data",function(data){
 			anyMoreChances(self);
 		})
 	});
@@ -69,7 +69,6 @@ var botManager = function(self){
 	var option = createHttpOption('/enquiry?question=currentPlayer','GET',self.cookie);
 	self.http.get(option,function(res){
 		res.on('data',function(chunk){
-			console.log("currentPlayer is ",chunk.toString(),"  ",chunk.toString() == self.name)
 			if(chunk.toString() == self.name){
 				self.emitter.emit('rollDice');
 			}
@@ -80,7 +79,6 @@ var anyMoreChances=function(self){
 	var playerChance = createHttpOption('/enquiry?question=anyMoreChances','GET',self.cookie);
 	self.http.get(playerChance,function(res){
 		res.on('data',function(chunk){
-			console.log("=========chances",chunk.toString(),"  ",+(chunk.toString())>0);
 			if(+(chunk.toString())==0){
 				self.emitter.emit('chooseCoin');
 			}
