@@ -30,16 +30,28 @@ exports.register = function(name,gameMaster){
 };
 
 exports.availableGame = function(games){
-	var result = {};
+	var result = [];
 	Object.keys(games).forEach(function(game){
-		var gameObj = games[game];
-		var players = Object.keys(gameObj.players);
-		if(players.length<gameObj.numberOfPlayers){
-			result[gameObj.id] = players;
+		var gameObj = {gameId:game};
+		var players = Object.keys(games[game].players)
+        gameObj.value = games[game].numberOfPlayers;
+		if(!games[game].isFull()){
+			result.push(gameObj);
 		};
 	});
 	return JSON.stringify(result);
 };
+
+exports.newGames = function(games) {
+    var result = [];
+    result.push({value:2,withBot:false});
+    result.push({value:3,withBot:false});
+    result.push({value:4,withBot:false});
+    result.push({value:2,withBot:true});
+    result.push({value:3,withBot:true});
+    result.push({value:4,withBot:true});
+    return JSON.stringify(result);
+}
 
 exports.isGameReady = function(game){
 	return game.isFull();

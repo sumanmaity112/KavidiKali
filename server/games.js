@@ -27,7 +27,7 @@ exports.loadGame = function(games, gameId, data,url){
 	if(data.option=='joinGame' && url=='/login'){
 		return games[data.gameId];
 	}
-	if(Object.keys(games).length==0 || data.option=='newGame'){
+	if(data.option=='newGame'){
 		gameId = createGame(games, data.numberOfPlayers);
 	}
 	return games[gameId]

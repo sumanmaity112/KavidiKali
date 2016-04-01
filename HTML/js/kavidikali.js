@@ -226,10 +226,8 @@ var updateDiceValues = function(){
 };
 var restore = function(){
 	$.get('enquiry?question=isGameOver',function(data){
-		console.log("------"+data);
 		if(data=='true'){
 			$.get('enquiry?question=whoIsTheWinner',function(data){
-				console.log("data is "+data);
 				$('Sorry gameover '+data+' won the game').prependTo("#notifications");
 				clearInterval(refreshWindow);
 				clearInterval(updateValues);

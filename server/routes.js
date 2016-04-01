@@ -103,6 +103,10 @@ var availableGame = function(req,res){
 	res.end(application.availableGame(req.games));
 }
 
+var newGames = function(req,res){
+	res.end(application.newGames(req.games));
+}
+
 app.use(cookieParser());
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -110,6 +114,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(loadGame);
 
 app.get('^/availableGame$', availableGame);
+
+app.get('^/newGames$', newGames);
 
 app.get('^/waitingPage.html$', isPlayerRegistered);
 
