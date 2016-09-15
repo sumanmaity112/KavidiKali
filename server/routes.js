@@ -24,13 +24,17 @@ var method_not_allowed = function(req, res){
 
 var login = function(req, res, next){
 	createPlayer(req.body.name, req, res);
-	if(req.body.playWithBot=='true')
-		connectToBot(req.game.id);
+	if(req.body.playWithBot=='true'){
+		var noOfBot = (+req.body.noOfBotPlayers);
+		connectToBot(req.game.id, noOfBot );
+	}
+	res.send();
 };
 
-var connectToBot = function(gameId){
-	(new botPlayer(gameId)).start();
-}
+var connectToBot = function(gameId, noOfBot){
+	for(var counter=0; counter<noOfBot;counter++)
+		(new botPlayer(gameId)).start();
+};
 
 var createPlayer = function(userId,req,res){
 	if(application.register(userId,req.game)){
@@ -101,11 +105,11 @@ var isValidPlayer = function(req, res, next){
 
 var availableGame = function(req,res){
 	res.end(application.availableGame(req.games));
-}
+};
 
 var newGames = function(req,res){
 	res.end(application.newGames(req.games));
-}
+};
 
 app.use(cookieParser());
 

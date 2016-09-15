@@ -18,7 +18,8 @@ var hideUserInfo = function(){
     })
 };
 
-var createGame = function(sizeOfGame,withBot){
+var createGame = function(sizeOfGame,withBot, noOfBotPlayers){
+	noOfBotPlayers = noOfBotPlayers || 0;
 	var playerName = $('#name').val();
 	var numberOfPlayers = sizeOfGame;
 	var obj = {};
@@ -26,6 +27,7 @@ var createGame = function(sizeOfGame,withBot){
 	obj.option = 'newGame';
 	obj.numberOfPlayers = numberOfPlayers;
 	obj.playWithBot = withBot;
+	obj.noOfBotPlayers = noOfBotPlayers;
 	var form = createForm(obj, 'POST', 'login');
 	clearInterval(update);
 	form.submit();
