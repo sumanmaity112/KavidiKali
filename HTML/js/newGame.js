@@ -1,5 +1,5 @@
 function newGames() {
-    $.get("chooseNoOfPlayer.html",function(data){
+    $.get("chooseNoOfPlayer.html", function (data) {
         $('#selectGame').html(data);
     });
 }
