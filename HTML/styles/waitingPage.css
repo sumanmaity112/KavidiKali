@@ -40,3 +40,11 @@
   color: #4078c0;
   text-decoration: underline;
 }
+
+#gameId {
+  width: 22%;
+  margin: 0 auto;
+  padding-top: 2%;
+  font-size: 21px;
+  color: #000;
+}

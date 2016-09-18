@@ -7,8 +7,17 @@ var waiting = function () {
     };
 }();
 
+var showGameId = function () {
+    $.get('update?toUpdate=gameId', function (data) {
+        if (data) {
+            $('#gameId').html("<p>YOUR GAME ID IS - " + data + "</p>");
+        }
+    });
+};
+
 window.onload = function () {
     setInterval(waiting, 500);
+    showGameId();
     updateJoinedPlayers();
 };
 
@@ -36,7 +45,6 @@ var convertIntoHtml = function (list) {
     for (var i = 0; i < list.length - 1; i++) {
         html += createDiv(list[i]);
     }
-    ;
     html += ['\n<div class="player" id="last_player">', list[i], ' joined</div>'].join(" ");
     return html;
 };

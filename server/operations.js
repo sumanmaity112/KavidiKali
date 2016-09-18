@@ -37,11 +37,16 @@ var updateNotification = function (gameMaster) {
     return gameMaster.getNotification();
 };
 
+var getGameId = function (gameMaster) {
+    return gameMaster.id;
+};
+
 exports.updates = {
     diceValues: getAllDiceValues,
     board: refreshBoard,
     waitingPage: updateWaitingPage,
-    notification: updateNotification
+    notification: updateNotification,
+    gameId: getGameId
 };
 
 //========================================================================================================
