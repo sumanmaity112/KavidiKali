@@ -60,6 +60,10 @@ Player.prototype = {
     },
     get coinColor() {
         return this.coins[this.id + '1'].colour;
+    },
+
+    hasAnyOtherChance: function() {
+        return this.chances > 0;
     }
 };
 
