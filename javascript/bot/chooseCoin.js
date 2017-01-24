@@ -26,7 +26,6 @@ var chooseCoin = function (myGameStatus, self, option) {
 }
 
 var moveCoin = function (option) {
-    console.log(option.path, "**^^^");
     http.get(option, function (res) {
     });
 }
@@ -49,9 +48,6 @@ var chooseBestCoinToMove = function (stateOfTheGame, myGameStatus, diceValue) {
     var opponentsCoins = lodash.filter(stateOfTheGame, function (coin) {
         return coin.colour != myCoinColor
     });
-    // console.log(opponentsCoins);
-
-
     var coinsEligibleToEnter = getOffBoardCoins(coins);
 
 
@@ -73,7 +69,6 @@ var chooseValidCoin = function (myGameStatus, coinsEligibleToMove, diceValue, op
         return {};
     for (var coin in coinsEligibleToMove) {
         var coinsCurrentIndex = lodash.findIndex(myGameStatus.path, {id: coinsEligibleToMove[coin].currentPosition});
-        // var coinsNextIndex = (coinsCurrentIndex+diceValue) % myGameStatus.path.length;
         var coinsNextIndex = myGameStatus.path.length <= 16 ? ((coinsCurrentIndex + diceValue) % myGameStatus.path.length) : (coinsCurrentIndex + diceValue);
         if (!myGameStatus.path[coinsNextIndex])
             continue;
@@ -92,10 +87,8 @@ var chooseValidCoin = function (myGameStatus, coinsEligibleToMove, diceValue, op
         var tile = myGameStatus.path[coinsNextIndex];
         if (!tile)
             continue;
-        console.log(!isMyCoinPresent(myGameStatus.coins, tile), '--------------')
 
         if (!isMyCoinPresent(myGameStatus.coins, tile)) {
-            // console.log({coinId:selectedCoin.id,tileId:tile.id},"*****")
             return {coinId: selectedCoin.id, tileId: tile.id};
         }
     }

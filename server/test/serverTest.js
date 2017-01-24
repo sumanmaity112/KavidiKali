@@ -404,143 +404,145 @@ describe("get handlers", function () {
                 .set('cookie', ['userId=jacky;gameId=123546789'])
                 .expect('{"id":"jacky","coins":{"jacky1":{"currentPosition":"2,0"}}}')
                 .expect(200, done)
-
-        });
-        it("gives 405 when it gets update board request from invalid player", function (done) {
-            game = {players: {}, id: 123546789};
-            game.players = {jacky: {}, joy: {}, johnny: {}, rocky: {}};
-            game.stateOfGame = function () {
-                return {id: 'jacky', coins: {jacky1: {currentPosition: '2,0'}}}
-            }
-            games = {};
-            games['123546789'] = game;
-            controller = requestHandler(games);
-            request(controller)
-                .get('/update?toUpdate=board')
-                .set('cookie', ['userId=jack;gameId=123546789'])
-                .expect('Method is not allowed')
-                .expect(405, done)
-        });
-        it("returns the current notification when it get request from registered player", function (done) {
-            game = {players: {}, id: 123546789};
-            game.players = {jacky: {}, joy: {}, johnny: {}, rocky: {}};
-            game.notification_text = "joy got 2"
-            game.getNotification = function () {
-                return this.notification_text
-            }
-            games = {};
-            games['123546789'] = game;
-            controller = requestHandler(games);
-            request(controller)
-                .get('/update?toUpdate=notification')
-                .set('cookie', ['userId=jacky;gameId=123546789'])
-                .expect(200)
-                .expect('joy got 2', done)
-        });
-    });
-    describe("enquiry?question=playerTurn", function () {
-        game = {players: {}, id: 123546789};
-        game.players = {jacky: {}, joy: {}, johnny: {}, rocky: {}};
-        games = {};
-        games['123546789'] = game;
-        controller = requestHandler(games);
-        it("returns the players turn number as 4 when get request from 1st player", function (done) {
-            request(controller)
-                .get('/enquiry?question=playerTurn')
-                .set('cookie', ['userId=jacky;gameId=123546789'])
-                .expect('4')
-                .expect(200, done)
-        });
-        it("returns the players turn number as 3 when get request from 2nd player", function (done) {
-            request(controller)
-                .get('/enquiry?question=playerTurn')
-                .set('cookie', ['userId=joy;gameId=123546789'])
-                .expect('3')
-                .expect(200, done)
-        });
-        it("returns the players turn number as 2 when get request from 3rd player", function (done) {
-            request(controller)
-                .get('/enquiry?question=playerTurn')
-                .set('cookie', ['userId=johnny;gameId=123546789'])
-                .expect('2')
-                .expect(200, done)
-        });
-        it("returns the players turn number as 1 when get request from 4th player", function (done) {
-            request(controller)
-                .get('/enquiry?question=playerTurn')
-                .set('cookie', ['userId=rocky;gameId=123546789'])
-                .expect('1')
-                .expect(200, done)
-        });
-        it("gives 405 when it get request from unregistered player", function (done) {
-            request(controller)
-                .get('/enquiry?question=playerTurn')
-                .set('cookie', ['userId=jack;gameId=123546789'])
-                .expect('Method is not allowed')
-                .expect(405, done)
-        });
-    });
-    describe("myInfo", function () {
-        it("gives stringified object of winner", function (done) {
-            game = {
-                players: {
-                    rocky: {colour: "red", id: "rocky", coins: {}},
-                    rony: {colour: "yellow", id: "rony", coins: {}}
-                },
-                winner: 'rocky',
-                id: 123546789,
-                resetGame: function () {
-                }
-            };
-            games = {};
-            games['123546789'] = game;
-            var controller = requestHandler(games)
-            request(controller)
-                .get('/enquiry?question=myInfo')
-                .set('cookie', ['userId=rocky;gameId=123546789'])
-                .expect('{"colour":"red","id":"rocky","coins":{}}')
-                .expect(200, done);
-        });
-        it("gives stringified object of the winner", function (done) {
-            game = {
-                players: {
-                    rocky: {colour: "red", id: "rocky", coins: {}},
-                    rony: {colour: "yellow", id: "rony", coins: {}}
-                },
-                winner: 'rony',
-                id: 123546789,
-                resetGame: function () {
-                }
-            };
-            games = {};
-            games['123546789'] = game;
-            var controller = requestHandler(games)
-            request(controller)
-                .get('/enquiry?question=myInfo')
-                .set('cookie', ['userId=rony;gameId=123546789'])
-                .expect('{"colour":"yellow","id":"rony","coins":{}}')
-                .expect(200, done);
-        });
-    });
-    describe("availableGame", function () {
-        it("gives the all available game where a player can join", function (done) {
-            var game1 = {players: {}, id: 123546789, numberOfPlayers: 4};
-            game1.players = {jacky: {}, joy: {}, johnny: {}};
-            var game2 = {players: {}, id: 123546780, numberOfPlayers: 4};
-            game2.players = {jack: {}, john: {}, johnny: {}};
-            var game3 = {players: {}, id: 123546781, numberOfPlayers: 4};
-            game3.players = {jack: {}, john: {}, johnny: {}, jacky: {}};
-            games = {};
-            games['123546789'] = game1;
-            games['123546780'] = game2;
-            games['123546781'] = game3;
-            controller = requestHandler(games);
-            request(controller)
-                .get('/availableGame')
-                .expect(200)
-                .expect('{"123546780":["jack","john","johnny"],"123546789":["jacky","joy","johnny"]}', done)
-        });
-    });
+		});
+		it("gives 405 when it gets update board request from invalid player",function(done){
+			game={players:{},id:123546789};
+			game.players={jacky:{},joy:{},johnny:{},rocky:{}};
+			game.stateOfGame = function(){
+				return {id:'jacky',coins:{jacky1:{currentPosition:'2,0'}}}
+			}
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+			request(controller)
+				.get('/update?toUpdate=board')
+				.set('cookie',['userId=jack;gameId=123546789'])
+				.expect('Method is not allowed')
+				.expect(405,done)
+		});
+		it("returns the current notification when it get request from registered player",function(done){
+			game={players:{},id:123546789};
+			game.players={jacky:{},joy:{},johnny:{},rocky:{}};
+			game.notification_text="joy got 2"
+			game.getNotification=function(){return this.notification_text}
+			games={};
+			games['123546789']=game;
+			controller = requestHandler(games);
+			request(controller)
+				.get('/update?toUpdate=notification')
+				.set('cookie',['userId=jacky;gameId=123546789'])
+				.expect(200)
+				.expect('joy got 2',done)
+		});
+	});
+	describe("enquiry?question=playerTurn",function(){
+		game={players:{},id:123546789};
+		game.players={jacky:{},joy:{},johnny:{},rocky:{}};
+		games={};
+		games['123546789']=game;
+		controller = requestHandler(games);
+		it("returns the players turn number as 4 when get request from 1st player",function(done){
+			request(controller)
+				.get('/enquiry?question=playerTurn')
+				.set('cookie',['userId=jacky;gameId=123546789'])
+				.expect('4')
+				.expect(200,done)
+		});
+		it("returns the players turn number as 3 when get request from 2nd player",function(done){
+			request(controller)
+				.get('/enquiry?question=playerTurn')
+				.set('cookie',['userId=joy;gameId=123546789'])
+				.expect('3')
+				.expect(200,done)
+		});
+		it("returns the players turn number as 2 when get request from 3rd player",function(done){
+			request(controller)
+				.get('/enquiry?question=playerTurn')
+				.set('cookie',['userId=johnny;gameId=123546789'])
+				.expect('2')
+				.expect(200,done)
+		});
+		it("returns the players turn number as 1 when get request from 4th player",function(done){
+			request(controller)
+				.get('/enquiry?question=playerTurn')
+				.set('cookie',['userId=rocky;gameId=123546789'])
+				.expect('1')
+				.expect(200,done)
+		});
+		it("gives 405 when it get request from unregistered player",function(done){
+			request(controller)
+				.get('/enquiry?question=playerTurn')
+				.set('cookie',['userId=jack;gameId=123546789'])
+				.expect('Method is not allowed')
+				.expect(405,done)
+		});
+	});
+	describe("myInfo",function(){
+		it("gives stringified object of winner",function(done){
+			game={
+					players:{rocky:{colour:"red",id:"rocky",coins:{}},
+							 rony:{colour:"yellow",id:"rony",coins:{}}
+							},
+					winner:'rocky',
+					id:123546789,
+					resetGame:function(){}
+				};
+				games={};
+				games['123546789']=game;
+			var controller = requestHandler(games)
+			request(controller)
+			.get('/enquiry?question=myInfo')
+			.set('cookie',['userId=rocky;gameId=123546789'])
+			.expect('{"colour":"red","id":"rocky","coins":{}}')
+			.expect(200,done);
+		});
+		it("gives stringified object of the winner",function(done){
+			game={
+					players:{rocky:{colour:"red",id:"rocky",coins:{}},
+							 rony:{colour:"yellow",id:"rony",coins:{}}
+							},
+					winner:'rony',
+					id:123546789,
+					resetGame:function(){}
+				};
+				games={};
+				games['123546789']=game;
+			var controller = requestHandler(games)
+			request(controller)
+			.get('/enquiry?question=myInfo')
+			.set('cookie',['userId=rony;gameId=123546789'])
+			.expect('{"colour":"yellow","id":"rony","coins":{}}')
+			.expect(200,done);
+		});
+	});
+	describe("availableGame",function(){
+		it("gives the all available game where a player can join",function(done){
+			var game1 = {players: {}, id: 123546789, numberOfPlayers: 4};
+			game1.players = {jacky: {}, joy: {}, johnny: {}, jack:{}};
+			game1.isFull = function () {
+				return true;
+			};
+			var game2 = {players: {}, id: 123546780, numberOfPlayers: 4};
+			game2.players = {jack: {}, john: {}, johnny: {}};
+			game2.isFull = function () {
+				return false;
+			};
+			var game3 = {players: {}, id: 123546781, numberOfPlayers: 4};
+			game3.players = {jack: {}, john: {}, johnny: {}};
+			game3.isFull = function () {
+				return false;
+			};
+			games = {};
+			games['123546789'] = game1;
+			games['123546780'] = game2;
+			games['123546781'] = game3;
+			controller = requestHandler(games);
+			request(controller)
+				.get('/availableGame')
+				.expect(200)
+				.expect('[{"gameId":"123546780","value":4},{"gameId":"123546781","value":4}]',done)
+		});
+	});
 
 });
 

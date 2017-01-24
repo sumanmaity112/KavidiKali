@@ -145,7 +145,6 @@ Game.prototype = {
         return this.notification_text;
     },
     isFull: function () {
-        // console.log('game',Object.keys(this.players).length , this.numberOfPlayers);
         this.emitter.emit("getARequest");
         return Object.keys(this.players).length == this.numberOfPlayers;
     }

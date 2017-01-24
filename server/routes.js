@@ -66,33 +66,35 @@ var isPlayerCanPlay = function (req, res, next) {
     }
 }
 
-var createFunctionalObj = function (req) {
-    var obj = urlParser.qs.parse(req.url);
-    obj.player = req.cookies.userId;
-    return obj;
+var createFunctionalObj = function(req, key){
+	var obj = urlParser.qs.parse(req.url);
+	var parsedData = urlParser.qs.parse(obj[key]);
+	lodash.merge(obj, parsedData);
+	obj.player = req.cookies.userId;
+	return obj;
 };
 
-var doInstruction = function (req, res, next) {
-    var obj = createFunctionalObj(req);
-    var acknowledge = application.handleInstruction(obj, req.game);
-    res.end(acknowledge);
+var doInstruction = function(req, res, next){
+	var obj = createFunctionalObj(req, "/instruction");
+	var acknowledge = application.handleInstruction(obj,req.game);
+	res.end(acknowledge);
 };
 
-var handleUpdate = function (req, res, next) {
-    var obj = createFunctionalObj(req);
-    var update = application.handleUpdates(obj, req.game);
-    res.end(update);
+var handleUpdate = function(req, res, next){
+	var obj = createFunctionalObj(req, "/update");
+	var update = application.handleUpdates(obj,req.game);
+	res.end(update);
 };
 
-var handleEnquiry = function (req, res, next) {
-    var obj = createFunctionalObj(req);
-    var response = enquiries(obj, req.game);
-    if (req.url == '/enquiry?question=whoIsTheWinner' && response != 'undefined') {
-        req.game.resetGame(req.cookies.userId);
-        res.clearCookie('userId')
-        res.clearCookie('gameId');
-    }
-    res.end(response);
+var handleEnquiry = function(req, res, next){
+	var obj = createFunctionalObj(req, "/enquiry");
+	var response = enquiries(obj,req.game);
+	if(req.url=='/enquiry?question=whoIsTheWinner' && response!='undefined'){
+		req.game.resetGame(req.cookies.userId);
+		res.clearCookie('userId');
+		res.clearCookie('gameId');
+	}
+	res.end(response);
 };
 
 var isValidPlayer = function (req, res, next) {
