@@ -1,0 +1,23 @@
+.circle {
+    width: 20%;
+    height: 30%;
+    background-color: #f8f8f8;
+    float: left;
+    padding: 2%;
+    margin: 2%;
+    border: solid #000;
+    border-radius: 15%;
+}
+
+.content {
+    width: 15%;
+    margin: 0 auto;
+}
+
+.android {
+    color: #A4C639;
+}
+
+.user {
+
+}

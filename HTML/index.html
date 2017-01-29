@@ -1,54 +1,61 @@
 <html>
 
 <head>
-  <title>KavidiKali Game</title>
-  <link rel="stylesheet" href="styles/index.css">
-  <link rel="stylesheet" href="styles/common.css">
-  <script src="//d3js.org/d3.v3.min.js"></script>
-  <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-  <script type="text/javascript" src="js/index.js"></script>
-  <script type="text/javascript" src="js/availableGames.js"></script>
-  <script type="text/javascript" src="js/newGame.js"></script>
+    <title>KavidiKali Game</title>
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/common.css">
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/availableGames.js"></script>
+    <script type="text/javascript" src="js/newGame.js"></script>
+    <link rel="stylesheet" href="styles/chooseNoOfPlayer.css">
+    <link rel="stylesheet" href="styles/font-awesome.min.css">
 </head>
 
 <body>
-  <div class="header">
+<div class="header">
     <img src="images/kavidi.png" id="kavidi_head1">
-  </div>
+</div>
 
-  <div class="userInfo">
+<div class="userInfo">
     <h3>Enter Your Name</h3>
     <div id="login">
-      <input type="text" name="name" placeholder="Ex: John Smith" id="name">
-      <input type="button" class="button" value="Continue" id="continue">
+        <input type="text" name="name" placeholder="Ex: John Smith" id="name">
+        <input type="button" class="button" value="Continue" id="continue">
     </div>
-  </div>
-  <div class="selectGame hidden" id="selectGame">
-    <div class="createGame" >
-      <!--<input type="radio" name="playWithBot" value="true"> playWithBot</input>
-      <input type="radio" name="playWithplayer" value="true"> playWithPlayer</input>-->
-      <input type="button" class="button" value="Create Game" id="createGame">
-      <!--<input type="button" class="button" value="3 player" id="createGame_button" onclick=createGame>
-      <input type="button" class="button" value="4 player" id="createGame_button" onclick=createGame>-->
+</div>
+<div class="selectGame hidden" id="selectGame">
+    <div class="createGame">
+        <!--<input type="radio" name="playWithBot" value="true"> playWithBot</input>
+        <input type="radio" name="playWithplayer" value="true"> playWithPlayer</input>-->
+        <input type="button" class="button" value="Create Game" id="createGame">
+        <!--<input type="button" class="button" value="3 player" id="createGame_button" onclick=createGame>
+        <input type="button" class="button" value="4 player" id="createGame_button" onclick=createGame>-->
     </div>
     <div class="joinGame">
-      <div class="availableGames" >
-           <input type="button" class="button" value="Join Game" id="joinGame">
-      </div>
+        <div class="availableGames">
+            <input type="button" class="button" value="Join Game" id="joinGame">
+        </div>
     </div>
 
-  </div>
-  <div class="footer">
+</div>
+<div class="footer">
     <div id="footer">
-      <div class="footer_elements" id="about"><a class="hover" title="About kavidikali" href="about.html" target="_blank">About</a></div>
-      <div class="footer_elements" id="issues"><a class="hover" title="GitHub Issues" href="https://github.com/sumanmaity112/KavidiKali/issues" target="_blank">Issues</a></div>
-      <div class="footer_elements" id="git">
-        <a class="hover" title="kavidikali Repository" href="https://github.com/sumanmaity112/KavidiKali" target="_blank"><img src="images/GitHub-Mark.png" id="gitHub"></a>
-      </div>
-      <div class="footer_elements" id="help"><a class="hover" title="Help Page" href="manual.html">Help</a></div>
-      <div class="footer_elements" id="contact"><a class="hover" title="To Contact Us" href="contact.html">Contact</a></div>
+        <div class="footer_elements" id="about"><a class="hover" title="About kavidikali" href="about.html"
+                                                   target="_blank">About</a></div>
+        <div class="footer_elements" id="issues"><a class="hover" title="GitHub Issues"
+                                                    href="https://github.com/sumanmaity112/KavidiKali/issues"
+                                                    target="_blank">Issues</a></div>
+        <div class="footer_elements" id="git">
+            <a class="hover" title="kavidikali Repository" href="https://github.com/sumanmaity112/KavidiKali"
+               target="_blank"><img src="images/GitHub-Mark.png" id="gitHub"></a>
+        </div>
+        <div class="footer_elements" id="help"><a class="hover" title="Help Page" href="manual.html">Help</a></div>
+        <div class="footer_elements" id="contact"><a class="hover" title="To Contact Us" href="contact.html">Contact</a>
+        </div>
     </div>
-  </div>
+</div>
 </body>
 
 </html>
