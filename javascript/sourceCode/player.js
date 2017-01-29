@@ -43,7 +43,6 @@ Player.prototype = {
                     this.path[0].place(coin);
                     this.diceValues = removeValue(this.diceValues, 6);
                 }
-                ;
             }
             else {
                 var currTileIndex = ld.findIndex(this.path, {id: coin.currentPosition});
@@ -56,9 +55,7 @@ Player.prototype = {
                     this.diceValues = removeValue(this.diceValues, dice);
                     this.path[currTileIndex].removeCoin(coin);
                 }
-                ;
             }
-            ;
             if (this.isWin) {
                 this.emitter.emit("Game_over");
                 return true;

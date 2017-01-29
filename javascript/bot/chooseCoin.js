@@ -15,7 +15,7 @@ var chooseCoin = function (myGameStatus, self, option) {
     option.path = '/update?toUpdate=board';
     http.get(option, function (res) {
         res.on('data', function (metaData) {
-            var availableCoin = chooseBestCoinToMove(JSON.parse(metaData), myGameStatus, myGameStatus.diceValues[0]);
+            var availableCoin = chooseBestCoinToMove(JSON.parse(metaData), myGameStatus);
             option.path = '/instruction?action=moveCoin&coin=' + availableCoin.coinId + '&position=' + availableCoin.tileId;
             moveCoin(option);
             if (myGameStatus.diceValues.length > 1)
@@ -23,47 +23,57 @@ var chooseCoin = function (myGameStatus, self, option) {
         })
     })
 
-}
+};
 
 var moveCoin = function (option) {
     http.get(option, function (res) {
     });
-}
+};
 
 var getOffBoardCoins = function (coins) {
     return lodash.filter(coins, function (coin) {
         return coin.currentPosition == -1;
     });
-}
+};
 
 var getOnBoardCoins = function (coins) {
     return lodash.filter(coins, function (coin) {
         return coin.currentPosition != -1 && coin.currentPosition != '2,2';
     });
-}
-var chooseBestCoinToMove = function (stateOfTheGame, myGameStatus, diceValue) {
+};
+
+var getMyCoinColor = function (myGameStatus) {
+    var coinId = myGameStatus.id + "1";
+    return myGameStatus.coins[coinId].colour;
+};
+
+var chooseBestCoinToMove = function (stateOfTheGame, myGameStatus) {
     var path = myGameStatus.path;
     var coins = myGameStatus.coins;
-    var myCoinColor = 'green';
+    var myCoinColor = getMyCoinColor(myGameStatus);
     var opponentsCoins = lodash.filter(stateOfTheGame, function (coin) {
         return coin.colour != myCoinColor
     });
     var coinsEligibleToEnter = getOffBoardCoins(coins);
 
 
-    if (myGameStatus.diceValues.indexOf(6) != -1 && coinsEligibleToEnter.length) {
+    var diceValues = myGameStatus.diceValues;
+    if (diceValues.indexOf(6) != -1 && coinsEligibleToEnter.length) {
         return {coinId: coinsEligibleToEnter[0].id, tileId: path[0].id};
     }
     else {
         var coinsEligibleToMove = getOnBoardCoins(coins);
-        if (coinsEligibleToMove.length && myGameStatus.diceValues.length) {
-            var result = chooseValidCoin(myGameStatus, coinsEligibleToMove, diceValue, opponentsCoins);
-            return result;
+        if (coinsEligibleToMove.length && diceValues.length) {
+            for (var index=0; index < diceValues.length; index++){
+                var result = chooseValidCoin(myGameStatus, coinsEligibleToMove, diceValues[index], opponentsCoins);
+                if(result.coinId)
+                    return result;
+            }
         }
     }
     return {};
+};
 
-}
 var chooseValidCoin = function (myGameStatus, coinsEligibleToMove, diceValue, opponentsCoins) {
     if (!coinsEligibleToMove.length)
         return {};
@@ -93,12 +103,13 @@ var chooseValidCoin = function (myGameStatus, coinsEligibleToMove, diceValue, op
         }
     }
     return {};
-}
+};
+
 var isMyCoinPresent = function (coins, tile) {
     for (var counter = 0; counter < coins.length; counter++) {
         if (coins[counter].currentPosition == tile.currentPosition && !(tile.coins instanceof Array))
             return true;
     }
     return false;
-}
+};
 module.exports = findMyDetails;

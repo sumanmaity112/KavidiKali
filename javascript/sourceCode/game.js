@@ -67,7 +67,6 @@ Game.prototype = {
             this.players[playerId].chances++;
             return true;
         }
-        ;
         return false;
     },
     isPlayerMatured: function (player) {
@@ -81,9 +80,7 @@ Game.prototype = {
             for (var coin in coins) {
                 state[coin] = coins[coin];
             }
-            ;
         }
-        ;
         return state;
     },
     get currentPlayer() {
@@ -128,7 +125,6 @@ Game.prototype = {
             this.counter = (this.counter + 1) % players.length;
             this.players[this.currentPlayer].chances++;
         }
-        ;
         return this.currentPlayer;
     },
     whenGameOver: function () {
