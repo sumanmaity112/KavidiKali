@@ -1,13 +1,13 @@
 var lodash = require('lodash');
 
-class Dice {
-    constructor(values) {
-        this.values = values
-    }
+var Dice = function(values){
+	this.values = values;
+};
 
-    roll() {
-        return lodash.sample(this.values);
-    }
+Dice.prototype = {
+	roll : function(){
+		return lodash.sample(this.values);
+	}
 }
 
 module.exports = Dice;
