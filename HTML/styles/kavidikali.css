@@ -167,13 +167,12 @@
 }
 
 #dice {
-  width: 50px;
-  height: 30px;
+  width: 70px;
+  height: 65px;
   border-radius: 5px;
   text-align: center;
-  margin: 0 auto;
   top: 50%;
-  left: 50%;
+  left: 30%;
   position: absolute;
 }
 
