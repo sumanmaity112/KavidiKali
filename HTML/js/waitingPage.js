@@ -7,10 +7,18 @@ var waiting = function () {
     };
 }();
 
+var createUrl = function (gameId) {
+    var hostname = window.location.host;
+    var protocol = window.location.protocol;
+    return protocol + "//" + hostname + "/joinGame.html?gameId=" + gameId;
+};
+
 var showGameId = function () {
     $.get('update?toUpdate=gameId', function (data) {
         if (data) {
             $('#gameId').html("<p>YOUR GAME ID IS - " + data + "</p>");
+            var url = createUrl(data);
+            $('#joinUrl').append("<a href='" + url + "'>" + url + "</a>");
         }
     });
 };

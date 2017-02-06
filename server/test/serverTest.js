@@ -62,7 +62,8 @@ describe("get handlers", function () {
         it("response with status code 405 when file is not present", function (done) {
             request(controller).get('/pikachu')
                 .expect(405)
-                .expect("Method is not allowed", done);
+                .expect(/Kavidikali Error Page/)
+                .expect(/Method is not allowed/, done);
         });
     });
     describe("unallowed method", function () {
@@ -70,7 +71,8 @@ describe("get handlers", function () {
             request(controller)
                 .put('/anything')
                 .expect(405)
-                .expect("Method is not allowed", done);
+                .expect(/Kavidikali Error Page/)
+                .expect(/Method is not allowed/, done);
         });
     });
     describe("kavidiKali.html", function () {
@@ -163,7 +165,7 @@ describe("get handlers", function () {
                     .get('/enquiry?question=currentPlayer')
                     .set('cookie', ['userId=roy'])
                     .expect(405)
-                    .expect('Method is not allowed', done);
+                    .expect(/Method is not allowed/, done);
             });
         });
         describe("isGameOver", function () {
@@ -271,7 +273,8 @@ describe("get handlers", function () {
                 request(controller)
                     .get('/enquiry?question=movesWhere&coin=rocky1')
                     .set('cookie', ['userId=john;gameId=123546789'])
-                    .expect('Method is not allowed')
+                    .expect(/Kavidikali Error Page/)
+                    .expect(/Method is not allowed/)
                     .expect(405, done);
             });
         });
@@ -343,7 +346,8 @@ describe("get handlers", function () {
             request(controller)
                 .get('/update?toUpdate=diceValues')
                 .set('cookie', ['userId=rocy;gameId=123546789'])
-                .expect('Method is not allowed')
+                .expect(/Kavidikali Error Page/)
+                .expect(/Method is not allowed/)
                 .expect(405, done)
         });
         it("updates the list of players when it gets request from valid player", function (done) {
@@ -387,7 +391,8 @@ describe("get handlers", function () {
             request(controller)
                 .get('/update?toUpdate=waitingPage')
                 .set('cookie', ['userId=jack;gameId=123546789'])
-                .expect('Method is not allowed')
+                .expect(/Kavidikali Error Page/)
+                .expect(/Method is not allowed/)
                 .expect(405, done)
         });
         it("gives current state of the game when it gets request from valid player", function (done) {
@@ -417,7 +422,8 @@ describe("get handlers", function () {
 			request(controller)
 				.get('/update?toUpdate=board')
 				.set('cookie',['userId=jack;gameId=123546789'])
-				.expect('Method is not allowed')
+                .expect(/Kavidikali Error Page/)
+                .expect(/Method is not allowed/)
 				.expect(405,done)
 		});
 		it("returns the current notification when it get request from registered player",function(done){
@@ -473,7 +479,8 @@ describe("get handlers", function () {
 			request(controller)
 				.get('/enquiry?question=playerTurn')
 				.set('cookie',['userId=jack;gameId=123546789'])
-				.expect('Method is not allowed')
+                .expect(/Kavidikali Error Page/)
+                .expect(/Method is not allowed/)
 				.expect(405,done)
 		});
 	});
@@ -656,7 +663,7 @@ describe("POST handlers", function () {
                 .expect('Location', '/waitingPage.html')
                 .expect('set-cookie', 'userId=rocky; Path=/,gameId=123546789; Path=/', done)
         });
-        it("redirects to index page if the game trying to join is full", function (done) {
+        it("response with 400 if the game trying to join is full", function (done) {
             var game = {
                 players: {rock: {}, jack: {}, johnny: {}, joy: {}},
                 createPlayer: function () {
@@ -671,8 +678,30 @@ describe("POST handlers", function () {
             request(controller)
                 .post('/login')
                 .send('name=rocky&gameId=123546789&option=joinGame')
-                .expect(302)
-                .expect('Location', '/index.html')
+                .expect(400)
+                .expect(/Kavidikali Error Page/)
+                .expect(/Sorry. Selected game is already started. You can not join the game. Please choose another game/)
+                .end(done);
+        });
+
+        it("response with 404 if requested gameId is invalid", function (done) {
+            var game = {
+                players: {rock: {}, jack: {}, johnny: {}, joy: {}},
+                createPlayer: function () {
+                },
+                id: '123546789',
+                isFull: function () {
+                    return true;
+                }
+            };
+            var games = {'123546789': game};
+            controller = requestHandler(games);
+            request(controller)
+                .post('/login')
+                .send('name=rocky&gameId=123546789&option=joinGame')
+                .expect(400)
+                .expect(/Kavidikali Error Page/)
+                .expect(/Sorry. Selected game is already started. You can not join the game. Please choose another game/)
                 .end(done);
         });
     });
@@ -722,7 +751,8 @@ describe("POST handlers", function () {
             request(controller)
                 .get('/instruction?action=rollDice')
                 .set('cookie', ['userId=piku;gameId=1235JUk'])
-                .expect('Method is not allowed')
+                .expect(/Kavidikali Error Page/)
+                .expect(/Method is not allowed/)
                 .expect(405, done);
         });
         it("performs action moveCoin if instruction is got from right player and right coin with right position", function (done) {

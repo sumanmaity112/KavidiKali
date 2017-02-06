@@ -8,6 +8,8 @@ var urlParser = require('url-parse');
 var lib = require('./games.js');
 var enquiries = application.enquiry;
 var botPlayer = require('../javascript/bot/botPlayer.js');
+var fs = require("fs");
+var errorPage = fs.readFileSync("HTML/errorPage.html","utf8");
 
 var app = express();
 
@@ -19,7 +21,7 @@ var loadGame = function (req, res, next) {
 
 var method_not_allowed = function (req, res) {
     res.statusCode = 405;
-    res.end('Method is not allowed');
+    res.end(errorPage.replace("__ERROR_REASON__","Method is not allowed"));
 };
 
 var login = function (req, res, next) {
@@ -37,7 +39,14 @@ var connectToBot = function (gameId, noOfBot) {
 };
 
 var createPlayer = function (userId, req, res) {
-    if (application.register(userId, req.game)) {
+    if(!req.game){
+        res.statusCode = 404;
+        res.end(errorPage.replace("__ERROR_REASON__","Please Check url"));
+    } else if(req.game.isFull()){
+        res.statusCode = 400;
+        res.end(errorPage.replace("__ERROR_REASON__","Sorry. Selected game is already started. You can not join the game. Please choose another game"));
+    }
+    else if (application.register(userId, req.game)) {
         res.cookie('userId', userId);
         res.cookie('gameId', req.game.id);
         res.redirect('/waitingPage.html');
@@ -64,7 +73,7 @@ var isPlayerCanPlay = function (req, res, next) {
         res.redirect('/waitingPage.html');
         res.end();
     }
-}
+};
 
 var createFunctionalObj = function(req, key){
 	var obj = urlParser.qs.parse(req.url);

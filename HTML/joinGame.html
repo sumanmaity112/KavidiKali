@@ -1,26 +1,45 @@
-<!DOCTYPE html>
 <html>
 
 <head>
-    <title>Waiting</title>
-    <link rel="stylesheet" href="styles/waitingPage.css">
+    <title>Join KavidiKali Game</title>
+    <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/common.css">
     <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="js/waitingPage.js"></script>
+    <link rel="stylesheet" href="styles/font-awesome.min.css">
+    <script>
+        window.onload = function () {
+            $("#login").submit(function () {
+                document.forms.loginForm.gameId.value = parseUrl().gameId;
+            })
+        };
+
+        var parseUrl = function () {
+            var search = document.location.search.slice(1);
+            var parameters = search.split("&");
+            var params = {};
+            parameters.forEach(function (parameter) {
+                var splittedParameter = parameter.split("=");
+                params[splittedParameter[0]] = splittedParameter[1];
+            });
+            return params;
+        };
+    </script>
 </head>
 
 <body>
 <div class="header">
-    <img src="images/kavidi.png" id="kavidi_head">
+    <img src="images/kavidi.png" id="kavidi_head1">
 </div>
-<div id="gameId" class="info"></div>
-<div class="players"></div>
-<div class="waiting">
-    <div class="waiting_dots" id="dot_0"></div>
-    <div class="waiting_dots" id="dot_1"></div>
-    <div class="waiting_dots" id="dot_2"></div>
+
+<div class="userInfo">
+    <h3>Enter Your Name</h3>
+    <form name="loginForm" action="/login" method="post" id="login">
+        <input type="text" name="name" placeholder="Ex: John Smith" id="name">
+        <input type="hidden" name="option" value="joinGame">
+        <input type="hidden" name="gameId">
+        <input type="submit" class="button" value="Continue" id="continue">
+    </form>
 </div>
-<div id="joinUrl" class="info">Others can join using - </div>
 <div class="footer">
     <div id="footer">
         <div class="footer_elements" id="about"><a class="hover" title="About kavidikali" href="about.html"
