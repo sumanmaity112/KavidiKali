@@ -22,3 +22,5 @@ Current developers:
 * [Syanima K.S] (https://github.com/syanima) (Developer)
 * [Supriya Gole] (https://github.com/SupriyaGole) (Developer)
 * [SaranRaj Sekar] (https://github.com/saran-THALA) (Developer)
+
+You can check the game **[here](http://kavidikali-5stars.rhcloud.com/)**
