@@ -1,24 +1,24 @@
 var update;
 
-window.onload = function () {
+window.onload = function() {
     $('#continue').click(hideUserInfo);
 };
 
-var hideUserInfo = function () {
+var hideUserInfo = function() {
     if (!$('#name').val())
         return;
     $('.userInfo').addClass('hidden');
     $('.selectGame').removeClass('hidden');
-    $('#createGame').click(function () {
+    $('#createGame').click(function() {
         newGames();
     })
-    $('#joinGame').click(function () {
+    $('#joinGame').click(function() {
         updateAvailableGames();
         update = setInterval(updateAvailableGames, 1000);
     })
 };
 
-var createGame = function (sizeOfGame, withBot, noOfBotPlayers) {
+var createGame = function(sizeOfGame, withBot, noOfBotPlayers) {
     noOfBotPlayers = noOfBotPlayers || 0;
     var playerName = $('#name').val();
     var numberOfPlayers = sizeOfGame;
@@ -30,10 +30,11 @@ var createGame = function (sizeOfGame, withBot, noOfBotPlayers) {
     obj.noOfBotPlayers = noOfBotPlayers;
     var form = createForm(obj, 'POST', 'login');
     clearInterval(update);
+    document.body.appendChild(form)
     form.submit();
 };
 
-var createForm = function (obj, method, action) {
+var createForm = function(obj, method, action) {
     var keys = Object.keys(obj);
     var form = document.createElement('form');
     var node = document.createElement("input");
@@ -41,15 +42,14 @@ var createForm = function (obj, method, action) {
         node.name = keys[i];
         node.value = obj[keys[i]];
         form.appendChild(node.cloneNode());
-    }
-    ;
+    };
     form.method = method;
     form.action = action;
     form.style.display = "none";
     return form;
 };
 
-var joinGame = function (id) {
+var joinGame = function(id) {
     var playerName = $('#name').val();
     var obj = {};
     obj.name = playerName;
