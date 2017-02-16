@@ -9,22 +9,22 @@ var lib = require('./games.js');
 var enquiries = application.enquiry;
 var botPlayer = require('../javascript/bot/botPlayer.js');
 var fs = require("fs");
-var errorPage = fs.readFileSync("HTML/errorPage.html","utf8");
+var errorPage = fs.readFileSync("HTML/errorPage.html", "utf8");
 
 var app = express();
 
-var loadGame = function (req, res, next) {
+var loadGame = function(req, res, next) {
     req.games = lib.removeGame(req.games);
     req.game = lib.loadGame(req.games, req.cookies.gameId, req.body, req.url);
     next();
 };
 
-var method_not_allowed = function (req, res) {
+var method_not_allowed = function(req, res) {
     res.statusCode = 405;
-    res.end(errorPage.replace("__ERROR_REASON__","Method is not allowed"));
+    res.end(errorPage.replace("__ERROR_REASON__", "Method is not allowed"));
 };
 
-var login = function (req, res, next) {
+var login = function(req, res, next) {
     createPlayer(req.body.name, req, res);
     if (req.body.playWithBot == 'true') {
         var noOfBot = (+req.body.noOfBotPlayers);
@@ -33,40 +33,40 @@ var login = function (req, res, next) {
     res.send();
 };
 
-var connectToBot = function (gameId, noOfBot) {
+var connectToBot = function(gameId, noOfBot) {
     for (var counter = 0; counter < noOfBot; counter++)
         (new botPlayer(gameId)).start();
 };
 
-var createPlayer = function (userId, req, res) {
-    if(!req.game){
+var createPlayer = function(userId, req, res) {
+    if (!req.game) {
         res.statusCode = 404;
-        res.end(errorPage.replace("__ERROR_REASON__","Please Check url"));
-    } else if(req.game.isFull()){
+        res.end(errorPage.replace("__ERROR_REASON__", "Please Check url"));
+    } else if (req.game.isFull()) {
         res.statusCode = 400;
-        res.end(errorPage.replace("__ERROR_REASON__","Sorry. Selected game is already started. You can not join the game. Please choose another game"));
-    }
-    else if (application.register(userId, req.game)) {
+        res.end(errorPage.replace("__ERROR_REASON__", "Sorry. Selected game is already started. You can not join the game. Please choose another game"));
+    } else if (application.register(userId, req.game)) {
         res.cookie('userId', userId);
         res.cookie('gameId', req.game.id);
         res.redirect('/waitingPage.html');
-    }
-    else
+    } else
         res.redirect('/index.html');
     res.end();
 };
 
-var isPlayerRegistered = function (req, res, next) {
+var isPlayerRegistered = function(req, res, next) {
     var player = req.cookies.userId;
-    if (!player || !enquiries({question: 'isValidPlayer', player: player}, req.game)) {
+    if (!player || !enquiries({
+            question: 'isValidPlayer',
+            player: player
+        }, req.game)) {
         res.redirect('/index.html');
         res.end();
-    }
-    else
+    } else
         next();
 };
 
-var isPlayerCanPlay = function (req, res, next) {
+var isPlayerCanPlay = function(req, res, next) {
     if (application.isGameReady(req.game))
         next();
     else {
@@ -75,56 +75,61 @@ var isPlayerCanPlay = function (req, res, next) {
     }
 };
 
-var createFunctionalObj = function(req, key){
-	var obj = urlParser.qs.parse(req.url);
-	var parsedData = urlParser.qs.parse(obj[key]);
-	lodash.merge(obj, parsedData);
-	obj.player = req.cookies.userId;
-	return obj;
+var createFunctionalObj = function(req, key) {
+    var obj = urlParser.qs.parse(req.url);
+    var parsedData = urlParser.qs.parse(obj[key]);
+    lodash.merge(obj, parsedData);
+    obj.player = req.cookies.userId;
+    return obj;
 };
 
-var doInstruction = function(req, res, next){
-	var obj = createFunctionalObj(req, "/instruction");
-	var acknowledge = application.handleInstruction(obj,req.game);
-	res.end(acknowledge);
+var doInstruction = function(req, res, next) {
+    var obj = createFunctionalObj(req, "/instruction");
+    var acknowledge = application.handleInstruction(obj, req.game);
+    res.end(acknowledge);
 };
 
-var handleUpdate = function(req, res, next){
-	var obj = createFunctionalObj(req, "/update");
-	var update = application.handleUpdates(obj,req.game);
-	res.end(update);
+var handleUpdate = function(req, res, next) {
+    var obj = createFunctionalObj(req, "/update");
+    var update = application.handleUpdates(obj, req.game);
+    res.end(update);
 };
 
-var handleEnquiry = function(req, res, next){
-	var obj = createFunctionalObj(req, "/enquiry");
-	var response = enquiries(obj,req.game);
-	if(req.url=='/enquiry?question=whoIsTheWinner' && response!='undefined'){
-		req.game.resetGame(req.cookies.userId);
-		res.clearCookie('userId');
-		res.clearCookie('gameId');
-	}
-	res.end(response);
+var handleEnquiry = function(req, res, next) {
+    var obj = createFunctionalObj(req, "/enquiry");
+    var response = enquiries(obj, req.game);
+    if (req.url == '/enquiry?question=whoIsTheWinner' && response != 'undefined') {
+        req.game.resetGame(req.cookies.userId);
+        res.clearCookie('userId');
+        res.clearCookie('gameId');
+    }
+    res.end(response);
 };
 
-var isValidPlayer = function (req, res, next) {
+var isValidPlayer = function(req, res, next) {
     var player = req.cookies.userId;
-    if (req.game && enquiries({question: 'isValidPlayer', player: player}, req.game))
+    if (req.game && enquiries({
+            question: 'isValidPlayer',
+            player: player
+        }, req.game))
         next();
     else
         method_not_allowed(req, res);
 };
 
-var availableGame = function (req, res) {
+var availableGame = function(req, res) {
     res.end(application.availableGame(req.games));
 };
 
-var newGames = function (req, res) {
+var newGames = function(req, res) {
     res.end(application.newGames(req.games));
 };
 
 app.use(cookieParser());
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 app.use(loadGame);
 
