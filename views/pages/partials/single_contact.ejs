@@ -1,0 +1,9 @@
+<a class="contacts" target="_blank" title="follow me on GitHub" href="<%=person.github_url%>">
+    <img class="git" alt="follow me on GitHub" src="images/GitHub-Mark.png" id="gitHub" border=0 />
+    <%=person.name%>
+        <%if (person.twitter_url) {%>
+            <a class="contacts" target="_blank" title="follow me on Twitter" href="<%=person.twitter_url%>">
+                <img id="twitter" alt="follow me on Twitter" src="https://c866088.ssl.cf3.rackcdn.com/assets/twiiter30x30.png" border=0 />
+            </a>
+            <%}%>
+</a>

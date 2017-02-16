@@ -9,62 +9,30 @@
 </head>
 
 <body>
-<div class="name">
-    <div class="header">
-      <% include ./partials/header %>
-    </div>
-    <div class="contactBody">
-        <h1>Contacts :</h1>
-        <ul>
-            <a class="contacts" target="_blank" title="follow me on GitHub" href="https://github.com/SRJPN"><img
-                    class="git" alt="follow me on GitHub" src="images/GitHub-Mark.png" id="gitHub" border=0> Sooraj
-                Parameswaran</a>
-        </ul>
-        <ul>
-            <a class="contacts" target="_blank" title="follow me on GitHub" href="https://github.com/sumanmaity112"><img
-                    class="git" alt="follow me on GitHub" src="images/GitHub-Mark.png" id="gitHub" border=0> Suman Maity
-                <a class="contacts" target="_blank" title="follow me on Twitter"
-                   href="http://www.twitter.com/sumanmaity112"><img id="twitter" alt="follow me on Twitter"
-                                                                    src="https://c866088.ssl.cf3.rackcdn.com/assets/twiiter30x30.png"
-                                                                    border=0> </a>
-            </a>
-        </ul>
-        <ul>
-            <a class="contacts" target="_blank" title="follow me on GitHub" href="https://github.com/saran-THALA"><img
-                    class="git" alt="follow me on GitHub" src="images/GitHub-Mark.png" id="gitHub" border=0> SaranRaj
-                Sekar
-                <a class="contacts" target="_blank" title="follow me on Twitter"
-                   href="http://www.twitter.com/saranraj_ece"><img id="twitter1" alt="follow me on Twitter"
-                                                                   src="https://c866088.ssl.cf3.rackcdn.com/assets/twiiter30x30.png"
-                                                                   border=0></a>
+    <div class="name">
+        <div class="header">
+            <% include ./partials/header %>
+        </div>
+        <div class="contactBody">
+            <h1>Contacts :</h1>
+            <ul>
+                <% people.forEach(function(person) { %>
+                    <li>
+                        <% include partials/single_contact {person} %>
+                    </li>
+                    <% }) %>
+            </ul>
 
-        </ul>
-        <ul>
-            <a class="contacts" target="_blank" title="follow me on GitHub" href="https://github.com/SupriyaGole"><img
-                    class="git" alt="follow me on GitHub" src="images/GitHub-Mark.png" id="gitHub" border=0> Supriya
-                Gole</a>
-        </ul>
-        <ul>
-            <a class="contacts" target="_blank" title="follow me on GitHub" href="https://github.com/syanima"><img
-                    class="git" alt="follow me on GitHub" src="images/GitHub-Mark.png" id="gitHub" border=0> Syanima K.S
-                <a class="contacts" target="_blank" title="follow me on Twitter"
-                   href="http://www.twitter.com/syanima_ks"><img id="twitter" alt="follow me on Twitter"
-                                                                 src="https://c866088.ssl.cf3.rackcdn.com/assets/twiiter30x30.png"
-                                                                 border=0> </a>
-            </a>
-        </ul>
-        <div class="email">
-            <a class="contacts" title="Contact us on Mail"
-               href="mailto:saranraj@thoughtworks.com?cc=syanima@thoughtworks.com, soorajp@thoughtworks.com, supriyag@thoughtworks.com,sumanm@thoughtworks.com&subject=Kavidi%20Kali"><img
-                    height=30px width=40px src="images/email-2.png" alt="Contact us on Mail"/> Email Us</a>
+            <div class="email">
+                <a class="contacts" title="Contact us on Mail" href="mailto:<%=people[0].email_id%>?cc=<%=people.map((person)=>person.email_id).join(',')%>&subject=Kavidi%20Kali">
+                    <img height=30px width=40px src="images/email-2.png" alt="Contact us on Mail" /> Email Us
+                </a>
+            </div>
         </div>
     </div>
-</div>
-<div class="footer">
-  <% include ./partials/footer %>
-</div>
-
-
+    <div class="footer">
+        <% include ./partials/footer %>
+    </div>
 </body>
 
 </html>

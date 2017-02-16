@@ -1,3 +1,5 @@
+const people = require('../contacts');
+
 module.exports = function(app) {
     app.get('^/waitingPage.html$', function(req, res) {
         res.render('pages/waitingPage');
@@ -20,7 +22,9 @@ module.exports = function(app) {
     });
 
     app.get('/contact.html', function(req, res) {
-        res.render('pages/contacts')
+        res.render('pages/contacts', {
+            people
+        })
     });
 
     app.get('/about.html', function(req, res) {
