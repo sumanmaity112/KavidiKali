@@ -3,14 +3,13 @@
 
 <head>
     <title>About KavidiKali</title>
-    <!-- <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'> -->
     <link rel="stylesheet" href="styles/common.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="styles/about.css" media="screen" title="no title" charset="utf-8">
 </head>
 
 <body>
 <div class="header">
-    <img src="images/kavidi.png" id="kavidi_head">
+  <% include ./partials/header %>
 </div>
 <div class="text">
     <p>
@@ -123,20 +122,7 @@
 </div>
 </div>
 <div class="footer">
-    <div id="footer">
-        <div class="footer_elements" id="about"><a class="hover" title="About kavidikali" href="about.html"
-                                                   target="_blank">About</a></div>
-        <div class="footer_elements" id="issues"><a class="hover" title="GitHub Issues"
-                                                    href="https://github.com/sumanmaity112/KavidiKali/issues"
-                                                    target="_blank">Issues</a></div>
-        <div class="footer_elements" id="git">
-            <a class="hover" title="kavidikali Repository" href="https://github.com/sumanmaity112/KavidiKali"
-               target="_blank"><img src="images/GitHub-Mark.png" id="gitHub"></a>
-        </div>
-        <div class="footer_elements" id="help"><a class="hover" title="Help Page" href="manual.html">Help</a></div>
-        <div class="footer_elements" id="contact"><a class="hover" title="To Contact Us" href="contact.html">Contact</a>
-        </div>
-    </div>
+  <% include ./partials/footer %>
 </div>
 </body>
 

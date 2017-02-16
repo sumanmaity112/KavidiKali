@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kavidikali Error Page</title>
+    <link rel="stylesheet" href="styles/common.css">
+    <style>
+        #error {
+            height: 100px;
+            width: 300px;
+            text-align: center;
+            margin: 0 auto;
+            padding-top: 18%;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+  <% include ./partials/header %>
+</div>
+<div id="error">
+    <%= message %>
+</div>
+<div class="footer">
+  <% include ./partials/footer %>
+</div>
+</body>
+</html>

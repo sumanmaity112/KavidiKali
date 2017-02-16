@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Waiting</title>
+    <link rel="stylesheet" href="styles/waitingPage.css">
+    <link rel="stylesheet" href="styles/common.css">
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/waitingPage.js"></script>
+</head>
+
+<body>
+<div class="header">
+  <% include ./partials/header %>
+</div>
+<div id="gameId" class="info"></div>
+<div class="players"></div>
+<div class="waiting">
+    <div class="waiting_dots" id="dot_0"></div>
+    <div class="waiting_dots" id="dot_1"></div>
+    <div class="waiting_dots" id="dot_2"></div>
+</div>
+<div id="joinUrl" class="info">Others can join using - </div>
+<div class="footer">
+  <% include ./partials/footer %>
+</div>
+</body>
+
+</html>

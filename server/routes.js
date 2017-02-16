@@ -8,8 +8,7 @@ var urlParser = require('url-parse');
 var lib = require('./games.js');
 var enquiries = application.enquiry;
 var botPlayer = require('../javascript/bot/botPlayer.js');
-var fs = require("fs");
-var errorPage = fs.readFileSync("HTML/errorPage.html", "utf8");
+var messages = require('./messages');
 
 var app = express();
 
@@ -19,18 +18,30 @@ var loadGame = function(req, res, next) {
     next();
 };
 
-var method_not_allowed = function(req, res) {
-    res.statusCode = 405;
-    res.end(errorPage.replace("__ERROR_REASON__", "Method is not allowed"));
+app.use(function(req, res, next) {
+    console.log(req.method, req.url);
+    next();
+});
+
+var sendErrorPageWithCode = function(res, errorCode, message) {
+    res.statusCode = errorCode;
+    res.render('pages/errorPage', {
+        message
+    });
 };
 
 var login = function(req, res, next) {
-    createPlayer(req.body.name, req, res);
-    if (req.body.playWithBot == 'true') {
-        var noOfBot = (+req.body.noOfBotPlayers);
-        connectToBot(req.game.id, noOfBot);
-    }
-    res.send();
+    if (!req.game)
+        sendErrorPageWithCode(res, 404, messages.checkUrl);
+    else if (req.game.isFull())
+        sendErrorPageWithCode(res, 400, messages.gameAlreadyStarted);
+    else if (application.register(req.body.name, req.game))
+        redirectWithSettingCookie(req, res);
+    else
+        res.redirect('/index.html');
+
+    req.body.playWithBot == 'true' &&
+        connectToBot(req.game.id, +req.body.noOfBotPlayers);
 };
 
 var connectToBot = function(gameId, noOfBot) {
@@ -38,20 +49,11 @@ var connectToBot = function(gameId, noOfBot) {
         (new botPlayer(gameId)).start();
 };
 
-var createPlayer = function(userId, req, res) {
-    if (!req.game) {
-        res.statusCode = 404;
-        res.end(errorPage.replace("__ERROR_REASON__", "Please Check url"));
-    } else if (req.game.isFull()) {
-        res.statusCode = 400;
-        res.end(errorPage.replace("__ERROR_REASON__", "Sorry. Selected game is already started. You can not join the game. Please choose another game"));
-    } else if (application.register(userId, req.game)) {
-        res.cookie('userId', userId);
-        res.cookie('gameId', req.game.id);
-        res.redirect('/waitingPage.html');
-    } else
-        res.redirect('/index.html');
-    res.end();
+
+var redirectWithSettingCookie = function(req, res) {
+    res.cookie('userId', req.body.name);
+    res.cookie('gameId', req.game.id);
+    res.redirect('/waitingPage.html');
 };
 
 var isPlayerRegistered = function(req, res, next) {
@@ -59,20 +61,17 @@ var isPlayerRegistered = function(req, res, next) {
     if (!player || !enquiries({
             question: 'isValidPlayer',
             player: player
-        }, req.game)) {
-        res.redirect('/index.html');
-        res.end();
-    } else
+        }, req.game))
+        res.redirect('/index.html')
+    else
         next();
 };
 
 var isPlayerCanPlay = function(req, res, next) {
     if (application.isGameReady(req.game))
         next();
-    else {
+    else
         res.redirect('/waitingPage.html');
-        res.end();
-    }
 };
 
 var createFunctionalObj = function(req, key) {
@@ -114,7 +113,7 @@ var isValidPlayer = function(req, res, next) {
         }, req.game))
         next();
     else
-        method_not_allowed(req, res);
+        sendErrorPageWithCode(res, 405, messages.methodNotAllowed);
 };
 
 var availableGame = function(req, res) {
@@ -133,13 +132,47 @@ app.use(bodyParser.urlencoded({
 
 app.use(loadGame);
 
+app.set('view engine', 'ejs');
+
 app.get('^/availableGame$', availableGame);
 
 app.get('^/newGames$', newGames);
 
-app.get('^/waitingPage.html$', isPlayerRegistered);
+app.get('^/waitingPage.html$', isPlayerRegistered, function(req, res) {
+    res.render('pages/waitingPage');
+});
 
-app.get('^/kavidiKali.html$', isPlayerRegistered, isPlayerCanPlay);
+app.get('^/kavidiKali.html$', isPlayerRegistered, isPlayerCanPlay, function(req, res) {
+    res.render('pages/kavidikali')
+});
+
+app.get('/index.html', function(req, res) {
+    res.render('pages/index')
+});
+
+app.get('/', function(req, res) {
+    res.render('pages/index')
+});
+
+app.get(/^\/joingame.html/, function(req, res) {
+    res.render('pages/joinGame')
+});
+
+app.get('/contact.html', function(req, res) {
+    res.render('pages/contacts')
+});
+
+app.get('/about.html', function(req, res) {
+    res.render('pages/about')
+});
+
+app.get('/manual.html', function(req, res) {
+    res.render('pages/manual')
+});
+
+app.get('/chooseNoOfPlayer.html', function(req, res) {
+    res.render('pages/chooseNoOfPlayer')
+});
 
 app.use(express.static('./HTML'));
 
