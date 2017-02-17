@@ -16,7 +16,7 @@
         <div class="contactBody">
             <h1>Contacts :</h1>
             <ul>
-                <% people.forEach(function(person) { %>
+                <% contacts.forEach(function(person) { %>
                     <li>
                         <% include partials/single_contact {person} %>
                     </li>
@@ -24,14 +24,14 @@
             </ul>
 
             <div class="email">
-                <a class="contacts" title="Contact us on Mail" href="mailto:<%=people[0].email_id%>?cc=<%=people.map((person)=>person.email_id).join(',')%>&subject=Kavidi%20Kali">
+                <a class="contacts" title="Contact us on Mail" href="mailto:<%=contacts[0].email_id%>?cc=<%=contacts.map((person)=>person.email_id).join(',')%>&subject=Kavidi%20Kali">
                     <img height=30px width=40px src="images/email-2.png" alt="Contact us on Mail" /> Email Us
                 </a>
             </div>
         </div>
     </div>
     <div class="footer">
-        <% include ./partials/footer %>
+        <% include ./partials/footer  %>
     </div>
 </body>
 
