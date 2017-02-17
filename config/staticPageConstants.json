@@ -1,0 +1,42 @@
+{
+  "WAITING_PAGE": {
+    "url":"^/waitingPage.html$",
+    "template":"pages/waitingPage"
+  },
+  "GAME_PAGE": {
+    "url":"^/kavidiKali.html$",
+    "template":"pages/kavidikali"
+  },
+  "INDEX_PAGE": {
+    "url":"^/index.html",
+    "template":"pages/index"
+  },
+  "INDEX": {
+    "url":"/",
+    "template":"pages/index"
+  },
+  "CONTACTS_PAGE": {
+    "url":"/contacts.html",
+    "template":"pages/contacts"
+  },
+  "ABOUT_PAGE": {
+    "url":"/about.html",
+    "template":"pages/about"
+  },
+  "MANUAL_PAGE": {
+    "url":"/manual.html",
+    "template":"pages/manual"
+  },
+  "CHOOSE_PLAYER_PAGE": {
+    "url":"/chooseNoOfPlayer.html",
+    "template":"pages/chooseNoOfPlayer"
+  },
+  "ERROR_PAGE": {
+    "url":"",
+    "template":"pages/errorPage"
+  },
+  "JOIN_GAME_PAGE": {
+    "url":"/^\/joingame.html/",
+    "template":"pages/joinGame"
+  }
+}

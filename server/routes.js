@@ -26,7 +26,7 @@ app.use(function(req, res, next) {
 
 var sendErrorPageWithCode = function(res, errorCode, message) {
     res.statusCode = errorCode;
-    res.render('pages/errorPage', {
+    staticPageRoutes.serverErrorPage(res, {
         message
     });
 };
@@ -143,7 +143,7 @@ app.get('^/waitingPage.html$', isPlayerRegistered);
 
 app.get('^/kavidiKali.html$', isPlayerRegistered, isPlayerCanPlay);
 
-app = staticPageRoutes(app);
+app = staticPageRoutes.serveStaticPage(app);
 
 app.use(express.static('./HTML'));
 
