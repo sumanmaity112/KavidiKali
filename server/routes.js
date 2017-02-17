@@ -24,18 +24,22 @@ app.use(function(req, res, next) {
     next();
 });
 
-var sendErrorPageWithCode = function(res, errorCode, message) {
-    res.statusCode = errorCode;
-    staticPageRoutes.serverErrorPage(res, {
-        message
-    });
+var errorHandler = function(err, req, res, next) {
+    res.statusCode = err.errorCode || 500;
+    staticPageRoutes.serverErrorPage(res, err);
 };
 
 var login = function(req, res, next) {
     if (!req.game)
-        sendErrorPageWithCode(res, 404, messages.checkUrl);
+        next({
+            errorCode: 404,
+            message: messages.checkUrl
+        });
     else if (req.game.isFull())
-        sendErrorPageWithCode(res, 400, messages.gameAlreadyStarted);
+        next({
+            errorCode: 400,
+            message: messages.gameAlreadyStarted
+        });
     else if (application.register(req.body.name, req.game))
         redirectWithSettingCookie(req, res);
     else
@@ -98,12 +102,16 @@ var handleUpdate = function(req, res, next) {
 var handleEnquiry = function(req, res, next) {
     var obj = createFunctionalObj(req, "/enquiry");
     var response = enquiries(obj, req.game);
+    clearCookies(req, res, response);
+    res.end(response);
+};
+
+var clearCookies = function(req, res, response) {
     if (req.url == '/enquiry?question=whoIsTheWinner' && response != 'undefined') {
         req.game.resetGame(req.cookies.userId);
         res.clearCookie('userId');
         res.clearCookie('gameId');
-    }
-    res.end(response);
+    };
 };
 
 var isValidPlayer = function(req, res, next) {
@@ -114,7 +122,10 @@ var isValidPlayer = function(req, res, next) {
         }, req.game))
         next();
     else
-        sendErrorPageWithCode(res, 405, messages.methodNotAllowed);
+        next({
+            errorCode: 405,
+            message: messages.methodNotAllowed
+        });
 };
 
 var availableGame = function(req, res) {
@@ -157,5 +168,6 @@ app.get(/^\/enquiry/, handleEnquiry);
 
 app.get(/^\/instruction/, doInstruction);
 
+app.use(errorHandler);
 
 module.exports = app;
