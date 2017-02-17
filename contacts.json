@@ -1,0 +1,30 @@
+[
+  {
+    "name":"Sooraj Parameswaran",
+    "github_url":"https://github.com/SRJPN",
+    "email_id":"soorajp@thoughtworks.com"
+  },
+  {
+    "name":"Suman Maity",
+    "github_url":"https://github.com/sumanmaity112",
+    "twitter_url":"http://www.twitter.com/sumanmaity112",
+    "email_id":"sumanm@thoughtworks.com"
+  },
+  {
+    "name":"Saran Raj",
+    "github_url":"https://github.com/saran-THALA",
+    "twitter_url":"http://www.twitter.com/saranraj_ece",
+    "email_id":"saranraj@thoughtworks.com"
+  },
+  {
+    "name":"Supriya Gole",
+    "github_url":"https://github.com/SupriyaGole",
+    "email_id":"supriyag@thoughtworks.com"
+  },
+  {
+    "name":"Syanima K S",
+    "github_url":"https://github.com/syanima",
+    "twitter_url":"http://www.twitter.com/syanima_ks",
+    "email_id":"syanima@thoughtworks.com"
+  }
+]
