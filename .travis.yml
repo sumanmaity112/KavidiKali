@@ -2,12 +2,9 @@ language: node_js
 node_js: "7.4"
 
 install:
+  - npm install --only=dev
   - npm install
   - npm test
-
-cache:
-  directories:
-  - ui/node_modules
 
 notifications:
   email: false
