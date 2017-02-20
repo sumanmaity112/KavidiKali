@@ -9,7 +9,9 @@
     "min": "node_modules/mocha/bin/_mocha -R min --recursive ./javascript",
     "watch": "node_modules/mocha/bin/_mocha -R min --watch --recursive ./javascript",
     "start": "node ./server/server.js",
-    "testServer": "node_modules/mocha/bin/_mocha --recursive ./server/test"
+    "testServer": "node_modules/mocha/bin/_mocha --recursive ./server/test",
+    "check-coverage": "node_modules/istanbul/lib/cli.js check-coverage --statement 82 --branch 71 --function 73 --line 82",
+    "build" : "npm install && npm test && npm run coverage && npm run check-coverage"
   },
   "repository": {
     "type": "git",
