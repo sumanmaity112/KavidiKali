@@ -1,4 +1,4 @@
-var request = require('superTest');
+var request = require('supertest');
 var assert = require('assert');
 var requestHandler = require('../routing.js');
 var Game = require('../../javascript/sourceCode/game.js');
