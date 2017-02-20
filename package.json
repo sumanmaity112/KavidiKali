@@ -4,12 +4,12 @@
   "description": "",
   "main": "./server/server.js",
   "scripts": {
-    "test": "mocha server/test/ javascript/test/",
-    "coverage": "istanbul cover _mocha server/test/ javascript/test/",
-    "min": "mocha -R min --recursive ./javascript",
-    "watch": "mocha -R min --watch --recursive ./javascript",
+    "test": "node_modules/mocha/bin/_mocha server/test/ javascript/test/",
+    "coverage": "node_modules/istanbul/lib/cli.js cover _mocha server/test/ javascript/test/",
+    "min": "node_modules/mocha/bin/_mocha -R min --recursive ./javascript",
+    "watch": "node_modules/mocha/bin/_mocha -R min --watch --recursive ./javascript",
     "start": "node ./server/server.js",
-    "testServer": "mocha --recursive ./server/test"
+    "testServer": "node_modules/mocha/bin/_mocha --recursive ./server/test"
   },
   "repository": {
     "type": "git",
