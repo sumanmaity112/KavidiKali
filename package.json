@@ -37,8 +37,8 @@
     "url-parse": "^1.0.5"
   },
   "engines": {
-    "node": ">= 0.6.0",
-    "npm": ">= 1.0.0"
+    "node": ">= 7.4",
+    "npm": ">= 4.0.5"
   },
   "private": true
 }
