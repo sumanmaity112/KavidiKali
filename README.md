@@ -1,5 +1,7 @@
 # KavidiKali
 
+[![Build Status](https://travis-ci.org/sumanmaity112/KavidiKali.svg?branch=master)](https://travis-ci.org/sumanmaity112/KavidiKali)
+
 From Wikipedia:
 
 Kavidi, the shell of “Money cowry” or “Cypraea moneta” has many roles in the culture and life of Keralites, thanks to the Arabian Sea that marks the western border of Kerala.
