@@ -42,5 +42,6 @@
     "node": ">= 7.4",
     "npm": ">= 4.0.5"
   },
+  "engineStrict": true,
   "private": true
 }
