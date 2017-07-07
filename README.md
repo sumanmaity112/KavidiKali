@@ -25,4 +25,4 @@ Current developers:
 * [Supriya Gole] (https://github.com/SupriyaGole) (Developer)
 * [SaranRaj Sekar] (https://github.com/saran-THALA) (Developer)
 
-You can check the game **[here](http://kavidikali-5stars.rhcloud.com/)**
+You can check the game **[here](https://kavidikali-5stars.rhcloud.com/)**
