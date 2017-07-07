@@ -56,5 +56,6 @@ var joinGame = function(id) {
     obj.option = 'joinGame';
     obj.gameId = id;
     var form = createForm(obj, 'POST', 'login');
+    document.body.appendChild(form);
     form.submit();
 };
